@@ -22,6 +22,10 @@
 		62D5FFDA176FED7C002E2BCB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D5FFBE176FED7C002E2BCB /* CoreData.framework */; };
 		62D5FFE2176FED7C002E2BCB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62D5FFE0176FED7C002E2BCB /* InfoPlist.strings */; };
 		62D5FFE4176FED7C002E2BCB /* AnagramReviewerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D5FFE3176FED7C002E2BCB /* AnagramReviewerTests.m */; };
+		62D5FFF7176FF02A002E2BCB /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D5FFF6176FF02A002E2BCB /* Tweet.m */; };
+		62D5FFF8176FF02A002E2BCB /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D5FFF6176FF02A002E2BCB /* Tweet.m */; };
+		62D5FFFB176FF02B002E2BCB /* Hit.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D5FFFA176FF02B002E2BCB /* Hit.m */; };
+		62D5FFFC176FF02B002E2BCB /* Hit.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D5FFFA176FF02B002E2BCB /* Hit.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +57,10 @@
 		62D5FFDF176FED7C002E2BCB /* AnagramReviewerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AnagramReviewerTests-Info.plist"; sourceTree = "<group>"; };
 		62D5FFE1176FED7C002E2BCB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		62D5FFE3176FED7C002E2BCB /* AnagramReviewerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnagramReviewerTests.m; sourceTree = "<group>"; };
+		62D5FFF5176FF02A002E2BCB /* Tweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tweet.h; sourceTree = "<group>"; };
+		62D5FFF6176FF02A002E2BCB /* Tweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tweet.m; sourceTree = "<group>"; };
+		62D5FFF9176FF02B002E2BCB /* Hit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hit.h; sourceTree = "<group>"; };
+		62D5FFFA176FF02B002E2BCB /* Hit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hit.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,7 +126,7 @@
 				62D5FFC9176FED7C002E2BCB /* ANRAppDelegate.h */,
 				62D5FFCA176FED7C002E2BCB /* ANRAppDelegate.m */,
 				62D5FFCF176FED7C002E2BCB /* Images.xcassets */,
-				62D5FFCC176FED7C002E2BCB /* AnagramReviewer.xcdatamodeld */,
+				62D5FFFD176FF043002E2BCB /* coredata */,
 				62D5FFC1176FED7C002E2BCB /* Supporting Files */,
 			);
 			path = AnagramReviewer;
@@ -151,6 +159,18 @@
 				62D5FFE0176FED7C002E2BCB /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		62D5FFFD176FF043002E2BCB /* coredata */ = {
+			isa = PBXGroup;
+			children = (
+				62D5FFF5176FF02A002E2BCB /* Tweet.h */,
+				62D5FFF9176FF02B002E2BCB /* Hit.h */,
+				62D5FFFA176FF02B002E2BCB /* Hit.m */,
+				62D5FFF6176FF02A002E2BCB /* Tweet.m */,
+				62D5FFCC176FED7C002E2BCB /* AnagramReviewer.xcdatamodeld */,
+			);
+			name = coredata;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,6 +270,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				62D5FFCB176FED7C002E2BCB /* ANRAppDelegate.m in Sources */,
+				62D5FFFB176FF02B002E2BCB /* Hit.m in Sources */,
+				62D5FFF7176FF02A002E2BCB /* Tweet.m in Sources */,
 				62D5FFCE176FED7C002E2BCB /* AnagramReviewer.xcdatamodeld in Sources */,
 				62D5FFC7176FED7C002E2BCB /* main.m in Sources */,
 			);
@@ -259,6 +281,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62D5FFFC176FF02B002E2BCB /* Hit.m in Sources */,
+				62D5FFF8176FF02A002E2BCB /* Tweet.m in Sources */,
 				62D5FFE4176FED7C002E2BCB /* AnagramReviewerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
