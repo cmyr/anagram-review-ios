@@ -35,6 +35,7 @@
     [request addValue:ANR_AUTH_TOKEN forHTTPHeaderField:@"Authorization"];
     (void)[NSURLConnection connectionWithRequest:request
                                         delegate:self];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 }
 
 -(void)setStatus:(NSString *)status forHit:(NSDictionary *)hit{
@@ -81,6 +82,7 @@
     }
 //    clear responseData to receive another response
     self.responseData = [NSMutableData data];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{

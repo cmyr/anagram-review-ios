@@ -16,7 +16,7 @@
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Tweet"];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"id_num" ascending:YES]];
-    request.predicate = [NSPredicate predicateWithFormat:@"unique = %@", id_str];
+    request.predicate = [NSPredicate predicateWithFormat:@"id_num = %@", @([id_str longLongValue])];
     
 
     NSError *error = nil;

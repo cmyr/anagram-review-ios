@@ -7,10 +7,11 @@
 //
 
 #import "ANRHitsCDTVC.h"
-#import "Hit.h"
+#import "Hit+Create.h"
 
 @interface ANRHitsCDTVC ()
 @property (nonatomic) BOOL beganUpdates;
+@property (strong, nonatomic) ANRServerHandler *serverHandler;
 @end
 
 @implementation ANRHitsCDTVC
@@ -25,7 +26,8 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-    
+    [super viewWillAppear:animated];
+    if (!self.managedObjectContext) [self loadDocument];
 }
 - (void)viewDidLoad
 {
@@ -43,6 +45,11 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+-(ANRServerHandler*)serverHandler {
+    if (!_serverHandler) _serverHandler = [[ANRServerHandler alloc]init];
+    _serverHandler.delegate = self;
+    return _serverHandler;
+}
 
 -(void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
@@ -56,6 +63,61 @@
         self.fetchedResultsController = nil;
     }
 }
+
+
+-(void)fetchHits
+{
+    [self.serverHandler requestHits];
+}
+
+#define DOCUMENT_NAME @"hitsfile"
+-(void)loadDocument{
+    NSURL *url = [[[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]lastObject];
+    url = [url URLByAppendingPathComponent:DOCUMENT_NAME];
+    UIManagedDocument *document = [[UIManagedDocument alloc]initWithFileURL:url];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[url path]]){
+//        create
+        [document saveToURL:url
+           forSaveOperation:UIDocumentSaveForCreating
+          completionHandler:^(BOOL success) {
+              if (success){
+                  self.managedObjectContext = document.managedObjectContext;
+                  [self fetchHits];
+              }
+          }];
+    }else if (document.documentState == UIDocumentStateClosed) {
+        [document openWithCompletionHandler:^(BOOL success) {
+            if (success){
+                self.managedObjectContext = document.managedObjectContext;
+                [self fetchHits];
+            }
+        }];
+    }else {
+        self.managedObjectContext = document.managedObjectContext;
+        [self fetchHits];
+        
+    }
+}
+
+#pragma mark - hit server delegate methods
+-(void)AGServerDid:(BOOL)successFlag updateStatusForHit:(NSDictionary *)hit
+{
+    
+}
+
+-(void)AGServerRetrievedHits:(NSArray *)hits
+{
+    for (NSDictionary *hit in hits)
+    {
+        [Hit hitWithServerInfo:hit inManagedContext:self.managedObjectContext];
+    }
+}
+
+-(void)AGServerFailedWithError:(NSError *)error
+{
+    
+}
+
 #pragma mark - Fetching
 
 - (void)performFetch

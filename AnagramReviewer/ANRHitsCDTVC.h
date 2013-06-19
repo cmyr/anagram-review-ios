@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ANRServerHandler.h"
 
-@interface ANRHitsCDTVC : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface ANRHitsCDTVC : UITableViewController <NSFetchedResultsControllerDelegate, ANRServerDelegateProtocol>
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic) BOOL debug;
