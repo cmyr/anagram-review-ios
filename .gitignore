@@ -112,3 +112,4 @@ xcuserdata
 #
 # ...none. Everything is now explained.
 auth.h
+ANRAuth.h

@@ -7,8 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		62C8746717720DBD00042795 /* Hit+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C8746617720DBD00042795 /* Hit+Create.m */; };
+		62C8746A1772118400042795 /* Tweet+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C874691772118400042795 /* Tweet+Create.m */; };
 		62D50000176FF46A002E2BCB /* ANRHitsCDVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D5FFFF176FF46A002E2BCB /* ANRHitsCDVC.m */; };
 		62D50001176FF46A002E2BCB /* ANRHitsCDVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D5FFFF176FF46A002E2BCB /* ANRHitsCDVC.m */; };
+		62D50004176FF558002E2BCB /* ANRServerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D50003176FF558002E2BCB /* ANRServerHandler.m */; };
+		62D50005176FF558002E2BCB /* ANRServerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D50003176FF558002E2BCB /* ANRServerHandler.m */; };
+		62D50008176FF641002E2BCB /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 62D50007176FF641002E2BCB /* Storyboard.storyboard */; };
 		62D5FFB9176FED7C002E2BCB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D5FFB8176FED7C002E2BCB /* Foundation.framework */; };
 		62D5FFBB176FED7C002E2BCB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D5FFBA176FED7C002E2BCB /* CoreGraphics.framework */; };
 		62D5FFBD176FED7C002E2BCB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D5FFBC176FED7C002E2BCB /* UIKit.framework */; };
@@ -41,6 +46,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		62C8746517720DBD00042795 /* Hit+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Hit+Create.h"; sourceTree = "<group>"; };
+		62C8746617720DBD00042795 /* Hit+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Hit+Create.m"; sourceTree = "<group>"; };
+		62C874681772118400042795 /* Tweet+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tweet+Create.h"; sourceTree = "<group>"; };
+		62C874691772118400042795 /* Tweet+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Tweet+Create.m"; sourceTree = "<group>"; };
+		62D50002176FF558002E2BCB /* ANRServerHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANRServerHandler.h; sourceTree = "<group>"; };
+		62D50003176FF558002E2BCB /* ANRServerHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANRServerHandler.m; sourceTree = "<group>"; };
+		62D50006176FF57B002E2BCB /* ANRAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANRAuth.h; sourceTree = "<group>"; };
+		62D50007176FF641002E2BCB /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		62D5FFB5176FED7C002E2BCB /* AnagramReviewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnagramReviewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62D5FFB8176FED7C002E2BCB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		62D5FFBA176FED7C002E2BCB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -127,8 +140,12 @@
 		62D5FFC0176FED7C002E2BCB /* AnagramReviewer */ = {
 			isa = PBXGroup;
 			children = (
+				62D50006176FF57B002E2BCB /* ANRAuth.h */,
 				62D5FFC9176FED7C002E2BCB /* ANRAppDelegate.h */,
 				62D5FFCA176FED7C002E2BCB /* ANRAppDelegate.m */,
+				62D50002176FF558002E2BCB /* ANRServerHandler.h */,
+				62D50003176FF558002E2BCB /* ANRServerHandler.m */,
+				62D50007176FF641002E2BCB /* Storyboard.storyboard */,
 				62D5FFCF176FED7C002E2BCB /* Images.xcassets */,
 				62D5FFFD176FF043002E2BCB /* coredata */,
 				62D5FFC1176FED7C002E2BCB /* Supporting Files */,
@@ -169,11 +186,15 @@
 			isa = PBXGroup;
 			children = (
 				62D5FFF5176FF02A002E2BCB /* Tweet.h */,
-				62D5FFFE176FF46A002E2BCB /* ANRHitsCDVC.h */,
-				62D5FFFF176FF46A002E2BCB /* ANRHitsCDVC.m */,
 				62D5FFF6176FF02A002E2BCB /* Tweet.m */,
 				62D5FFF9176FF02B002E2BCB /* Hit.h */,
+				62C874681772118400042795 /* Tweet+Create.h */,
+				62C874691772118400042795 /* Tweet+Create.m */,
 				62D5FFFA176FF02B002E2BCB /* Hit.m */,
+				62C8746517720DBD00042795 /* Hit+Create.h */,
+				62C8746617720DBD00042795 /* Hit+Create.m */,
+				62D5FFFE176FF46A002E2BCB /* ANRHitsCDVC.h */,
+				62D5FFFF176FF46A002E2BCB /* ANRHitsCDVC.m */,
 				62D5FFCC176FED7C002E2BCB /* AnagramReviewer.xcdatamodeld */,
 			);
 			name = coredata;
@@ -257,6 +278,7 @@
 			files = (
 				62D5FFC5176FED7C002E2BCB /* InfoPlist.strings in Resources */,
 				62D5FFD0176FED7C002E2BCB /* Images.xcassets in Resources */,
+				62D50008176FF641002E2BCB /* Storyboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,9 +299,12 @@
 			files = (
 				62D5FFCB176FED7C002E2BCB /* ANRAppDelegate.m in Sources */,
 				62D50000176FF46A002E2BCB /* ANRHitsCDVC.m in Sources */,
+				62D50004176FF558002E2BCB /* ANRServerHandler.m in Sources */,
 				62D5FFFB176FF02B002E2BCB /* Hit.m in Sources */,
 				62D5FFF7176FF02A002E2BCB /* Tweet.m in Sources */,
 				62D5FFCE176FED7C002E2BCB /* AnagramReviewer.xcdatamodeld in Sources */,
+				62C8746A1772118400042795 /* Tweet+Create.m in Sources */,
+				62C8746717720DBD00042795 /* Hit+Create.m in Sources */,
 				62D5FFC7176FED7C002E2BCB /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -291,6 +316,7 @@
 				62D5FFFC176FF02B002E2BCB /* Hit.m in Sources */,
 				62D50001176FF46A002E2BCB /* ANRHitsCDVC.m in Sources */,
 				62D5FFF8176FF02A002E2BCB /* Tweet.m in Sources */,
+				62D50005176FF558002E2BCB /* ANRServerHandler.m in Sources */,
 				62D5FFE4176FED7C002E2BCB /* AnagramReviewerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -480,6 +506,7 @@
 				62D5FFE9176FED7C002E2BCB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		62D5FFEA176FED7C002E2BCB /* Build configuration list for PBXNativeTarget "AnagramReviewerTests" */ = {
 			isa = XCConfigurationList;
@@ -488,6 +515,7 @@
 				62D5FFEC176FED7C002E2BCB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
