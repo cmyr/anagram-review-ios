@@ -2,7 +2,7 @@
 //  Tweet.m
 //  AnagramReviewer
 //
-//  Created by Colin Rothfels on 2013-06-17.
+//  Created by Colin Rothfels on 2013-06-19.
 //  Copyright (c) 2013 cmyr. All rights reserved.
 //
 
@@ -12,13 +12,13 @@
 
 @implementation Tweet
 
-@dynamic id_num;
-@dynamic text;
 @dynamic hash_str;
-@dynamic screenname;
-@dynamic username;
+@dynamic id_num;
 @dynamic profile_img;
 @dynamic profile_img_url;
+@dynamic screenname;
+@dynamic text;
+@dynamic username;
 @dynamic hit;
 
 @end

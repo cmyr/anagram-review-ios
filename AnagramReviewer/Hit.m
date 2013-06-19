@@ -2,7 +2,7 @@
 //  Hit.m
 //  AnagramReviewer
 //
-//  Created by Colin Rothfels on 2013-06-17.
+//  Created by Colin Rothfels on 2013-06-19.
 //  Copyright (c) 2013 cmyr. All rights reserved.
 //
 
@@ -13,9 +13,8 @@
 @implementation Hit
 
 @dynamic id_num;
-@dynamic status;
 @dynamic rating;
-@dynamic tweet_one;
-@dynamic tweet_two;
+@dynamic status;
+@dynamic tweets;
 
 @end

@@ -37,8 +37,7 @@
         Tweet *tweetTwo = [Tweet tweetWithID:[hitDict valueForKeyPath:TWEET_TWO_ID]
                                       text:[hitDict valueForKeyPath:TWEET_TWO_TEXT]
                                  inContext:context];
-        hit.tweet_one = tweetOne;
-        hit.tweet_two = tweetTwo;
+        hit.tweets = [NSSet setWithObjects:tweetOne, tweetTwo, nil];
     } else {
         hit = matches[0];
     }
