@@ -7,6 +7,7 @@
 //
 
 #import "ANRHitsCDTVC.h"
+#import "Hit.h"
 
 @interface ANRHitsCDTVC ()
 @property (nonatomic) BOOL beganUpdates;
@@ -200,6 +201,15 @@
     return [self.fetchedResultsController sectionIndexTitles];
 }
 
+-(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Hit"];
+    Hit *hit = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    cell.textLabel.text = [hit.id_num stringValue];
+    cell.detailTextLabel.text = hit.status;
+    
+    return cell;
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
