@@ -75,7 +75,7 @@
 		6B2825D317725EF900ABA11D /* Hit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hit.m; sourceTree = "<group>"; };
 		6B2825D517725EFA00ABA11D /* Tweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tweet.h; sourceTree = "<group>"; };
 		6B2825D617725EFA00ABA11D /* Tweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tweet.m; sourceTree = "<group>"; };
-		6B721F721772552600447432 /* ANRAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ANRAuth.h; path = ../ANRAuth.h; sourceTree = "<group>"; };
+		6B721F721772552600447432 /* ANRAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANRAuth.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +143,8 @@
 				62D5FFCA176FED7C002E2BCB /* ANRAppDelegate.m */,
 				62D50002176FF558002E2BCB /* ANRServerHandler.h */,
 				62D50003176FF558002E2BCB /* ANRServerHandler.m */,
+				62D5FFFE176FF46A002E2BCB /* ANRHitsCDTVC.h */,
+				62D5FFFF176FF46A002E2BCB /* ANRHitsCDTVC.m */,
 				62D50007176FF641002E2BCB /* Storyboard.storyboard */,
 				62D5FFCF176FED7C002E2BCB /* Images.xcassets */,
 				62D5FFFD176FF043002E2BCB /* coredata */,
@@ -187,8 +189,6 @@
 				62C874691772118400042795 /* Tweet+Create.m */,
 				62C8746517720DBD00042795 /* Hit+Create.h */,
 				62C8746617720DBD00042795 /* Hit+Create.m */,
-				62D5FFFE176FF46A002E2BCB /* ANRHitsCDTVC.h */,
-				62D5FFFF176FF46A002E2BCB /* ANRHitsCDTVC.m */,
 				62D5FFCC176FED7C002E2BCB /* AnagramReviewer.xcdatamodeld */,
 				6B2825D217725EF900ABA11D /* Hit.h */,
 				6B2825D317725EF900ABA11D /* Hit.m */,

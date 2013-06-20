@@ -12,7 +12,7 @@
 
 @implementation Hit (Create)
 
-+ (Hit *)hitWithServerInfo:(NSDictionary *)hitDict inManagedContext:(NSManagedObjectContext *)context
++ (void)hitWithServerInfo:(NSDictionary *)hitDict inManagedContext:(NSManagedObjectContext *)context
 {
     Hit *hit = nil;
 //    check to see if this hit is already stored;
@@ -41,6 +41,6 @@
     } else {
         hit = matches[0];
     }
-    return hit;
 }
+
 @end

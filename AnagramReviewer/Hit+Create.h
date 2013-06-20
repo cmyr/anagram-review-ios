@@ -10,6 +10,7 @@
 
 @interface Hit (Create)
 
-+ (Hit *)hitWithServerInfo:(NSDictionary *)hitDict
++ (void)hitWithServerInfo:(NSDictionary *)hitDict
          inManagedContext:(NSManagedObjectContext *)context;
+
 @end

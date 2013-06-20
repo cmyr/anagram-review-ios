@@ -51,16 +51,6 @@
 }
 
 #pragma mark - nsconnectiondelgate methods
-//- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
-//    return YES;
-//}
-//
-//-(void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge{
-//    [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
-//}
-//- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
-//    [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
-//}
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection{
 //    find out what exactly we received;
