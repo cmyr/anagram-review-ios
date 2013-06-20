@@ -56,9 +56,9 @@
     _managedObjectContext = managedObjectContext;
     if (managedObjectContext) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Hit"];
-        request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"id_num" ascending:YES]];
+        request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"status" ascending:YES]];
         request.predicate = nil;
-        self.fetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:request managedObjectContext:managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+        self.fetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:request managedObjectContext:managedObjectContext sectionNameKeyPath:@"status" cacheName:nil];
     } else {
         self.fetchedResultsController = nil;
     }
@@ -109,7 +109,21 @@
 {
     for (NSDictionary *hit in hits)
     {
-        [Hit hitWithServerInfo:hit inManagedContext:self.managedObjectContext];
+//        if (![hit[@"status"]isEqualToString:HIT_STATUS_FAILED])
+//        [Hit hitWithServerInfo:hit inManagedContext:self.managedObjectContext];
+//        for each hit we want to retreive the actual info from twitter
+//        then make a hit object in our DB from that. cool? cool
+        dispatch_queue_t twitterQueue = dispatch_queue_create("com.cmyr.twitterQueue", NULL);
+        dispatch_async(twitterQueue, ^{
+            NSArray *twitterInfo = [ANRServerHandler twitterInfoForHit:hit];
+            if (twitterInfo){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [Hit updateHit:hit
+                        withTweets:twitterInfo
+                  inManagedContext:self.managedObjectContext];
+                });
+            }
+        });
     }
 }
 
@@ -253,15 +267,15 @@
 	return [[[self.fetchedResultsController sections] objectAtIndex:section] name];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
-{
-	return [self.fetchedResultsController sectionForSectionIndexTitle:title atIndex:index];
-}
-
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-{
-    return [self.fetchedResultsController sectionIndexTitles];
-}
+//- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+//{
+//	return [self.fetchedResultsController sectionForSectionIndexTitle:title atIndex:index];
+//}
+//
+//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+//{
+//    return [self.fetchedResultsController sectionIndexTitles];
+//}
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

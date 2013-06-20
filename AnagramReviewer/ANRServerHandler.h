@@ -16,6 +16,11 @@
 #define TWEET_ONE_TEXT @"tweet_one.text"
 #define TWEET_TWO_TEXT @"tweet_two.text"
 
+
+#define HIT_STATUS_REVIEW @"review"
+#define HIT_STATUS_APPROVED @"approved"
+#define HIT_STATUS_FAILED @"failed"
+
 @protocol ANRServerDelegateProtocol <NSObject>
 -(void)AGServerRetrievedHits:(NSArray*)hits;
 -(void)AGServerDid:(BOOL)successFlag updateStatusForHit:(NSDictionary*)hit;
@@ -29,5 +34,6 @@
 -(void)requestHits;
 -(void)setStatus:(NSString*)status forHit:(NSDictionary*)hit;
 -(void)postHit:(NSDictionary*)hit;
+
 
 @end

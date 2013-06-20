@@ -12,4 +12,9 @@
 
 + (Hit *)hitWithServerInfo:(NSDictionary *)hitDict
          inManagedContext:(NSManagedObjectContext *)context;
+
++ (Hit*) updateHit:(NSDictionary*)hit
+        withTweets:(NSArray*)tweets
+  inManagedContext:(NSManagedObjectContext*) context;
+
 @end
