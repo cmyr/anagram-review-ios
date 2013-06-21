@@ -16,10 +16,20 @@
 #define TWEET_ONE_TEXT @"tweet_one.text"
 #define TWEET_TWO_TEXT @"tweet_two.text"
 
+
+
+#define TWITTER_ID_STRING @"id_str"
+#define TWITTER_TEXT @"text"
+#define TWITTER_USER_NAME @"user.name"
+#define TWITTER_USER_SCREENNAME @"user.screen_name"
+#define TWITTER_USER_IMG_URL @"user.profile_image_url"
+#define TWITTER_CREATED_DATE @"created_at"
+
 @protocol ANRServerDelegateProtocol <NSObject>
--(void)AGServerRetrievedHits:(NSArray*)hits;
+//-(void)AGServerRetrievedHits:(NSArray*)hits;
 -(void)AGServerDid:(BOOL)successFlag updateStatusForHit:(NSDictionary*)hit;
 -(void)AGServerFailedWithError:(NSError*)error;
+@property (strong, nonatomic) NSManagedObjectContext* managedObjectContext;
 @end
 
 @interface ANRServerHandler : NSObject <NSURLConnectionDelegate, NSURLConnectionDataDelegate>

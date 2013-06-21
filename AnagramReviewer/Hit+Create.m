@@ -12,7 +12,7 @@
 
 @implementation Hit (Create)
 
-+ (void)hitWithServerInfo:(NSDictionary *)hitDict inManagedContext:(NSManagedObjectContext *)context
++ (Hit*)hitWithServerInfo:(NSDictionary *)hitDict inManagedContext:(NSManagedObjectContext *)context
 {
 //        creates and sets up a hit from info, as necessary.
     Hit *hit = nil;
@@ -40,15 +40,45 @@
                                       text:[hitDict valueForKeyPath:TWEET_TWO_TEXT]
                                  inContext:context];
         hit.tweets = [NSSet setWithObjects:tweetOne, tweetTwo, nil];
-        [hit fetchTwitterInfo];
     } else {
         hit = matches[0];
     }
+    return hit;
 }
 
--(void)fetchTwitterInfo
+
+-(void)updateWithTwitterInfo:(NSDictionary *)twitterInfo
 {
-//    go and get tweets here? gah
+    Tweet* tweet;
+    for (Tweet *t in self.tweets) {
+        if ([[t.id_num stringValue]isEqualToString:twitterInfo[TWITTER_ID_STRING]]) tweet = t;
+    }
+    assert(tweet);
+    NSLog(@"successfully fetched tweet: %@", twitterInfo);
+    tweet.text = twitterInfo[TWITTER_TEXT];
+    tweet.screenname = [twitterInfo valueForKeyPath:TWITTER_USER_SCREENNAME];
+    tweet.username = [twitterInfo valueForKeyPath:TWITTER_USER_NAME];
+    tweet.profile_img_url = [twitterInfo valueForKeyPath:TWITTER_USER_IMG_URL];
+    tweet.created_at = [self dateFromString:[twitterInfo valueForKey:TWITTER_CREATED_DATE]];
+    tweet.fetched = @(YES);
+    
+//    check that to see if all tweets are fetched
+    self.fetched = @(YES);
+    for (Tweet *t in self.tweets) {
+        if (!t.fetched) self.fetched = @(NO);
+    }
+}
+
+-(NSDate*)dateFromString:(NSString*)string{
+//    Wed Aug 27 13:08:45 +0000 2008
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+    [dateFormatter setDateFormat:@"EEE MMM dd HH:mm:ss Z Y"];
+    return [dateFormatter dateFromString:string];
+}
+
+-(void)twitterUpdateFailedWithError:(NSError *)error
+{
+    NSLog(@"twitter update failed with Error: %@ for hit: %@", error, self);
 }
 
 @end

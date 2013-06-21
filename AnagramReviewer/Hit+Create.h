@@ -10,7 +10,8 @@
 
 @interface Hit (Create)
 
-+ (void)hitWithServerInfo:(NSDictionary *)hitDict
++ (Hit*)hitWithServerInfo:(NSDictionary *)hitDict
          inManagedContext:(NSManagedObjectContext *)context;
-
+-(void)updateWithTwitterInfo:(NSDictionary*)twitterInfo;
+-(void)twitterUpdateFailedWithError:(NSError *)error;
 @end
