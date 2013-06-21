@@ -23,7 +23,7 @@
     NSArray *matches = [context executeFetchRequest:request error:&error];
     
     if(!matches || matches.count > 1) {
-#warning here be errors
+//TODO: error handling
     } else if (!matches.count) {
         //        no match, so let's create it
         tweet = [NSEntityDescription insertNewObjectForEntityForName:@"Tweet" inManagedObjectContext:context];
@@ -47,7 +47,7 @@
     NSArray *matches = [context executeFetchRequest:request error:&error];
     
     if(!matches || matches.count > 1) {
-#warning here be errors
+ //TODO: error handling
         if (error) NSLog(@"%@", error);
         return;
     } else {

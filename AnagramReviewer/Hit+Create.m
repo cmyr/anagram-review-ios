@@ -14,6 +14,7 @@
 
 + (void)hitWithServerInfo:(NSDictionary *)hitDict inManagedContext:(NSManagedObjectContext *)context
 {
+//        creates and sets up a hit from info, as necessary.
     Hit *hit = nil;
 //    check to see if this hit is already stored;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Hit"];
@@ -24,7 +25,8 @@
     NSArray *matches = [context executeFetchRequest:request error:&error];
     
     if(!matches || matches.count > 1) {
-#warning here be errors
+    //TODO: error handling?
+        
     } else if (!matches.count) {
 //        no match, so let's create it
         hit = [NSEntityDescription insertNewObjectForEntityForName:@"Hit" inManagedObjectContext:context];
@@ -38,9 +40,15 @@
                                       text:[hitDict valueForKeyPath:TWEET_TWO_TEXT]
                                  inContext:context];
         hit.tweets = [NSSet setWithObjects:tweetOne, tweetTwo, nil];
+        [hit fetchTwitterInfo];
     } else {
         hit = matches[0];
     }
+}
+
+-(void)fetchTwitterInfo
+{
+//    go and get tweets here? gah
 }
 
 @end
