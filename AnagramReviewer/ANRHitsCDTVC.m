@@ -8,6 +8,7 @@
 
 #import "ANRHitsCDTVC.h"
 #import "Hit+Create.h"
+#import "Tweet.h"
 
 @interface ANRHitsCDTVC ()
 @property (nonatomic) BOOL beganUpdates;
@@ -253,14 +254,42 @@
 	return [[[self.fetchedResultsController sections] objectAtIndex:section] name];
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 141.0;
+}
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Hit"];
     Hit *hit = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [hit.id_num stringValue];
-    cell.detailTextLabel.text = hit.status;
+    NSArray* tweets = [hit.tweets allObjects];
+    Tweet* tweetOne = tweets[0];
+    Tweet* tweetTwo = tweets[1];
     
+    UIView *containerOne = [cell viewWithTag:10];
+    UIView *containerTwo = [cell viewWithTag:20];
+    
+    UIImageView *profilePicOne = (UIImageView*)[cell viewWithTag:11];
+    UIImageView *profilePicTwo = (UIImageView*)[cell viewWithTag:21];
+    
+    UILabel *nameOne = (UILabel*)[cell viewWithTag:12];
+    UILabel *nameTwo = (UILabel*)[cell viewWithTag:22];
+    
+    UILabel *screenNameOne = (UILabel*)[cell viewWithTag:13];
+    UILabel *screenNameTwo = (UILabel*)[cell viewWithTag:23];
+    
+    UILabel *textOne = (UILabel*)[cell viewWithTag:14];
+    UILabel *textTwo = (UILabel*)[cell viewWithTag:24];
+    
+    nameOne.text = tweetOne.username ? tweetOne.username : @"name";
+    screenNameOne.text = tweetOne.screenname ? [@"@" stringByAppendingString:tweetOne.screenname] : @"@sn";
+    textOne.text = tweetOne.text;
+    
+    nameTwo.text = tweetTwo.username ? tweetTwo.username : @"name";
+    screenNameTwo.text = tweetTwo.screenname ? [@"@" stringByAppendingString:tweetTwo.screenname] : @"sn";
+    textTwo.text = tweetTwo.text;
+ 
     return cell;
 }
 /*
