@@ -97,6 +97,8 @@
               if (success){
                   self.managedObjectContext = document.managedObjectContext;
                   [self fetchHits];
+              }else{
+                  NSLog(@"failed to open document?");
               }
           }];
     }else if (document.documentState == UIDocumentStateClosed) {
@@ -129,7 +131,7 @@
 
 -(void)AGServerFailedWithError:(NSError *)error
 {
-    
+    NSLog(@"AGServer failed with error: %@", error);
 }
 
 #pragma mark - Fetching
