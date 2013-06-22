@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="missingprofile.png" translatesAutoresizingMaskIntoConstraints="NO" id="khy-yY-dgl">
-                                <rect key="frame" x="8" y="8" width="44" height="44"/>
+                                <rect key="frame" x="15" y="8" width="44" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="WLt-7W-9Z9"/>
@@ -26,9 +26,10 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="12" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AUserName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Otf-OV-iCO">
-                                <rect key="frame" x="60" y="8" width="67" height="15"/>
+                                <rect key="frame" x="67" y="8" width="67" height="15"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="15" id="PFe-GG-k53"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="100" id="Qjg-z2-7US"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
@@ -36,7 +37,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="13" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@screenname" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B8A-LK-pyR">
-                                <rect key="frame" x="135" y="8" width="73" height="15"/>
+                                <rect key="frame" x="142" y="8" width="73" height="15"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="100" id="4uZ-Rv-Rav"/>
@@ -45,12 +46,19 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="14" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tweet text" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="x0P-ZA-bi2">
-                                <rect key="frame" x="60" y="25" width="241" height="14"/>
+                                <rect key="frame" x="67" y="25" width="241" height="14"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="241" id="M5D-pU-PCn"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tweet Not Found" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5wR-H0-qsV">
+                                <rect key="frame" x="111" y="2" width="95" height="15"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -59,18 +67,20 @@
                             <constraint firstItem="khy-yY-dgl" firstAttribute="top" secondItem="ki8-f1-Gfh" secondAttribute="top" constant="8" id="8zD-bd-3W8"/>
                             <constraint firstItem="B8A-LK-pyR" firstAttribute="bottom" secondItem="Otf-OV-iCO" secondAttribute="bottom" id="EiM-So-ZD6"/>
                             <constraint firstItem="B8A-LK-pyR" firstAttribute="leading" secondItem="Otf-OV-iCO" secondAttribute="trailing" constant="8" id="FIK-N8-4GH"/>
-                            <constraint firstItem="khy-yY-dgl" firstAttribute="leading" secondItem="ki8-f1-Gfh" secondAttribute="leading" constant="8" id="Mhq-xf-qiK"/>
+                            <constraint firstItem="khy-yY-dgl" firstAttribute="leading" secondItem="ki8-f1-Gfh" secondAttribute="leading" constant="15" id="Mhq-xf-qiK"/>
                             <constraint firstItem="x0P-ZA-bi2" firstAttribute="top" secondItem="Otf-OV-iCO" secondAttribute="bottom" constant="2" id="QWp-4U-hnk"/>
                             <constraint firstItem="Otf-OV-iCO" firstAttribute="leading" secondItem="khy-yY-dgl" secondAttribute="trailing" constant="8" id="UsD-xp-7hq"/>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="gA8-9d-8yW"/>
                             <constraint firstItem="x0P-ZA-bi2" firstAttribute="leading" secondItem="khy-yY-dgl" secondAttribute="trailing" constant="8" id="gax-Av-thE"/>
+                            <constraint firstAttribute="centerX" secondItem="5wR-H0-qsV" secondAttribute="centerX" constant="2" id="orh-Vp-asS"/>
+                            <constraint firstItem="5wR-H0-qsV" firstAttribute="top" secondItem="ki8-f1-Gfh" secondAttribute="top" constant="2" id="sZZ-84-vkr"/>
                             <constraint firstItem="khy-yY-dgl" firstAttribute="top" secondItem="Otf-OV-iCO" secondAttribute="top" id="tmH-W7-ZRy"/>
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ldB-yp-HpN">
                         <rect key="frame" x="0.0" y="70" width="320" height="1"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.92851163903061229" green="0.92851163903061229" blue="0.92851163903061229" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="kuc-is-JkG"/>
                         </constraints>
@@ -80,7 +90,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" tag="21" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="missingprofile.png" translatesAutoresizingMaskIntoConstraints="NO" id="ahu-W3-8i5">
-                                <rect key="frame" x="8" y="8" width="44" height="44"/>
+                                <rect key="frame" x="15" y="8" width="44" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="f1H-E8-yyp"/>
@@ -88,9 +98,10 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="22" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AUserName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCb-MR-hM4">
-                                <rect key="frame" x="59" y="6" width="67" height="15"/>
+                                <rect key="frame" x="66" y="6" width="67" height="15"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="15" id="eIy-FW-l5t"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="100" id="opr-uu-5V9"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
@@ -98,7 +109,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="23" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@screenname" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vDX-sS-pCL">
-                                <rect key="frame" x="134" y="6" width="73" height="15"/>
+                                <rect key="frame" x="141" y="6" width="73" height="15"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="100" id="cnC-yu-a2L"/>
@@ -107,12 +118,19 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="24" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tweet text" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="1TX-Ro-SyR">
-                                <rect key="frame" x="59" y="23" width="241" height="14"/>
+                                <rect key="frame" x="66" y="23" width="241" height="14"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="241" id="K3g-6M-33x"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tweet Not Found" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zky-OU-3Qp">
+                                <rect key="frame" x="113" y="2" width="95" height="15"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -121,10 +139,12 @@
                             <constraint firstItem="1TX-Ro-SyR" firstAttribute="leading" secondItem="ahu-W3-8i5" secondAttribute="trailing" constant="7" id="0qw-0h-Cmj"/>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="3O6-bL-QBs"/>
                             <constraint firstItem="ahu-W3-8i5" firstAttribute="top" secondItem="pCb-MR-hM4" secondAttribute="top" constant="2" id="Cvz-VA-4Zs"/>
+                            <constraint firstItem="zky-OU-3Qp" firstAttribute="top" secondItem="79v-82-czP" secondAttribute="top" constant="2" id="MYM-cF-ifK"/>
                             <constraint firstItem="vDX-sS-pCL" firstAttribute="bottom" secondItem="pCb-MR-hM4" secondAttribute="bottom" id="NAE-7X-Fyp"/>
-                            <constraint firstItem="ahu-W3-8i5" firstAttribute="leading" secondItem="79v-82-czP" secondAttribute="leading" constant="8" id="bQo-tg-LVz"/>
+                            <constraint firstItem="ahu-W3-8i5" firstAttribute="leading" secondItem="79v-82-czP" secondAttribute="leading" constant="15" id="bQo-tg-LVz"/>
                             <constraint firstItem="pCb-MR-hM4" firstAttribute="leading" secondItem="ahu-W3-8i5" secondAttribute="trailing" constant="7" id="dwN-fP-KRS"/>
                             <constraint firstItem="vDX-sS-pCL" firstAttribute="leading" secondItem="pCb-MR-hM4" secondAttribute="trailing" constant="8" id="iDk-HO-pen"/>
+                            <constraint firstAttribute="centerX" secondItem="zky-OU-3Qp" secondAttribute="centerX" id="oYO-lS-aqg"/>
                             <constraint firstItem="ahu-W3-8i5" firstAttribute="top" secondItem="79v-82-czP" secondAttribute="top" constant="8" id="rIf-x5-7St"/>
                             <constraint firstItem="1TX-Ro-SyR" firstAttribute="top" secondItem="pCb-MR-hM4" secondAttribute="bottom" constant="2" id="yKz-Vf-ga4"/>
                         </constraints>
@@ -155,6 +175,8 @@
                 <outlet property="screenNameTwo" destination="vDX-sS-pCL" id="uHA-gx-4zx"/>
                 <outlet property="tweetTextOne" destination="x0P-ZA-bi2" id="VPy-TA-kkS"/>
                 <outlet property="tweetTextTwo" destination="1TX-Ro-SyR" id="KGC-dS-uRa"/>
+                <outlet property="warningOne" destination="5wR-H0-qsV" id="lxJ-Nf-Esc"/>
+                <outlet property="warningTwo" destination="zky-OU-3Qp" id="dXb-gU-8Dw"/>
             </connections>
         </tableViewCell>
     </objects>
@@ -175,6 +197,8 @@
                 <relationship kind="outlet" name="screenNameTwo" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="tweetTextOne" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="tweetTextTwo" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="warningOne" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="warningTwo" candidateClass="UILabel"/>
             </relationships>
         </class>
         <class className="NSLayoutConstraint" superclassName="NSObject">

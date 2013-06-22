@@ -19,4 +19,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *screenNameTwo;
 @property (weak, nonatomic) IBOutlet UILabel *tweetTextOne;
 @property (weak, nonatomic) IBOutlet UILabel *tweetTextTwo;
+@property (weak, nonatomic) IBOutlet UILabel *warningOne;
+@property (weak, nonatomic) IBOutlet UILabel *warningTwo;
+
+
 @end

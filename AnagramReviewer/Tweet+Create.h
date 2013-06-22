@@ -13,7 +13,7 @@
                 text:(NSString*)text
            inContext:(NSManagedObjectContext*)context;
 
-+(void)updateTweetWithTwitterInfo:(NSDictionary*)twitterDict
-                    inContext:(NSManagedObjectContext*)context;
+//+(void)updateTweetWithTwitterInfo:(NSDictionary*)twitterDict
+//                    inContext:(NSManagedObjectContext*)context;
 
 @end

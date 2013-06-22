@@ -15,6 +15,7 @@
 @interface ANRHitsCDTVC ()
 @property (nonatomic) BOOL beganUpdates;
 @property (strong, nonatomic) ANRServerHandler *serverHandler;
+@property (strong, nonatomic) UIImage *placeholderImage;
 @end
 
 @implementation ANRHitsCDTVC
@@ -32,11 +33,14 @@
     [super viewWillAppear:animated];
     if (!self.managedObjectContext) [self loadDocument];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.tableView registerNib:[UINib nibWithNibName:@"hitCellView" bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    self.tableView.separatorColor = [UIColor grayColor];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -54,6 +58,11 @@
     if (!_serverHandler) _serverHandler = [[ANRServerHandler alloc]init];
     _serverHandler.delegate = self;
     return _serverHandler;
+}
+
+-(UIImage*)placeholderImage {
+    if (!_placeholderImage) _placeholderImage = [UIImage imageNamed:@"missingprofile"];
+    return _placeholderImage;
 }
 
 -(void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
@@ -276,29 +285,20 @@
     NSArray* tweets = [hit.tweets allObjects];
     Tweet* tweetOne = tweets[0];
     Tweet* tweetTwo = tweets[1];
-    
-//    UIView *containerOne = [cell viewWithTag:10];
-//    UIView *containerTwo = [cell viewWithTag:20];
-//    
-//    UIImageView *profilePicOne = (UIImageView*)[cell viewWithTag:11];
-//    UIImageView *profilePicTwo = (UIImageView*)[cell viewWithTag:21];
-//    
-//    UILabel *nameOne = (UILabel*)[cell viewWithTag:12];
-//    UILabel *nameTwo = (UILabel*)[cell viewWithTag:22];
-//    
-//    UILabel *screenNameOne = (UILabel*)[cell viewWithTag:13];
-//    UILabel *screenNameTwo = (UILabel*)[cell viewWithTag:23];
-//    
-//    UILabel *textOne = (UILabel*)[cell viewWithTag:14];
-//    UILabel *textTwo = (UILabel*)[cell viewWithTag:24];
-    
-    cell.nameOne.text = tweetOne.username ? tweetOne.username : @"name";
-    cell.screenNameOne.text = tweetOne.screenname ? [@"@" stringByAppendingString:tweetOne.screenname] : @"@sn";
+
+    cell.profileImageOne.image = tweetOne.profile_img ? [UIImage imageWithData:tweetOne.profile_img] : self.placeholderImage;
+    cell.nameOne.text = tweetOne.username ;
+    cell.screenNameOne.text = tweetOne.screenname ;
     cell.tweetTextOne.text = tweetOne.text;
-    
-    cell.nameTwo.text = tweetTwo.username ? tweetTwo.username : @"name";
-    cell.screenNameTwo.text = tweetTwo.screenname ? [@"@" stringByAppendingString:tweetTwo.screenname] : @"sn";
+    cell.warningOne.hidden = YES;
+    if (!tweetOne.username && !tweetOne.screenname) cell.warningOne.hidden = NO;
+
+    cell.profileImageTwo.image = tweetTwo.profile_img ? [UIImage imageWithData:tweetTwo.profile_img] : self.placeholderImage;
+    cell.nameTwo.text = tweetTwo.username ;
+    cell.screenNameTwo.text = tweetTwo.screenname ;
     cell.tweetTextTwo.text = tweetTwo.text;
+    cell.warningTwo.hidden = YES;
+    if (!tweetTwo.username && !tweetTwo.screenname) cell.warningTwo.hidden = NO;
  
     return cell;
 }
