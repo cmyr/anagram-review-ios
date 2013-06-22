@@ -15,9 +15,14 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self configureSubviews];
+        // ...
     }
     return self;
+}
+
+
+-(void)awakeFromNib {
+    [self configureSubviews];
 }
 
 -(void)configureSubviews {
@@ -26,7 +31,6 @@
     [self.profileImageTwo.layer setCornerRadius:5.0];
     [self.profileImageOne.layer setMasksToBounds:YES];
     [self.profileImageTwo.layer setMasksToBounds:YES];
-
 
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

@@ -271,6 +271,7 @@
 //        cell = [[ANRHitCell alloc]initWithStyle:UITableViewCellStyleDefault
 //                                reuseIdentifier:CellIdentifier];
 //    }
+    assert([cell isKindOfClass:[ANRHitCell class]]);
     Hit *hit = [self.fetchedResultsController objectAtIndexPath:indexPath];
     NSArray* tweets = [hit.tweets allObjects];
     Tweet* tweetOne = tweets[0];
