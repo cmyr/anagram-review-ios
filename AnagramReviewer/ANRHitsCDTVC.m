@@ -7,9 +7,11 @@
 //
 
 #import "ANRHitsCDTVC.h"
+#import "ANRHitCell.h"
 #import "Hit+Create.h"
 #import "Tweet.h"
 
+#define CELL_REUSE_IDENTIFIER @"Hit"
 @interface ANRHitsCDTVC ()
 @property (nonatomic) BOOL beganUpdates;
 @property (strong, nonatomic) ANRServerHandler *serverHandler;
@@ -33,7 +35,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    [self.tableView registerNib:[UINib nibWithNibName:@"hitCellView" bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -261,34 +265,39 @@
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Hit"];
+    static NSString *CellIdentifier = CELL_REUSE_IDENTIFIER;
+    ANRHitCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+//    if (!cell) {
+//        cell = [[ANRHitCell alloc]initWithStyle:UITableViewCellStyleDefault
+//                                reuseIdentifier:CellIdentifier];
+//    }
     Hit *hit = [self.fetchedResultsController objectAtIndexPath:indexPath];
     NSArray* tweets = [hit.tweets allObjects];
     Tweet* tweetOne = tweets[0];
     Tweet* tweetTwo = tweets[1];
     
-    UIView *containerOne = [cell viewWithTag:10];
-    UIView *containerTwo = [cell viewWithTag:20];
+//    UIView *containerOne = [cell viewWithTag:10];
+//    UIView *containerTwo = [cell viewWithTag:20];
+//    
+//    UIImageView *profilePicOne = (UIImageView*)[cell viewWithTag:11];
+//    UIImageView *profilePicTwo = (UIImageView*)[cell viewWithTag:21];
+//    
+//    UILabel *nameOne = (UILabel*)[cell viewWithTag:12];
+//    UILabel *nameTwo = (UILabel*)[cell viewWithTag:22];
+//    
+//    UILabel *screenNameOne = (UILabel*)[cell viewWithTag:13];
+//    UILabel *screenNameTwo = (UILabel*)[cell viewWithTag:23];
+//    
+//    UILabel *textOne = (UILabel*)[cell viewWithTag:14];
+//    UILabel *textTwo = (UILabel*)[cell viewWithTag:24];
     
-    UIImageView *profilePicOne = (UIImageView*)[cell viewWithTag:11];
-    UIImageView *profilePicTwo = (UIImageView*)[cell viewWithTag:21];
+    cell.nameOne.text = tweetOne.username ? tweetOne.username : @"name";
+    cell.screenNameOne.text = tweetOne.screenname ? [@"@" stringByAppendingString:tweetOne.screenname] : @"@sn";
+    cell.tweetTextOne.text = tweetOne.text;
     
-    UILabel *nameOne = (UILabel*)[cell viewWithTag:12];
-    UILabel *nameTwo = (UILabel*)[cell viewWithTag:22];
-    
-    UILabel *screenNameOne = (UILabel*)[cell viewWithTag:13];
-    UILabel *screenNameTwo = (UILabel*)[cell viewWithTag:23];
-    
-    UILabel *textOne = (UILabel*)[cell viewWithTag:14];
-    UILabel *textTwo = (UILabel*)[cell viewWithTag:24];
-    
-    nameOne.text = tweetOne.username ? tweetOne.username : @"name";
-    screenNameOne.text = tweetOne.screenname ? [@"@" stringByAppendingString:tweetOne.screenname] : @"@sn";
-    textOne.text = tweetOne.text;
-    
-    nameTwo.text = tweetTwo.username ? tweetTwo.username : @"name";
-    screenNameTwo.text = tweetTwo.screenname ? [@"@" stringByAppendingString:tweetTwo.screenname] : @"sn";
-    textTwo.text = tweetTwo.text;
+    cell.nameTwo.text = tweetTwo.username ? tweetTwo.username : @"name";
+    cell.screenNameTwo.text = tweetTwo.screenname ? [@"@" stringByAppendingString:tweetTwo.screenname] : @"sn";
+    cell.tweetTextTwo.text = tweetTwo.text;
  
     return cell;
 }

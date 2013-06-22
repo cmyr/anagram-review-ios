@@ -1,0 +1,22 @@
+//
+//  ANRHitCell.h
+//  AnagramReviewer
+//
+//  Created by Colin Rothfels on 2013-06-22.
+//  Copyright (c) 2013 cmyr. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface ANRHitCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIView *containerOne;
+@property (weak, nonatomic) IBOutlet UIView *containerTwo;
+@property (weak, nonatomic) IBOutlet UIImageView *profileImageOne;
+@property (weak, nonatomic) IBOutlet UIImageView *profileImageTwo;
+@property (weak, nonatomic) IBOutlet UILabel *nameOne;
+@property (weak, nonatomic) IBOutlet UILabel *nameTwo;
+@property (weak, nonatomic) IBOutlet UILabel *screenNameOne;
+@property (weak, nonatomic) IBOutlet UILabel *screenNameTwo;
+@property (weak, nonatomic) IBOutlet UILabel *tweetTextOne;
+@property (weak, nonatomic) IBOutlet UILabel *tweetTextTwo;
+@end
