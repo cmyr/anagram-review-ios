@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="twit1.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="khy-yY-dgl">
+                            <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="missingprofile.png" translatesAutoresizingMaskIntoConstraints="NO" id="khy-yY-dgl">
                                 <rect key="frame" x="8" y="8" width="44" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <constraints>
@@ -70,7 +70,7 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ldB-yp-HpN">
                         <rect key="frame" x="0.0" y="70" width="320" height="1"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="kuc-is-JkG"/>
                         </constraints>
@@ -79,7 +79,7 @@
                         <rect key="frame" x="0.0" y="71" width="320" height="70"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" tag="21" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="twit1.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="ahu-W3-8i5">
+                            <imageView userInteractionEnabled="NO" tag="21" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="missingprofile.png" translatesAutoresizingMaskIntoConstraints="NO" id="ahu-W3-8i5">
                                 <rect key="frame" x="8" y="8" width="44" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <constraints>
@@ -159,6 +159,26 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="twit1.jpeg" width="48" height="48"/>
+        <image name="missingprofile.png" width="44" height="44"/>
     </resources>
+    <classes>
+        <class className="ANRHitCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ANRHitCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="containerOne" candidateClass="UIView"/>
+                <relationship kind="outlet" name="containerTwo" candidateClass="UIView"/>
+                <relationship kind="outlet" name="nameOne" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="nameTwo" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="profileImageOne" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="profileImageTwo" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="screenNameOne" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="screenNameTwo" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="tweetTextOne" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="tweetTextTwo" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+    </classes>
 </document>
