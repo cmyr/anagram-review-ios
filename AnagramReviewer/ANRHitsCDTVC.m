@@ -9,16 +9,21 @@
 #import "ANRHitsCDTVC.h"
 #import "ANRHitCell.h"
 #import "ANRNotificationDropDownView.h"
+#import "ANRSlideGestureRecognizer.h"
 #import "Hit+Create.h"
 #import "Tweet+Create.h"
 
 
 #define CELL_REUSE_IDENTIFIER @"Hit"
+#define SLIDE_GESTURE_START_KEYPATH @"startPoint"
+#define SLIDE_GESTURE_LENGTH_KEYPATH @"gestureLength"
+
 @interface ANRHitsCDTVC ()
 @property (nonatomic) BOOL beganUpdates;
 @property (strong, nonatomic) ANRServerHandler *serverHandler;
 @property (strong, nonatomic) UIImage *placeholderImage;
 @property (strong, nonatomic) ANRNotificationDropDownView *notificationView;
+@property (nonatomic, weak) ANRHitCell *cellForSlideGesture;
 @end
 
 @implementation ANRHitsCDTVC
@@ -44,6 +49,17 @@
          forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.separatorColor = [UIColor grayColor];
+
+//    ANRSlideGestureRecognizer *slideGestureRecognizer = [[ANRSlideGestureRecognizer alloc]initWithTarget:self action:@selector(respondToSlideGesture:)];
+////    use KVO to be notified as the slide gesture's length changes:
+//    [slideGestureRecognizer addObserver:self forKeyPath:SLIDE_GESTURE_LENGTH_KEYPATH
+//                                options:NSKeyValueObservingOptionNew
+//                                context:NULL];
+//    [slideGestureRecognizer addObserver:self forKeyPath:SLIDE_GESTURE_START_KEYPATH
+//                                options:NSKeyValueObservingOptionNew
+//                                context:NULL];
+//    [self.view addGestureRecognizer:slideGestureRecognizer];
+//    
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -136,7 +152,47 @@
 {
     NSLog(@"AGServer failed with error: %@", error);
 }
+#pragma mark - handling touches
+-(void)respondToSlideGesture:(UIGestureRecognizer*)gesture {
+    ANRSlideGestureRecognizer *slideGesture;
+    if (![gesture isKindOfClass:[ANRSlideGestureRecognizer class]])
+        return;
 
+    slideGesture = (ANRSlideGestureRecognizer*)gesture;
+    if (gesture.state == UIGestureRecognizerStateBegan){
+        CGPoint startPoint = [gesture locationInView:self.tableView];
+        self.cellForSlideGesture = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForRowAtPoint:startPoint]];
+//        self.cellForSlideGesture.tweetOne.backgroundColor = [UIColor purpleColor];
+    }
+    
+    // do something responsive;
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+//    if ([keyPath isEqualToString:SLIDE_GESTURE_START_KEYPATH]){
+//        NSValue *value = change[NSKeyValueChangeNewKey];
+//        CGPoint slidePoint = [value CGPointValue];
+//        self.cellForSlideGesture = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForRowAtPoint:slidePoint]];
+//        self.cellForSlideGesture.tweetOne.backgroundColor = [UIColor purpleColor];
+//    }else if ([keyPath isEqualToString:SLIDE_GESTURE_LENGTH_KEYPATH])
+//    {
+//        CGFloat length = [(NSNumber*)change[NSKeyValueChangeNewKey]floatValue];
+//        if (length) {
+//            self.cellForSlideGesture.tweetContainer.frame = CGRectMake(0 - length,
+//                                                                       self.cellForSlideGesture.tweetContainer.frame.origin.y,
+//                                                                       self.cellForSlideGesture.tweetContainer.frame.size.width,
+//                                                                       self.cellForSlideGesture.tweetContainer.frame.size.height);
+//        }else{
+////            self.cellForSlideGesture.tweetContainer.frame = CGRectMake(0,
+////                                                                       self.cellForSlideGesture.tweetContainer.frame.origin.y,
+////                                                                       self.cellForSlideGesture.tweetContainer.frame.size.width,
+////                                                                       self.cellForSlideGesture.tweetContainer.frame.size.height);
+//
+//        }
+//    }
+//    find out
+}
 #pragma mark - Fetching
 
 - (void)performFetch

@@ -12,6 +12,7 @@
 @interface ANRSlideGestureRecognizer : UIGestureRecognizer
 @property (nonatomic) CGFloat gestureLength;
 @property (strong, nonatomic) NSNumber *gestureSuccessLength;
+@property (nonatomic) CGPoint startPoint;
 
 - (void)reset;
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;

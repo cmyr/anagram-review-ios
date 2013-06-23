@@ -9,9 +9,7 @@
 #import "ANRSlideGestureRecognizer.h"
 
 @implementation ANRSlideGestureRecognizer
-{
-    CGPoint _startPoint;
-}
+
 
 #define DEFAULT_GESTURE_SUCCESS_LENGTH 50.0
 
@@ -22,7 +20,8 @@
 
 -(void)reset
 {
-    
+    _startPoint = CGPointZero;
+    self.gestureLength = 0.0;
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -32,6 +31,7 @@
         self.state = UIGestureRecognizerStateFailed;
     }
     _startPoint = [[touches anyObject]locationInView:[self.view window]];
+    self.state = UIGestureRecognizerStateBegan;
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
