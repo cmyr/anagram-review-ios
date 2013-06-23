@@ -8,14 +8,17 @@
 
 #import "ANRHitsCDTVC.h"
 #import "ANRHitCell.h"
+#import "ANRNotificationDropDownView.h"
 #import "Hit+Create.h"
-#import "Tweet.h"
+#import "Tweet+Create.h"
+
 
 #define CELL_REUSE_IDENTIFIER @"Hit"
 @interface ANRHitsCDTVC ()
 @property (nonatomic) BOOL beganUpdates;
 @property (strong, nonatomic) ANRServerHandler *serverHandler;
 @property (strong, nonatomic) UIImage *placeholderImage;
+@property (strong, nonatomic) ANRNotificationDropDownView *notificationView;
 @end
 
 @implementation ANRHitsCDTVC
@@ -252,6 +255,7 @@
     }
 }
 
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -287,23 +291,27 @@
     NSArray* tweets = [hit.tweets allObjects];
     Tweet* tweetOne = tweets[0];
     Tweet* tweetTwo = tweets[1];
-
+    
+    if (tweetOne.profile_img_url && !tweetOne.profile_img) [tweetOne fetchProfileImage];
+    if (tweetTwo.profile_img_url && !tweetTwo.profile_img) [tweetTwo fetchProfileImage];
+            
     cell.profileImageOne.image = tweetOne.profile_img ? [UIImage imageWithData:tweetOne.profile_img] : self.placeholderImage;
     cell.nameOne.text = tweetOne.username ;
-    cell.screenNameOne.text = tweetOne.screenname ;
+    cell.screenNameOne.text = tweetOne.screenname ? [@"@" stringByAppendingString:tweetOne.screenname] : nil;
     cell.tweetTextOne.text = tweetOne.text;
     cell.warningOne.hidden = YES;
     if (!tweetOne.username && !tweetOne.screenname) cell.warningOne.hidden = NO;
 
     cell.profileImageTwo.image = tweetTwo.profile_img ? [UIImage imageWithData:tweetTwo.profile_img] : self.placeholderImage;
     cell.nameTwo.text = tweetTwo.username ;
-    cell.screenNameTwo.text = tweetTwo.screenname ;
+    cell.screenNameTwo.text = tweetTwo.screenname ? [@"@" stringByAppendingString:tweetTwo.screenname] : nil;
     cell.tweetTextTwo.text = tweetTwo.text;
     cell.warningTwo.hidden = YES;
     if (!tweetTwo.username && !tweetTwo.screenname) cell.warningTwo.hidden = NO;
  
     return cell;
 }
+
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

@@ -47,36 +47,25 @@
 {
 //    means we've received a url from which we need to fetch our image.
     NSString *url = change[NSKeyValueChangeNewKey];
+    if (url) [self fetchProfileImage];
+}
+
+-(void)fetchProfileImage
+{
+    NSString *url = self.profile_img_url;
+    url = [url stringByReplacingOccurrencesOfString:@"_normal" withString:@"_bigger"];
     NSBlockOperation *fetchOperation = [NSBlockOperation blockOperationWithBlock:^{
         NSURLRequest *imageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
         NSData *imageData = [NSURLConnection sendSynchronousRequest:imageRequest returningResponse:nil error:nil];
-        if (imageData) self.profile_img = imageData;
+        
+        if (imageData){
+            [self.managedObjectContext performBlock:^{
+                self.profile_img = imageData;
+            }];
+        }
     }];
     [fetchOperation start];
-    
+
 }
 
-//+(void)updateTweetWithTwitterInfo:(NSDictionary *)twitterDict inContext:(NSManagedObjectContext *)context
-//{
-//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Tweet"];
-//    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"id_num" ascending:YES]];
-//    request.predicate = [NSPredicate predicateWithFormat:@"unique = %@", twitterDict[@"id_str"]];
-//    
-//    NSError *error = nil;
-//    NSArray *matches = [context executeFetchRequest:request error:&error];
-//    
-//    if(!matches || matches.count > 1) {
-// //TODO: error handling
-//        if (error) NSLog(@"%@", error);
-//        return;
-//    } else {
-//        Tweet *tweet = matches[0];
-//        tweet.text = twitterDict[@"text"];
-//        tweet.screenname = [twitterDict valueForKeyPath:@"user.screen_name"];
-//        tweet.username = [twitterDict valueForKeyPath:@"user.name"];
-//        tweet.profile_img_url = [twitterDict valueForKeyPath:@"user.profile_img_url"];
-//        tweet.profile_img = nil;
-////        TODO: image fetching
-//    }
-//}
 @end

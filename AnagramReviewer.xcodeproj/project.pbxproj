@@ -16,6 +16,7 @@
 		6224381D1774F2FE002B17A2 /* NSString+STTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 622438161774F2FE002B17A2 /* NSString+STTwitter.m */; };
 		622438291774FD48002B17A2 /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 622438281774FD48002B17A2 /* Tweet.m */; };
 		6224382C1774FE07002B17A2 /* Hit.m in Sources */ = {isa = PBXBuildFile; fileRef = 6224382B1774FE07002B17A2 /* Hit.m */; };
+		623E342617768DD6004281FC /* ANRNotificationDropDownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 623E342517768DD6004281FC /* ANRNotificationDropDownView.m */; };
 		627D94F017764B62009A8F42 /* ANRHitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 627D94EF17764B62009A8F42 /* ANRHitCell.m */; };
 		627D94F2177654D3009A8F42 /* hitCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 627D94F1177654D3009A8F42 /* hitCellView.xib */; };
 		627D94F517765F8B009A8F42 /* missingprofile.png in Resources */ = {isa = PBXBuildFile; fileRef = 627D94F317765F8B009A8F42 /* missingprofile.png */; };
@@ -74,6 +75,8 @@
 		622438281774FD48002B17A2 /* Tweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tweet.m; sourceTree = "<group>"; };
 		6224382A1774FE07002B17A2 /* Hit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hit.h; sourceTree = "<group>"; };
 		6224382B1774FE07002B17A2 /* Hit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hit.m; sourceTree = "<group>"; };
+		623E342417768DD6004281FC /* ANRNotificationDropDownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANRNotificationDropDownView.h; sourceTree = "<group>"; };
+		623E342517768DD6004281FC /* ANRNotificationDropDownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANRNotificationDropDownView.m; sourceTree = "<group>"; };
 		627D94EE17764B62009A8F42 /* ANRHitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ANRHitCell.h; path = ../ANRHitCell.h; sourceTree = "<group>"; };
 		627D94EF17764B62009A8F42 /* ANRHitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ANRHitCell.m; path = ../ANRHitCell.m; sourceTree = "<group>"; };
 		627D94F1177654D3009A8F42 /* hitCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = hitCellView.xib; sourceTree = "<group>"; };
@@ -200,6 +203,8 @@
 				62D5FFFF176FF46A002E2BCB /* ANRHitsCDTVC.m */,
 				627D94EE17764B62009A8F42 /* ANRHitCell.h */,
 				627D94EF17764B62009A8F42 /* ANRHitCell.m */,
+				623E342417768DD6004281FC /* ANRNotificationDropDownView.h */,
+				623E342517768DD6004281FC /* ANRNotificationDropDownView.m */,
 				627D94F1177654D3009A8F42 /* hitCellView.xib */,
 				62D50007176FF641002E2BCB /* Storyboard.storyboard */,
 				62D5FFCF176FED7C002E2BCB /* Images.xcassets */,
@@ -367,6 +372,7 @@
 				622438181774F2FE002B17A2 /* STTwitterAPIWrapper.m in Sources */,
 				62C8746A1772118400042795 /* Tweet+Create.m in Sources */,
 				62C8746717720DBD00042795 /* Hit+Create.m in Sources */,
+				623E342617768DD6004281FC /* ANRNotificationDropDownView.m in Sources */,
 				6224381B1774F2FE002B17A2 /* STTwitterOAuthOSX.m in Sources */,
 				622438191774F2FE002B17A2 /* STTwitterHTML.m in Sources */,
 				622438291774FD48002B17A2 /* Tweet.m in Sources */,

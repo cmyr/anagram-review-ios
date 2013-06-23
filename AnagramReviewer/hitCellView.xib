@@ -18,8 +18,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="142"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view tag="10" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ki8-f1-Gfh">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+                            <view tag="10" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ki8-f1-Gfh">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="71"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="missingprofile.png" translatesAutoresizingMaskIntoConstraints="NO" id="khy-yY-dgl">
@@ -82,16 +82,16 @@
                                     <constraint firstItem="khy-yY-dgl" firstAttribute="top" secondItem="Otf-OV-iCO" secondAttribute="top" id="tmH-W7-ZRy"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ldB-yp-HpN">
-                                <rect key="frame" x="0.0" y="70" width="320" height="1"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ldB-yp-HpN">
+                                <rect key="frame" x="0.0" y="71" width="320" height="1"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.92851163903061229" green="0.92851163903061229" blue="0.92851163903061229" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="kuc-is-JkG"/>
                                 </constraints>
                             </imageView>
-                            <view tag="20" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="79v-82-czP">
-                                <rect key="frame" x="0.0" y="71" width="320" height="70"/>
+                            <view tag="20" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="79v-82-czP">
+                                <rect key="frame" x="0.0" y="72" width="320" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" tag="21" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="missingprofile.png" translatesAutoresizingMaskIntoConstraints="NO" id="ahu-W3-8i5">
@@ -163,7 +163,7 @@
                             <constraint firstItem="79v-82-czP" firstAttribute="top" secondItem="ldB-yp-HpN" secondAttribute="bottom" id="R49-Mi-E4u"/>
                             <constraint firstItem="79v-82-czP" firstAttribute="trailing" secondItem="Aez-4K-qcM" secondAttribute="trailing" id="RSB-Xs-nci"/>
                             <constraint firstItem="ki8-f1-Gfh" firstAttribute="leading" secondItem="Aez-4K-qcM" secondAttribute="leading" id="UWQ-CB-0hY"/>
-                            <constraint firstAttribute="bottom" secondItem="79v-82-czP" secondAttribute="bottom" constant="1" id="dSh-NM-UKH"/>
+                            <constraint firstAttribute="bottom" secondItem="79v-82-czP" secondAttribute="bottom" id="dSh-NM-UKH"/>
                             <constraint firstItem="ki8-f1-Gfh" firstAttribute="trailing" secondItem="Aez-4K-qcM" secondAttribute="trailing" id="pnn-79-e8V"/>
                             <constraint firstItem="ldB-yp-HpN" firstAttribute="top" secondItem="ki8-f1-Gfh" secondAttribute="bottom" id="u2i-Hl-26J"/>
                             <constraint firstItem="ldB-yp-HpN" firstAttribute="trailing" secondItem="Aez-4K-qcM" secondAttribute="trailing" id="uz8-ca-ofz"/>
