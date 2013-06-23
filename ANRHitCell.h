@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface ANRHitCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UIView *containerOne;
-@property (weak, nonatomic) IBOutlet UIView *containerTwo;
+@property (weak, nonatomic) IBOutlet UIView *tweetContainer;
+@property (weak, nonatomic) IBOutlet UIView *tweetOne;
+@property (weak, nonatomic) IBOutlet UIView *tweetTwo;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageOne;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageTwo;
 @property (weak, nonatomic) IBOutlet UILabel *nameOne;
