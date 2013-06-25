@@ -198,27 +198,4 @@
     <resources>
         <image name="missingprofile.png" width="44" height="44"/>
     </resources>
-    <classes>
-        <class className="ANRHitCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ANRHitCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="nameOne" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nameTwo" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="profileImageOne" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="profileImageTwo" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="screenNameOne" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="screenNameTwo" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tweetContainer" candidateClass="UIView"/>
-                <relationship kind="outlet" name="tweetOne" candidateClass="UIView"/>
-                <relationship kind="outlet" name="tweetTextOne" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tweetTextTwo" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tweetTwo" candidateClass="UIView"/>
-                <relationship kind="outlet" name="warningOne" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="warningTwo" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-    </classes>
 </document>

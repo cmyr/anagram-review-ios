@@ -11,10 +11,12 @@
 @interface ANRNotificationDropDownView : UIView
 
 @property (nonatomic) BOOL isActive;
+@property (strong, nonatomic) UIDynamicAnimator *dynamicAnimator;
 
 -(void)showNotification:(NSString*)notification autohide:(BOOL)hide;
 -(void)showIndefiniteNotification:(NSString*)notification;
 -(void)hideNotification;
 -(id)initForScreen;
+
 
 @end

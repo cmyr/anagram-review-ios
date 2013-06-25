@@ -24,36 +24,45 @@
     return self;
 }
 
-#define DROPDOWN_VIEW_HEIGHT 56.0
+#define DROPDOWN_VIEW_HEIGHT 44.0
 -(id)initForScreen{
 //    assigns a frame based on screen size
     CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
     CGRect viewRect = CGRectMake(0, -DROPDOWN_VIEW_HEIGHT,
                           screenRect.size.width,
                           DROPDOWN_VIEW_HEIGHT);
+    self.backgroundColor = [UIColor whiteColor];
     return [self initWithFrame:viewRect];
 }
--(void)setupViews{
-    UILabel *notificationLabel = [[UILabel alloc]initWithFrame:CGRectZero];
-    notificationLabel.font = [UIFont systemFontOfSize:14.0];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-8-[notificationLabel]-8-"
-                                                                options:0
-                                                                metrics:nil
-                                                                  views:NSDictionaryOfVariableBindings(notificationLabel)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-8-[notificationLabel(>=14)]-8-"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(notificationLabel)]];
+
+-(UILabel*)notificationLabel{
+    if (!_notificationLabel) {
+        _notificationLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, DROPDOWN_VIEW_HEIGHT)];
+        _notificationLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _notificationLabel.font = [UIFont systemFontOfSize:14.0];
+        [self addSubview:_notificationLabel];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-8-[_notificationLabel]-8-|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(_notificationLabel)]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-8-[_notificationLabel(>=14)]-8-|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(_notificationLabel)]];
+    }
+    return _notificationLabel;
 }
 
 -(void)setNotification:(NSString *)notification{
     _notification = notification;
     self.notificationLabel.text = notification;
     [self.notificationLabel sizeToFit];
+    self.notificationLabel.backgroundColor = [UIColor orangeColor];
 }
 
 -(void)showIndefiniteNotification:(NSString *)notification{
-    
+    self.notification = notification;
+    self.isActive = YES;
 }
 
 -(void)showNotification:(NSString *)notification autohide:(BOOL)hide{

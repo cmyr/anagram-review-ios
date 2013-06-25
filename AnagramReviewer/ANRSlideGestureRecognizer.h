@@ -14,6 +14,7 @@
 @property (strong, nonatomic) NSNumber *gestureSuccessLength;
 @property (nonatomic) CGPoint startPoint;
 
+
 - (void)reset;
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;

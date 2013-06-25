@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "ANRServerHandler.h"
 
-@interface ANRHitsCDTVC : UITableViewController <NSFetchedResultsControllerDelegate, ANRServerDelegateProtocol, UIGestureRecognizerDelegate>
+@interface ANRHitsCDTVC : UIViewController <NSFetchedResultsControllerDelegate, ANRServerDelegateProtocol, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic) BOOL debug;

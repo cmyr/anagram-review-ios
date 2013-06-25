@@ -29,14 +29,14 @@
 
 @implementation ANRHitsCDTVC
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+//- (id)initWithStyle:(UITableViewStyle)style
+//{
+//    self = [super initWithStyle:style];
+//    if (self) {
+//        // Custom initialization
+//    }
+//    return self;
+//}
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -49,12 +49,25 @@
     [super viewDidLoad];
     [self.tableView registerNib:[UINib nibWithNibName:@"hitCellView" bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
+    self.tableView.delegate = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.separatorColor = [UIColor grayColor];
     ANRSlideGestureRecognizer *gr = [[ANRSlideGestureRecognizer alloc]initWithTarget:self
                                                                             action:@selector(respondToSlideGesture:)];
                                     [self.view addGestureRecognizer:gr];
     gr.delegate = self;
+    
+//    set up our drop-down view;
+    self.notificationView = [[ANRNotificationDropDownView alloc]initForScreen];
+    self.notificationView.backgroundColor = [UIColor orangeColor];
+    self.notificationView.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
+    [self.notificationView.dynamicAnimator addBehavior:[[UIGravityBehavior alloc]initWithItems:@[self.notificationView]]];
+    UICollisionBehavior *collision = [[UICollisionBehavior alloc]initWithItems:@[self.notificationView]];
+    [collision addBoundaryWithIdentifier:@"boundary" fromPoint:CGPointMake(0, self.notificationView.frame.size.height) toPoint:CGPointMake(self.view.frame.size.width, self.notificationView.frame.size.height)];
+    [self.notificationView.dynamicAnimator addBehavior:collision];
+    
+    [self.view addSubview:self.notificationView];
+    [self.notificationView showIndefiniteNotification:@"PLEEEAAASSEE"];
 }
 
 - (void)didReceiveMemoryWarning
