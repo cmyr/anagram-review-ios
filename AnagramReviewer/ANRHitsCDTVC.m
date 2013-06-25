@@ -40,6 +40,7 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     if (!self.managedObjectContext) [self loadDocument];
+
 }
 
 - (void)viewDidLoad
@@ -49,7 +50,11 @@
          forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.separatorColor = [UIColor grayColor];
-
+    ANRSlideGestureRecognizer *gr = [[ANRSlideGestureRecognizer alloc]initWithTarget:self
+                                                                            action:@selector(respondToSlideGesture:)];
+                                    [self.view addGestureRecognizer:gr];
+    gr.delegate = self;
+                                    
 //    ANRSlideGestureRecognizer *slideGestureRecognizer = [[ANRSlideGestureRecognizer alloc]initWithTarget:self action:@selector(respondToSlideGesture:)];
 ////    use KVO to be notified as the slide gesture's length changes:
 //    [slideGestureRecognizer addObserver:self forKeyPath:SLIDE_GESTURE_LENGTH_KEYPATH
@@ -100,10 +105,12 @@
 
 -(void)fetchHits
 {
-    [self.serverHandler requestHits];
+//    [self.serverHandler requestHits];
+#warning network activity disabled for debug 
 }
 
 #define DOCUMENT_NAME @"hitsfile"
+
 -(void)loadDocument{
     NSURL *url = [[[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]lastObject];
     url = [url URLByAppendingPathComponent:DOCUMENT_NAME];
@@ -154,18 +161,67 @@
 }
 #pragma mark - handling touches
 -(void)respondToSlideGesture:(UIGestureRecognizer*)gesture {
-    ANRSlideGestureRecognizer *slideGesture;
-    if (![gesture isKindOfClass:[ANRSlideGestureRecognizer class]])
-        return;
-
-    slideGesture = (ANRSlideGestureRecognizer*)gesture;
-    if (gesture.state == UIGestureRecognizerStateBegan){
-        CGPoint startPoint = [gesture locationInView:self.tableView];
-        self.cellForSlideGesture = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForRowAtPoint:startPoint]];
-//        self.cellForSlideGesture.tweetOne.backgroundColor = [UIColor purpleColor];
+    ANRSlideGestureRecognizer *slideGesture = (ANRSlideGestureRecognizer*)gesture;
+    if (slideGesture.state == UIGestureRecognizerStateBegan){
+        CGPoint startPoint = [slideGesture locationInView:self.tableView];
+        self.cellForSlideGesture = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:
+                                                 [self.tableView indexPathForRowAtPoint:startPoint]];
+    }
+    if (slideGesture.state == UIGestureRecognizerStateChanged)
+    {
+        NSLog(@"gesture state changed");
+        [UIView animateWithDuration:0.01
+                              delay:0.0
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             self.cellForSlideGesture.tweetContainer.frame = CGRectMake(0 - slideGesture.gestureLength,
+                                                                                        self.cellForSlideGesture.tweetContainer.frame.origin.y,
+                                                                                        self.cellForSlideGesture.tweetContainer.frame.size.width,
+                                                                                        self.cellForSlideGesture.tweetContainer.frame.size.height);
+                         } completion:NULL];
+    }
+    if (slideGesture.state == UIGestureRecognizerStateEnded) {
+        NSLog(@"gesture state ended");
     }
     
+    
+    //    ANRSlideGestureRecognizer *slideGesture;
+//    if (![gesture isKindOfClass:[ANRSlideGestureRecognizer class]])
+//        return;
+//
+//    slideGesture = (ANRSlideGestureRecognizer*)gesture;
+//    if (gesture.state == UIGestureRecognizerStateBegan){
+//        CGPoint startPoint = [gesture locationInView:self.tableView];
+//        self.cellForSlideGesture = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForRowAtPoint:startPoint]];
+////        self.cellForSlideGesture.tweetOne.backgroundColor = [UIColor purpleColor];
+//    }
+        
+//    switch (gesture.state) {
+//        case UIGestureRecognizerStateBegan:
+//            NSLog(@"gesture began");
+//            break;
+//        case UIGestureRecognizerStateChanged:
+//            NSLog(@"gesture state changed");
+//            break;
+//        case UIGestureRecognizerStateEnded:
+//            NSLog(@"gesture state ended");
+//            break;
+//        case UIGestureRecognizerStateFailed:
+//            NSLog(@"gesture state failed");
+//            break;
+//        case UIGestureRecognizerStateCancelled:
+//            NSLog(@"gesture state cancelled");
+//            break;
+//        default:
+//            break;
+//    }
+//    
     // do something responsive;
+}
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context

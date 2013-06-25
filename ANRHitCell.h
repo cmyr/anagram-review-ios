@@ -24,4 +24,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *warningTwo;
 
 
+@property (strong, nonatomic) UIButton *topButton;
+@property (strong, nonatomic) UIButton *bottomButton;
 @end
