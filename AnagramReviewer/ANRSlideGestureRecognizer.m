@@ -34,19 +34,13 @@
     self.state = UIGestureRecognizerStateBegan;
 }
 
-#define MIN_GESTURE_LENGTH 10.0
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesMoved:touches withEvent:event];
     if (self.state == UIGestureRecognizerStateFailed) return;
     CGPoint point = [[touches anyObject]locationInView:[self.view window]];
-    if (point.x > _startPoint.x){
-//     self.state = UIGestureRecognizerStateFailed;
-    }else if (point.x < _startPoint.x){
-        self.gestureLength = _startPoint.x - point.x;
-        if (self.gestureLength > MIN_GESTURE_LENGTH)
-            self.state = UIGestureRecognizerStatePossible;
-    }
+    self.gestureLength = _startPoint.x - point.x;
+
     
 }
 
@@ -56,13 +50,14 @@
     if (self.state == UIGestureRecognizerStateFailed) return;
     CGPoint point = [[touches anyObject]locationInView:[self.view window]];
     if (point.x > _startPoint.x){
-        self.state = UIGestureRecognizerStateFailed;
+        self.state = UIGestureRecognizerStateEnded;
     }else if (point.x < _startPoint.x){
         self.gestureLength = _startPoint.x - point.x;
         if (self.gestureLength >= [self.gestureSuccessLength floatValue]){
             self.state = UIGestureRecognizerStateRecognized;
         }
     }
+    self.state = UIGestureRecognizerStateEnded;
 }
 
 -(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event

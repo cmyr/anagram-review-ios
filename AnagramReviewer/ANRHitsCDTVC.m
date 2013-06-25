@@ -24,6 +24,7 @@
 @property (strong, nonatomic) UIImage *placeholderImage;
 @property (strong, nonatomic) ANRNotificationDropDownView *notificationView;
 @property (nonatomic, weak) ANRHitCell *cellForSlideGesture;
+@property (nonatomic) BOOL slideGestureInProgress;
 @end
 
 @implementation ANRHitsCDTVC
@@ -54,23 +55,6 @@
                                                                             action:@selector(respondToSlideGesture:)];
                                     [self.view addGestureRecognizer:gr];
     gr.delegate = self;
-                                    
-//    ANRSlideGestureRecognizer *slideGestureRecognizer = [[ANRSlideGestureRecognizer alloc]initWithTarget:self action:@selector(respondToSlideGesture:)];
-////    use KVO to be notified as the slide gesture's length changes:
-//    [slideGestureRecognizer addObserver:self forKeyPath:SLIDE_GESTURE_LENGTH_KEYPATH
-//                                options:NSKeyValueObservingOptionNew
-//                                context:NULL];
-//    [slideGestureRecognizer addObserver:self forKeyPath:SLIDE_GESTURE_START_KEYPATH
-//                                options:NSKeyValueObservingOptionNew
-//                                context:NULL];
-//    [self.view addGestureRecognizer:slideGestureRecognizer];
-//    
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
@@ -160,6 +144,8 @@
     NSLog(@"AGServer failed with error: %@", error);
 }
 #pragma mark - handling touches
+
+#define MIN_GESTURE_LENGTH 10.0
 -(void)respondToSlideGesture:(UIGestureRecognizer*)gesture {
     ANRSlideGestureRecognizer *slideGesture = (ANRSlideGestureRecognizer*)gesture;
     if (slideGesture.state == UIGestureRecognizerStateBegan){
@@ -169,54 +155,32 @@
     }
     if (slideGesture.state == UIGestureRecognizerStateChanged)
     {
-        NSLog(@"gesture state changed");
-        [UIView animateWithDuration:0.01
-                              delay:0.0
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^{
-                             self.cellForSlideGesture.tweetContainer.frame = CGRectMake(0 - slideGesture.gestureLength,
-                                                                                        self.cellForSlideGesture.tweetContainer.frame.origin.y,
-                                                                                        self.cellForSlideGesture.tweetContainer.frame.size.width,
-                                                                                        self.cellForSlideGesture.tweetContainer.frame.size.height);
-                         } completion:NULL];
+        NSLog(@"gesture state changed %f", slideGesture.gestureLength);
+        if (slideGesture.gestureLength > MIN_GESTURE_LENGTH)
+            self.slideGestureInProgress = YES;
+
+        if (self.slideGestureInProgress) {
+            [UIView animateWithDuration:0.01
+                                  delay:0.0
+                                options:UIViewAnimationOptionBeginFromCurrentState
+                             animations:^{
+                                 self.cellForSlideGesture.tweetContainer.frame = CGRectMake(0 - slideGesture.gestureLength,
+                                                                                            self.cellForSlideGesture.tweetContainer.frame.origin.y,
+                                                                                            self.cellForSlideGesture.tweetContainer.frame.size.width,
+                                                                                            self.cellForSlideGesture.tweetContainer.frame.size.height);
+                             } completion:^(BOOL finished) {
+                                 self.cellForSlideGesture.hasMoved = YES;
+                             }];
+        }
     }
     if (slideGesture.state == UIGestureRecognizerStateEnded) {
         NSLog(@"gesture state ended");
+        [self.cellForSlideGesture snapToPlace];
+        self.cellForSlideGesture = nil;
+        self.slideGestureInProgress = NO;
+//        self.cellForSlideGesture.hasMoved = NO;
     }
     
-    
-    //    ANRSlideGestureRecognizer *slideGesture;
-//    if (![gesture isKindOfClass:[ANRSlideGestureRecognizer class]])
-//        return;
-//
-//    slideGesture = (ANRSlideGestureRecognizer*)gesture;
-//    if (gesture.state == UIGestureRecognizerStateBegan){
-//        CGPoint startPoint = [gesture locationInView:self.tableView];
-//        self.cellForSlideGesture = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForRowAtPoint:startPoint]];
-////        self.cellForSlideGesture.tweetOne.backgroundColor = [UIColor purpleColor];
-//    }
-        
-//    switch (gesture.state) {
-//        case UIGestureRecognizerStateBegan:
-//            NSLog(@"gesture began");
-//            break;
-//        case UIGestureRecognizerStateChanged:
-//            NSLog(@"gesture state changed");
-//            break;
-//        case UIGestureRecognizerStateEnded:
-//            NSLog(@"gesture state ended");
-//            break;
-//        case UIGestureRecognizerStateFailed:
-//            NSLog(@"gesture state failed");
-//            break;
-//        case UIGestureRecognizerStateCancelled:
-//            NSLog(@"gesture state cancelled");
-//            break;
-//        default:
-//            break;
-//    }
-//    
-    // do something responsive;
 }
 
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
@@ -224,31 +188,6 @@
     return YES;
 }
 
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-//    if ([keyPath isEqualToString:SLIDE_GESTURE_START_KEYPATH]){
-//        NSValue *value = change[NSKeyValueChangeNewKey];
-//        CGPoint slidePoint = [value CGPointValue];
-//        self.cellForSlideGesture = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForRowAtPoint:slidePoint]];
-//        self.cellForSlideGesture.tweetOne.backgroundColor = [UIColor purpleColor];
-//    }else if ([keyPath isEqualToString:SLIDE_GESTURE_LENGTH_KEYPATH])
-//    {
-//        CGFloat length = [(NSNumber*)change[NSKeyValueChangeNewKey]floatValue];
-//        if (length) {
-//            self.cellForSlideGesture.tweetContainer.frame = CGRectMake(0 - length,
-//                                                                       self.cellForSlideGesture.tweetContainer.frame.origin.y,
-//                                                                       self.cellForSlideGesture.tweetContainer.frame.size.width,
-//                                                                       self.cellForSlideGesture.tweetContainer.frame.size.height);
-//        }else{
-////            self.cellForSlideGesture.tweetContainer.frame = CGRectMake(0,
-////                                                                       self.cellForSlideGesture.tweetContainer.frame.origin.y,
-////                                                                       self.cellForSlideGesture.tweetContainer.frame.size.width,
-////                                                                       self.cellForSlideGesture.tweetContainer.frame.size.height);
-//
-//        }
-//    }
-//    find out
-}
 #pragma mark - Fetching
 
 - (void)performFetch
@@ -390,6 +329,8 @@
     return 141.0;
 }
 
+#define DEFAULT_CELL_HEIGHT 141.0
+#define DEFAULT_CELL_WIDTH  320.0
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = CELL_REUSE_IDENTIFIER;
@@ -399,6 +340,8 @@
 //                                reuseIdentifier:CellIdentifier];
 //    }
     assert([cell isKindOfClass:[ANRHitCell class]]);
+    cell.tweetContainer.frame = CGRectMake(0, 0, DEFAULT_CELL_WIDTH, DEFAULT_CELL_HEIGHT);
+    [cell resetDynamics];
     Hit *hit = [self.fetchedResultsController objectAtIndexPath:indexPath];
     NSArray* tweets = [hit.tweets allObjects];
     Tweet* tweetOne = tweets[0];

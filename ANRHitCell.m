@@ -9,6 +9,11 @@
 #import "ANRHitCell.h"
 #import <QuartzCore/QuartzCore.h>
 
+@interface ANRHitCell()
+@property (strong, nonatomic) UIDynamicAnimator *dynamicAnimator;
+@property (strong, nonatomic) UIAttachmentBehavior *tweetViewAnchor;
+@property (strong, nonatomic) UISnapBehavior *tweetViewSnap;
+@end
 @implementation ANRHitCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -23,7 +28,21 @@
 
 -(void)awakeFromNib {
     [self configureSubviews];
+    [self configureDynamics];
 }
+
+//-(void)setHasMoved:(BOOL)hasMoved
+//{
+////    we'll use this to add and remove our attachment behaviour
+//    _hasMoved = hasMoved;
+//    if (self.hasMoved){
+////        [self.dynamicAnimator addBehavior:self.tweetViewAnchor];
+//        UISnapBehavior *tweetSnap = [[UISnapBehavior alloc]initWithItem:self.tweetContainer
+//                                                            snapToPoint:self.dynamicAnimator.referenceView.center];
+//    }else{
+//        [self.dynamicAnimator removeBehavior:self.tweetViewAnchor];
+//    }
+//}
 
 -(void)configureSubviews {
 //    round corners on profile picture imageviews;
@@ -57,10 +76,32 @@
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(b1,b2)]];
     
-    
+
 // add the button views;
     
 }
+
+-(void)configureDynamics {
+    self.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.contentView];
+    self.tweetViewSnap = [[UISnapBehavior alloc]initWithItem:self.tweetContainer
+                                                        snapToPoint:self.dynamicAnimator.referenceView.center];
+    
+//    self.tweetViewAnchor = [[UIAttachmentBehavior alloc]initWithItem:self.tweetContainer
+//                                                               point:CGPointMake(self.frame.size.width -1, self.frame.size.height/2)
+//                                                    attachedToAnchor:CGPointMake(self.contentView.frame.size.width -1, self.contentView.frame.size.height/2)];
+    
+    
+//    [self.dynamicAnimator addBehavior:self.tweetViewAnchor];
+}
+
+-(void)snapToPlace {
+    [self.dynamicAnimator addBehavior:self.tweetViewSnap];
+}
+
+-(void)resetDynamics {
+    [self.dynamicAnimator removeAllBehaviors];
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];

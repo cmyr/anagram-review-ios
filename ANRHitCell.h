@@ -26,4 +26,12 @@
 
 @property (strong, nonatomic) UIButton *topButton;
 @property (strong, nonatomic) UIButton *bottomButton;
+
+@property (nonatomic) BOOL hasMoved;
+
+
+//dynamic behaviors
+
+-(void)snapToPlace;
+-(void)resetDynamics;
 @end
