@@ -52,10 +52,10 @@
     self.tableView.delegate = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.separatorColor = [UIColor grayColor];
-    ANRSlideGestureRecognizer *gr = [[ANRSlideGestureRecognizer alloc]initWithTarget:self
-                                                                            action:@selector(respondToSlideGesture:)];
-                                    [self.view addGestureRecognizer:gr];
-    gr.delegate = self;
+//    ANRSlideGestureRecognizer *gr = [[ANRSlideGestureRecognizer alloc]initWithTarget:self
+//                                                                            action:@selector(respondToSlideGesture:)];
+//                                    [self.view addGestureRecognizer:gr];
+//    gr.delegate = self;
     
 //    set up our drop-down view;
     self.notificationView = [[ANRNotificationDropDownView alloc]initForScreen];
@@ -102,8 +102,8 @@
 
 -(void)fetchHits
 {
-//    [self.serverHandler requestHits];
-#warning network activity disabled for debug 
+    [self.serverHandler requestHits];
+#warning network activity disabled for debug
 }
 
 #define DOCUMENT_NAME @"hitsfile"

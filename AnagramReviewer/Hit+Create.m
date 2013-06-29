@@ -53,7 +53,9 @@
     for (Tweet *t in self.tweets) {
         if ([[t.id_num stringValue]isEqualToString:twitterInfo[TWITTER_ID_STRING]]) tweet = t;
     }
-    assert(tweet);
+//    assert(tweet);
+    if (!tweet)
+        NSLog(@"no tweet!");
     NSLog(@"successfully fetched tweet: %@", twitterInfo);
     tweet.text = twitterInfo[TWITTER_TEXT];
     tweet.screenname = [twitterInfo valueForKeyPath:TWITTER_USER_SCREENNAME];

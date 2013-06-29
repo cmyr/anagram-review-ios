@@ -18,11 +18,18 @@
 
 @interface ANRServerHandler ()
 @property (strong, nonatomic) NSMutableData* responseData;
-@property (strong, nonatomic) STTwitterAPIWrapper *twitter;
 @end
 
 @implementation ANRServerHandler
 
++(instancetype)sharedInstance {
+    static ANRServerHandler *singleton = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        singleton = [[ANRServerHandler alloc]init];
+    });
+    return singleton;
+}
 
 -(id)init{
     if (self = [super init]){
@@ -94,9 +101,32 @@
 
 -(void)processHits:(NSArray*)newHits {
     NSUInteger fetchRequestCount = 0;
+    NSMutableSet *hitIDs = [NSMutableSet set];
+    
+    for (NSDictionary* newHit in newHits) {
+        [hitIDs addObject: [newHit valueForKeyPath:HIT_ID]];
+    }
+    //    delete from data tweets anything that wasn't returned from the server;
+    //    so what do we want to do? mostly just fetch any tweet that has an ID outside of our list
+    NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"Hit"];
+    NSError *error;
+    NSArray *results = [self.delegate.managedObjectContext executeFetchRequest:request error:&error];
+    if (error)
+        NSLog(@"error fetching hits for removal: %@", error);
+    if (!results)
+        NSLog(@"error fetching hits returned nil?");
+    for (Hit* hit in results) {
+        if (![hitIDs containsObject:hit])
+            [self.delegate.managedObjectContext deleteObject:hit];
+    }
+    [self.delegate.managedObjectContext save:&error];
+    if (error) NSLog(@"saving error: %@", error);
+
+//    now actually go through our received hits and update them as needed
     for (NSDictionary* newHit in newHits) {
 //        make the Hit database object;
            Hit* hit = [Hit hitWithServerInfo:newHit inManagedContext:self.delegate.managedObjectContext];
+        [hitIDs addObject:hit.id_num];
 //        fetch the first tweet;
         if (hit.fetched) continue;
 //        because tweets is a set, i'm fetching both even if maybe only one needs it. not super efficient, I acknowledge.
@@ -118,6 +148,7 @@
         fetchRequestCount++;
     }
     NSLog(@"%i fetch requests made", fetchRequestCount);
+    
 }
 
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{

@@ -17,6 +17,11 @@
 #define TWEET_TWO_TEXT @"tweet_two.text"
 
 
+#define HIT_STATUS_POST @"posted"
+#define HIT_STATUS_REJECT @"rejected"
+#define HIT_STATUS_APPROVE @"approved"
+#define HIT_STATUS_FAILED @"failed"
+#define HIT_STATUS_REVIEW @"review"
 
 #define TWITTER_ID_STRING @"id_str"
 #define TWITTER_TEXT @"text"
@@ -24,6 +29,8 @@
 #define TWITTER_USER_SCREENNAME @"user.screen_name"
 #define TWITTER_USER_IMG_URL @"user.profile_image_url"
 #define TWITTER_CREATED_DATE @"created_at"
+@class STTwitterAPIWrapper;
+
 
 @protocol ANRServerDelegateProtocol <NSObject>
 //-(void)AGServerRetrievedHits:(NSArray*)hits;
@@ -35,7 +42,8 @@
 @interface ANRServerHandler : NSObject <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 
 @property id<ANRServerDelegateProtocol> delegate;
-
+@property (strong, nonatomic) STTwitterAPIWrapper *twitter;
++(instancetype)sharedInstance;
 -(void)requestHits;
 -(void)setStatus:(NSString*)status forHit:(NSDictionary*)hit;
 -(void)postHit:(NSDictionary*)hit;
