@@ -30,6 +30,9 @@
 @property (nonatomic) BOOL hasMoved;
 
 
+-(void)showButtons;
+-(void)hideButtons;
+
 //dynamic behaviors
 
 -(void)snapToPlace;

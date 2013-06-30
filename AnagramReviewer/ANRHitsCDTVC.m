@@ -24,7 +24,7 @@
 @property (strong, nonatomic) UIImage *placeholderImage;
 @property (strong, nonatomic) ANRNotificationDropDownView *notificationView;
 @property (nonatomic, weak) ANRHitCell *cellForSlideGesture;
-@property (nonatomic) BOOL slideGestureInProgress;
+//@property (nonatomic) BOOL slideGestureInProgress;
 @end
 
 @implementation ANRHitsCDTVC
@@ -58,16 +58,15 @@
 //    gr.delegate = self;
     
 //    set up our drop-down view;
-    self.notificationView = [[ANRNotificationDropDownView alloc]initForScreen];
-    self.notificationView.backgroundColor = [UIColor orangeColor];
-    self.notificationView.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
-    [self.notificationView.dynamicAnimator addBehavior:[[UIGravityBehavior alloc]initWithItems:@[self.notificationView]]];
-    UICollisionBehavior *collision = [[UICollisionBehavior alloc]initWithItems:@[self.notificationView]];
-    [collision addBoundaryWithIdentifier:@"boundary" fromPoint:CGPointMake(0, self.notificationView.frame.size.height) toPoint:CGPointMake(self.view.frame.size.width, self.notificationView.frame.size.height)];
-    [self.notificationView.dynamicAnimator addBehavior:collision];
-    
-    [self.view addSubview:self.notificationView];
-    [self.notificationView showIndefiniteNotification:@"PLEEEAAASSEE"];
+//    self.notificationView = [[ANRNotificationDropDownView alloc]initForScreen];
+//    self.notificationView.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
+//    [self.notificationView.dynamicAnimator addBehavior:[[UIGravityBehavior alloc]initWithItems:@[self.notificationView]]];
+//    UICollisionBehavior *collision = [[UICollisionBehavior alloc]initWithItems:@[self.notificationView]];
+//    [collision addBoundaryWithIdentifier:@"boundary" fromPoint:CGPointMake(0, self.notificationView.frame.size.height) toPoint:CGPointMake(self.view.frame.size.width, self.notificationView.frame.size.height)];
+//    [self.notificationView.dynamicAnimator addBehavior:collision];
+//    
+//    [self.view addSubview:self.notificationView];
+//    [self.notificationView showIndefiniteNotification:@"PLEEEAAASSEE"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -103,7 +102,7 @@
 -(void)fetchHits
 {
     [self.serverHandler requestHits];
-#warning network activity disabled for debug
+//#warning network activity disabled for debug
 }
 
 #define DOCUMENT_NAME @"hitsfile"
@@ -137,6 +136,14 @@
         
     }
 }
+#pragma mark - table view delegate methods
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    ANRHitCell *cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell showButtons];
+
+    
+}
 
 #pragma mark - hit server delegate methods
 -(void)AGServerDid:(BOOL)successFlag updateStatusForHit:(NSDictionary *)hit
@@ -158,43 +165,43 @@
 }
 #pragma mark - handling touches
 
-#define MIN_GESTURE_LENGTH 10.0
--(void)respondToSlideGesture:(UIGestureRecognizer*)gesture {
-    ANRSlideGestureRecognizer *slideGesture = (ANRSlideGestureRecognizer*)gesture;
-    if (slideGesture.state == UIGestureRecognizerStateBegan){
-        CGPoint startPoint = [slideGesture locationInView:self.tableView];
-        self.cellForSlideGesture = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:
-                                                 [self.tableView indexPathForRowAtPoint:startPoint]];
-    }
-    if (slideGesture.state == UIGestureRecognizerStateChanged)
-    {
-        NSLog(@"gesture state changed %f", slideGesture.gestureLength);
-        if (slideGesture.gestureLength > MIN_GESTURE_LENGTH)
-            self.slideGestureInProgress = YES;
-
-        if (self.slideGestureInProgress) {
-            [UIView animateWithDuration:0.01
-                                  delay:0.0
-                                options:UIViewAnimationOptionBeginFromCurrentState
-                             animations:^{
-                                 self.cellForSlideGesture.tweetContainer.frame = CGRectMake(0 - slideGesture.gestureLength,
-                                                                                            self.cellForSlideGesture.tweetContainer.frame.origin.y,
-                                                                                            self.cellForSlideGesture.tweetContainer.frame.size.width,
-                                                                                            self.cellForSlideGesture.tweetContainer.frame.size.height);
-                             } completion:^(BOOL finished) {
-                                 self.cellForSlideGesture.hasMoved = YES;
-                             }];
-        }
-    }
-    if (slideGesture.state == UIGestureRecognizerStateEnded) {
-        NSLog(@"gesture state ended");
-        [self.cellForSlideGesture snapToPlace];
-        self.cellForSlideGesture = nil;
-        self.slideGestureInProgress = NO;
-//        self.cellForSlideGesture.hasMoved = NO;
-    }
-    
-}
+//#define MIN_GESTURE_LENGTH 10.0
+//-(void)respondToSlideGesture:(UIGestureRecognizer*)gesture {
+//    ANRSlideGestureRecognizer *slideGesture = (ANRSlideGestureRecognizer*)gesture;
+//    if (slideGesture.state == UIGestureRecognizerStateBegan){
+//        CGPoint startPoint = [slideGesture locationInView:self.tableView];
+//        self.cellForSlideGesture = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:
+//                                                 [self.tableView indexPathForRowAtPoint:startPoint]];
+//    }
+//    if (slideGesture.state == UIGestureRecognizerStateChanged)
+//    {
+//        NSLog(@"gesture state changed %f", slideGesture.gestureLength);
+//        if (slideGesture.gestureLength > MIN_GESTURE_LENGTH)
+//            self.slideGestureInProgress = YES;
+//
+//        if (self.slideGestureInProgress) {
+//            [UIView animateWithDuration:0.01
+//                                  delay:0.0
+//                                options:UIViewAnimationOptionBeginFromCurrentState
+//                             animations:^{
+//                                 self.cellForSlideGesture.tweetContainer.frame = CGRectMake(0 - slideGesture.gestureLength,
+//                                                                                            self.cellForSlideGesture.tweetContainer.frame.origin.y,
+//                                                                                            self.cellForSlideGesture.tweetContainer.frame.size.width,
+//                                                                                            self.cellForSlideGesture.tweetContainer.frame.size.height);
+//                             } completion:^(BOOL finished) {
+//                                 self.cellForSlideGesture.hasMoved = YES;
+//                             }];
+//        }
+//    }
+//    if (slideGesture.state == UIGestureRecognizerStateEnded) {
+//        NSLog(@"gesture state ended");
+//        [self.cellForSlideGesture snapToPlace];
+//        self.cellForSlideGesture = nil;
+//        self.slideGestureInProgress = NO;
+////        self.cellForSlideGesture.hasMoved = NO;
+//    }
+//    
+//}
 
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
