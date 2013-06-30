@@ -56,7 +56,7 @@
 //    assert(tweet);
     if (!tweet)
         NSLog(@"no tweet!");
-    NSLog(@"successfully fetched tweet: %@", twitterInfo);
+    NSLog(@"successfully fetched tweet: %@", tweet.id_num);
     tweet.text = twitterInfo[TWITTER_TEXT];
     tweet.screenname = [twitterInfo valueForKeyPath:TWITTER_USER_SCREENNAME];
     tweet.username = [twitterInfo valueForKeyPath:TWITTER_USER_NAME];

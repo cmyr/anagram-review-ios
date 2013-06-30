@@ -52,21 +52,6 @@
     self.tableView.delegate = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.separatorColor = [UIColor grayColor];
-//    ANRSlideGestureRecognizer *gr = [[ANRSlideGestureRecognizer alloc]initWithTarget:self
-//                                                                            action:@selector(respondToSlideGesture:)];
-//                                    [self.view addGestureRecognizer:gr];
-//    gr.delegate = self;
-    
-//    set up our drop-down view;
-//    self.notificationView = [[ANRNotificationDropDownView alloc]initForScreen];
-//    self.notificationView.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
-//    [self.notificationView.dynamicAnimator addBehavior:[[UIGravityBehavior alloc]initWithItems:@[self.notificationView]]];
-//    UICollisionBehavior *collision = [[UICollisionBehavior alloc]initWithItems:@[self.notificationView]];
-//    [collision addBoundaryWithIdentifier:@"boundary" fromPoint:CGPointMake(0, self.notificationView.frame.size.height) toPoint:CGPointMake(self.view.frame.size.width, self.notificationView.frame.size.height)];
-//    [self.notificationView.dynamicAnimator addBehavior:collision];
-//    
-//    [self.view addSubview:self.notificationView];
-//    [self.notificationView showIndefiniteNotification:@"PLEEEAAASSEE"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -101,8 +86,8 @@
 
 -(void)fetchHits
 {
-    [self.serverHandler requestHits];
-//#warning network activity disabled for debug
+//    [self.serverHandler requestHits];
+#warning network activity disabled for debug
 }
 
 #define DOCUMENT_NAME @"hitsfile"
@@ -140,9 +125,12 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ANRHitCell *cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:indexPath];
-    [cell showButtons];
+    [cell showButtons];    
+}
 
-    
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    ANRHitCell *cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell hideButtons];
 }
 
 #pragma mark - hit server delegate methods
@@ -163,49 +151,15 @@
 {
     NSLog(@"AGServer failed with error: %@", error);
 }
-#pragma mark - handling touches
 
-//#define MIN_GESTURE_LENGTH 10.0
-//-(void)respondToSlideGesture:(UIGestureRecognizer*)gesture {
-//    ANRSlideGestureRecognizer *slideGesture = (ANRSlideGestureRecognizer*)gesture;
-//    if (slideGesture.state == UIGestureRecognizerStateBegan){
-//        CGPoint startPoint = [slideGesture locationInView:self.tableView];
-//        self.cellForSlideGesture = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:
-//                                                 [self.tableView indexPathForRowAtPoint:startPoint]];
-//    }
-//    if (slideGesture.state == UIGestureRecognizerStateChanged)
-//    {
-//        NSLog(@"gesture state changed %f", slideGesture.gestureLength);
-//        if (slideGesture.gestureLength > MIN_GESTURE_LENGTH)
-//            self.slideGestureInProgress = YES;
-//
-//        if (self.slideGestureInProgress) {
-//            [UIView animateWithDuration:0.01
-//                                  delay:0.0
-//                                options:UIViewAnimationOptionBeginFromCurrentState
-//                             animations:^{
-//                                 self.cellForSlideGesture.tweetContainer.frame = CGRectMake(0 - slideGesture.gestureLength,
-//                                                                                            self.cellForSlideGesture.tweetContainer.frame.origin.y,
-//                                                                                            self.cellForSlideGesture.tweetContainer.frame.size.width,
-//                                                                                            self.cellForSlideGesture.tweetContainer.frame.size.height);
-//                             } completion:^(BOOL finished) {
-//                                 self.cellForSlideGesture.hasMoved = YES;
-//                             }];
-//        }
-//    }
-//    if (slideGesture.state == UIGestureRecognizerStateEnded) {
-//        NSLog(@"gesture state ended");
-//        [self.cellForSlideGesture snapToPlace];
-//        self.cellForSlideGesture = nil;
-//        self.slideGestureInProgress = NO;
-////        self.cellForSlideGesture.hasMoved = NO;
-//    }
-//    
-//}
+#pragma mark - handling cell actions
 
--(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return YES;
+-(void)cellApproveAction {
+    NSLog(@"approve action");
+}
+
+-(void)cellRejectAction {
+    NSLog(@"reject action");    
 }
 
 #pragma mark - Fetching
@@ -355,13 +309,19 @@
 {
     static NSString *CellIdentifier = CELL_REUSE_IDENTIFIER;
     ANRHitCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//    if (!cell) {
-//        cell = [[ANRHitCell alloc]initWithStyle:UITableViewCellStyleDefault
-//                                reuseIdentifier:CellIdentifier];
-//    }
     assert([cell isKindOfClass:[ANRHitCell class]]);
     cell.tweetContainer.frame = CGRectMake(0, 0, DEFAULT_CELL_WIDTH, DEFAULT_CELL_HEIGHT);
-    [cell resetDynamics];
+
+//    set frames;
+    cell.tweetOne.frame = CGRectMake(0, 0, cell.tweetOne.frame.size.width, cell.tweetOne.frame.size.height);
+    cell.tweetTwo.frame = CGRectMake(0, cell.tweetOne.frame.size.height + 1,
+                                     cell.tweetTwo.frame.size.width, cell.tweetTwo.frame.size.height);
+    
+//    set button actions;
+    [cell reset];
+    [cell.approveButton addTarget:self action:@selector(cellApproveAction) forControlEvents:UIControlEventTouchUpInside];
+    [cell.rejectButton addTarget:self action:@selector(cellRejectAction) forControlEvents:UIControlEventTouchUpInside];
+    
     Hit *hit = [self.fetchedResultsController objectAtIndexPath:indexPath];
     NSArray* tweets = [hit.tweets allObjects];
     Tweet* tweetOne = tweets[0];

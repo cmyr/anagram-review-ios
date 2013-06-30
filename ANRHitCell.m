@@ -46,10 +46,25 @@
 
 -(void)configureSubviews {
     
-//    create the view for the bottom buttons;
+
+    [self.layer setMasksToBounds:YES];
+    [self.tweetOne.layer setShadowColor:[[UIColor blackColor]CGColor]];
+    [self.tweetOne.layer setShadowRadius:1.0];
+    [self.tweetOne.layer setShadowOpacity:0.5];
+    [self.tweetOne.layer setShadowOffset:CGSizeMake(0, 2.0)];
+
+    [self.tweetTwo.layer setShadowColor:[[UIColor blackColor]CGColor]];
+    [self.tweetTwo.layer setShadowRadius:1.0];
+    [self.tweetTwo.layer setShadowOpacity:0.5];
+    [self.tweetTwo.layer setShadowOffset:CGSizeMake(0, -2.0)];
+
+    [self.tweetTwo.layer setMasksToBounds:YES];
+
+    //    create the view for the bottom buttons;
     UIView *underView = [[UIView alloc]init];
     underView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.contentView setClipsToBounds:YES];
+    underView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+    
     UIButton *approveButton = [UIButton buttonWithType:UIButtonTypeSystem];
     UIButton *rejectButton = [UIButton buttonWithType:UIButtonTypeSystem];
     approveButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -62,7 +77,7 @@
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(underView)]];
-    [underView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[approveButton][rejectButton]|"
+    [underView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[approveButton(==rejectButton)][rejectButton]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(approveButton, rejectButton)]];
@@ -74,42 +89,22 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(approveButton)]];
+    [underView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[rejectButton]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(rejectButton)]];
 
     
-    approveButton.backgroundColor = [UIColor greenColor];
-    rejectButton.backgroundColor = [UIColor redColor];
+    approveButton.backgroundColor = [[UIColor greenColor]colorWithAlphaComponent:0.2];
+    rejectButton.backgroundColor = [[UIColor redColor]colorWithAlphaComponent:0.2];
+    self.approveButton = approveButton;
+    self.rejectButton = rejectButton;
     
 //    round corners on profile picture imageviews;
     [self.profileImageOne.layer setCornerRadius:5.0];
     [self.profileImageTwo.layer setCornerRadius:5.0];
     [self.profileImageOne.layer setMasksToBounds:YES];
-    [self.profileImageTwo.layer setMasksToBounds:YES];
-
-//    UIButton *b1, *b2;
-//    b1 = [UIButton buttonWithType:UIButtonTypeSystem];
-//    b2 = [UIButton buttonWithType:UIButtonTypeSystem];
-//    b1.backgroundColor = [UIColor greenColor];
-//    b2.backgroundColor = [UIColor redColor];
-//    b1.translatesAutoresizingMaskIntoConstraints = NO;
-//    b2.translatesAutoresizingMaskIntoConstraints = NO;
-//    [self.contentView insertSubview:b1 belowSubview:self.tweetContainer];
-//    [self.contentView insertSubview:b2 belowSubview:self.tweetContainer];
-//    
-//    UIView *t1 = self.tweetOne;
-//    UIView *t2 = self.tweetTwo;
-//    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[b1(==t1)]-(>=0)-[b2(==t2)]|"
-//                                                                 options:0
-//                                                                 metrics:nil
-//                                                                   views:NSDictionaryOfVariableBindings(b1,b2,t1,t2)]];
-//    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[b1(80)]|"
-//                                                                 options:0
-//                                                                 metrics:nil
-//                                                                   views:NSDictionaryOfVariableBindings(b1)]];
-//    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[b2(==b1)]|"
-//                                                                 options:0
-//                                                                 metrics:nil
-//                                                                   views:NSDictionaryOfVariableBindings(b1,b2)]];
-    
+    [self.profileImageTwo.layer setMasksToBounds:YES];   
 
 // add the button views;
     
@@ -132,6 +127,10 @@
     [self.dynamicAnimator addBehavior:self.tweetViewSnap];
 }
 
+-(void)reset {
+    self.tweetTwo.layer.masksToBounds = YES;
+    self.tweetContainer.userInteractionEnabled = YES;
+}
 -(void)resetDynamics {
     [self.dynamicAnimator removeAllBehaviors];
 }
@@ -144,27 +143,48 @@
 }
 #pragma mark - button actions
 
+#define TWEET_VIEW_OVERHANG 10.0
 -(void)showButtons {
+    self.tweetContainer.backgroundColor = [UIColor clearColor];
+    self.tweetContainer.userInteractionEnabled = NO;
     [UIView animateWithDuration:0.5
                      animations:^{
-                         self.tweetContainer.frame = CGRectMake(0,
-                                                                -(self.tweetContainer.frame.size.height - 20),
-                                                                self.tweetContainer.frame.size.width,
-                                                                self.tweetContainer.frame.size.height);
+                         self.tweetOne.frame = CGRectMake(0,
+                                                          -(self.tweetOne.frame.size.height - TWEET_VIEW_OVERHANG),
+                                                          self.tweetOne.frame.size.width,
+                                                          self.tweetOne.frame.size.height);
+                         self.tweetTwo.frame = CGRectMake(0,
+                                                          (self.tweetContainer.frame.size.height - TWEET_VIEW_OVERHANG),
+                                                          self.tweetTwo.frame.size.width,
+                                                          self.tweetTwo.frame.size.height);
+                         self.tweetTwo.layer.masksToBounds = NO;
                      } completion:^(BOOL finished) {
-//                         chill
+//                         self.tweetContainer.frame = CGRectMake(0,
+//                                                                -(self.tweetContainer.frame.size.height - TWEET_VIEW_OVERHANG),
+//                                                                self.tweetContainer.frame.size.width,
+//                                                                self.tweetContainer.frame.size.height);
+
                      }];
 }
 
 -(void)hideButtons {
     [UIView animateWithDuration:0.5
                      animations:^{
-                         self.tweetContainer.frame = CGRectMake(0,
-                                                                0,
-                                                                self.tweetContainer.frame.size.width,
-                                                                self.tweetContainer.frame.size.height);
+                         self.tweetOne.frame = CGRectMake(0,
+                                                          0,
+                                                          self.tweetOne.frame.size.width,
+                                                          self.tweetOne.frame.size.height);
+                         self.tweetTwo.frame = CGRectMake(0,
+                                                          (self.tweetOne.frame.size.height + 1.0),
+                                                          self.tweetTwo.frame.size.width,
+                                                          self.tweetTwo.frame.size.height);
                      } completion:^(BOOL finished) {
-                         //                         chill
+                         self.tweetContainer.userInteractionEnabled = YES;
+                         self.tweetTwo.layer.masksToBounds = YES;
+//                         self.tweetContainer.frame = CGRectMake(0,
+//                                                                0,
+//                                                                self.tweetContainer.frame.size.width,
+//                                                                self.tweetContainer.frame.size.height);
                      }];
 }
 

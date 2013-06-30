@@ -24,8 +24,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *warningTwo;
 
 
-@property (strong, nonatomic) UIButton *topButton;
-@property (strong, nonatomic) UIButton *bottomButton;
+@property (strong, nonatomic) UIButton *approveButton;
+@property (strong, nonatomic) UIButton *rejectButton;
 
 @property (nonatomic) BOOL hasMoved;
 
@@ -33,6 +33,8 @@
 -(void)showButtons;
 -(void)hideButtons;
 
+//call to reset some drawing properties that might've been changed;
+-(void)reset;
 //dynamic behaviors
 
 -(void)snapToPlace;
