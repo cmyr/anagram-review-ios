@@ -21,6 +21,7 @@
 @interface ANRHitsCDTVC ()
 @property (nonatomic) BOOL beganUpdates;
 @property (strong, nonatomic) ANRServerHandler *serverHandler;
+@property (strong, nonatomic) UIManagedDocument *document;
 @property (strong, nonatomic) UIImage *placeholderImage;
 @property (strong, nonatomic) ANRNotificationDropDownView *notificationView;
 @property (nonatomic, weak) ANRHitCell *cellForSlideGesture;
@@ -50,8 +51,6 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"hitCellView" bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
     self.tableView.delegate = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    self.tableView.separatorColor = [UIColor grayColor];
 }
 
 - (void)didReceiveMemoryWarning
@@ -63,6 +62,11 @@
     if (!_serverHandler) _serverHandler = [[ANRServerHandler alloc]init];
     _serverHandler.delegate = self;
     return _serverHandler;
+}
+
+//this lets us receive touches in our buttons more quickly
+-(BOOL) touchesShouldCancelInContentView:(UIView *)view {
+    return YES;
 }
 
 -(UIImage*)placeholderImage {
@@ -87,6 +91,8 @@
 -(void)fetchHits
 {
 //    [self.serverHandler requestHits];
+//    rediculously hacky way of saving when we're debugging
+    [self performSelector:@selector(saveDocument) withObject:Nil afterDelay:60.0];
 #warning network activity disabled for debug
 }
 
@@ -95,31 +101,46 @@
 -(void)loadDocument{
     NSURL *url = [[[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]lastObject];
     url = [url URLByAppendingPathComponent:DOCUMENT_NAME];
-    UIManagedDocument *document = [[UIManagedDocument alloc]initWithFileURL:url];
+    self.document = [[UIManagedDocument alloc]initWithFileURL:url];
     if (![[NSFileManager defaultManager] fileExistsAtPath:[url path]]){
 //        create
-        [document saveToURL:url
+        [self.document saveToURL:url
            forSaveOperation:UIDocumentSaveForCreating
           completionHandler:^(BOOL success) {
               if (success){
-                  self.managedObjectContext = document.managedObjectContext;
+                  self.managedObjectContext = self.document.managedObjectContext;
                   [self fetchHits];
               }else{
                   NSLog(@"failed to open document?");
               }
           }];
-    }else if (document.documentState == UIDocumentStateClosed) {
-        [document openWithCompletionHandler:^(BOOL success) {
+    }else if (self.document.documentState == UIDocumentStateClosed) {
+        [self.document openWithCompletionHandler:^(BOOL success) {
             if (success){
-                self.managedObjectContext = document.managedObjectContext;
+                self.managedObjectContext = self.document.managedObjectContext;
                 [self fetchHits];
             }
         }];
     }else {
-        self.managedObjectContext = document.managedObjectContext;
+        self.managedObjectContext = self.document.managedObjectContext;
         [self fetchHits];
         
     }
+}
+
+-(void)saveDocument {
+    NSURL *url = [[[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]lastObject];
+    url = [url URLByAppendingPathComponent:DOCUMENT_NAME];
+    [self.document
+     saveToURL:url
+     forSaveOperation:UIDocumentSaveForOverwriting
+     completionHandler:^(BOOL success) {
+         if (success){
+             NSLog(@"document saved");
+         }else{
+             NSLog(@"document not saved");
+         }
+     }];
 }
 #pragma mark - table view delegate methods
 
@@ -321,6 +342,15 @@
     [cell reset];
     [cell.approveButton addTarget:self action:@selector(cellApproveAction) forControlEvents:UIControlEventTouchUpInside];
     [cell.rejectButton addTarget:self action:@selector(cellRejectAction) forControlEvents:UIControlEventTouchUpInside];
+
+// set background colors for even / odd number cells;
+    if (indexPath.row % 2) {
+        cell.tweetOne.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+        cell.tweetTwo.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+    }else{
+        cell.tweetOne.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+        cell.tweetTwo.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+    }
     
     Hit *hit = [self.fetchedResultsController objectAtIndexPath:indexPath];
     NSArray* tweets = [hit.tweets allObjects];

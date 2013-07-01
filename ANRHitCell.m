@@ -48,15 +48,15 @@
     
 
     [self.layer setMasksToBounds:YES];
-    [self.tweetOne.layer setShadowColor:[[UIColor blackColor]CGColor]];
+    [self.tweetOne.layer setShadowColor:[[UIColor grayColor]CGColor]];
     [self.tweetOne.layer setShadowRadius:1.0];
     [self.tweetOne.layer setShadowOpacity:0.5];
-    [self.tweetOne.layer setShadowOffset:CGSizeMake(0, 2.0)];
+    [self.tweetOne.layer setShadowOffset:CGSizeMake(0, 1.0)];
 
-    [self.tweetTwo.layer setShadowColor:[[UIColor blackColor]CGColor]];
+    [self.tweetTwo.layer setShadowColor:[[UIColor grayColor]CGColor]];
     [self.tweetTwo.layer setShadowRadius:1.0];
     [self.tweetTwo.layer setShadowOpacity:0.5];
-    [self.tweetTwo.layer setShadowOffset:CGSizeMake(0, -2.0)];
+    [self.tweetTwo.layer setShadowOffset:CGSizeMake(0, -1.0)];
 
     [self.tweetTwo.layer setMasksToBounds:YES];
 
@@ -69,8 +69,19 @@
     UIButton *rejectButton = [UIButton buttonWithType:UIButtonTypeSystem];
     approveButton.translatesAutoresizingMaskIntoConstraints = NO;
     rejectButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [approveButton setImage:[UIImage imageNamed:@"check64"] forState:UIControlStateNormal];
+    [rejectButton setImage:[UIImage imageNamed:@"cross64"] forState:UIControlStateNormal];
+    approveButton.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];//[[UIColor greenColor]colorWithAlphaComponent:0.2];
+    rejectButton.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];//[[UIColor redColor]colorWithAlphaComponent:0.2];
     [underView addSubview:approveButton];
     [underView addSubview:rejectButton];
+    underView.tintColor = [UIColor blackColor];
+    
+//    button actions to show touch events:
+    [approveButton addTarget:self action:@selector(approveButtonDown) forControlEvents:UIControlEventTouchDown];
+    [approveButton addTarget:self action:@selector(approveButtonUp) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+    [rejectButton addTarget:self action:@selector(rejectButtonDown) forControlEvents:UIControlEventTouchDown];
+    [rejectButton addTarget:self action:@selector(rejectButtonUp) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
 
     [self.contentView insertSubview:underView belowSubview:self.tweetContainer];
     [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[underView]|"
@@ -94,9 +105,6 @@
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(rejectButton)]];
 
-    
-    approveButton.backgroundColor = [[UIColor greenColor]colorWithAlphaComponent:0.2];
-    rejectButton.backgroundColor = [[UIColor redColor]colorWithAlphaComponent:0.2];
     self.approveButton = approveButton;
     self.rejectButton = rejectButton;
     
@@ -142,6 +150,21 @@
     // Configure the view for the selected state
 }
 #pragma mark - button actions
+-(void)approveButtonDown {
+    self.approveButton.backgroundColor = [UIColor whiteColor];
+}
+
+-(void)rejectButtonDown {
+    self.rejectButton.backgroundColor = [UIColor whiteColor];
+}
+
+-(void)approveButtonUp {
+     self.approveButton.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+}
+
+-(void)rejectButtonUp {
+     self.rejectButton.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+}
 
 #define TWEET_VIEW_OVERHANG 10.0
 -(void)showButtons {

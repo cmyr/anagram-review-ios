@@ -21,6 +21,10 @@
 		627D94F2177654D3009A8F42 /* hitCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 627D94F1177654D3009A8F42 /* hitCellView.xib */; };
 		627D94F517765F8B009A8F42 /* missingprofile.png in Resources */ = {isa = PBXBuildFile; fileRef = 627D94F317765F8B009A8F42 /* missingprofile.png */; };
 		627D94F617765F8B009A8F42 /* missingprofile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 627D94F417765F8B009A8F42 /* missingprofile@2x.png */; };
+		6297B7761780B4CF003A084D /* check64.png in Resources */ = {isa = PBXBuildFile; fileRef = 6297B7741780B4CF003A084D /* check64.png */; };
+		6297B7771780B4CF003A084D /* cross64.png in Resources */ = {isa = PBXBuildFile; fileRef = 6297B7751780B4CF003A084D /* cross64.png */; };
+		6297B77A1780B5D0003A084D /* cross128.png in Resources */ = {isa = PBXBuildFile; fileRef = 6297B7781780B5D0003A084D /* cross128.png */; };
+		6297B77B1780B5D0003A084D /* check128.png in Resources */ = {isa = PBXBuildFile; fileRef = 6297B7791780B5D0003A084D /* check128.png */; };
 		62C8746717720DBD00042795 /* Hit+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C8746617720DBD00042795 /* Hit+Create.m */; };
 		62C8746A1772118400042795 /* Tweet+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C874691772118400042795 /* Tweet+Create.m */; };
 		62D50000176FF46A002E2BCB /* ANRHitsCDTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D5FFFF176FF46A002E2BCB /* ANRHitsCDTVC.m */; };
@@ -83,6 +87,10 @@
 		627D94F1177654D3009A8F42 /* hitCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = hitCellView.xib; sourceTree = "<group>"; };
 		627D94F317765F8B009A8F42 /* missingprofile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = missingprofile.png; sourceTree = "<group>"; };
 		627D94F417765F8B009A8F42 /* missingprofile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "missingprofile@2x.png"; sourceTree = "<group>"; };
+		6297B7741780B4CF003A084D /* check64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check64.png; sourceTree = "<group>"; };
+		6297B7751780B4CF003A084D /* cross64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cross64.png; sourceTree = "<group>"; };
+		6297B7781780B5D0003A084D /* cross128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cross128.png; sourceTree = "<group>"; };
+		6297B7791780B5D0003A084D /* check128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check128.png; sourceTree = "<group>"; };
 		62C8746517720DBD00042795 /* Hit+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Hit+Create.h"; sourceTree = "<group>"; };
 		62C8746617720DBD00042795 /* Hit+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Hit+Create.m"; sourceTree = "<group>"; };
 		62C874681772118400042795 /* Tweet+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tweet+Create.h"; sourceTree = "<group>"; };
@@ -214,6 +222,10 @@
 				62D50007176FF641002E2BCB /* Storyboard.storyboard */,
 				62D5FFCF176FED7C002E2BCB /* Images.xcassets */,
 				627D94F317765F8B009A8F42 /* missingprofile.png */,
+				6297B7741780B4CF003A084D /* check64.png */,
+				6297B7781780B5D0003A084D /* cross128.png */,
+				6297B7791780B5D0003A084D /* check128.png */,
+				6297B7751780B4CF003A084D /* cross64.png */,
 				627D94F417765F8B009A8F42 /* missingprofile@2x.png */,
 				622438071774F2E5002B17A2 /* twitter */,
 				62D5FFFD176FF043002E2BCB /* coredata */,
@@ -343,9 +355,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6297B77B1780B5D0003A084D /* check128.png in Resources */,
 				627D94F517765F8B009A8F42 /* missingprofile.png in Resources */,
 				627D94F2177654D3009A8F42 /* hitCellView.xib in Resources */,
+				6297B7771780B4CF003A084D /* cross64.png in Resources */,
+				6297B7761780B4CF003A084D /* check64.png in Resources */,
 				62D5FFC5176FED7C002E2BCB /* InfoPlist.strings in Resources */,
+				6297B77A1780B5D0003A084D /* cross128.png in Resources */,
 				62D5FFD0176FED7C002E2BCB /* Images.xcassets in Resources */,
 				627D94F617765F8B009A8F42 /* missingprofile@2x.png in Resources */,
 				62D50008176FF641002E2BCB /* Storyboard.storyboard in Resources */,

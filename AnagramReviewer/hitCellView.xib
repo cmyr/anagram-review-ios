@@ -81,14 +81,6 @@
                                     <constraint firstItem="khy-yY-dgl" firstAttribute="top" secondItem="Otf-OV-iCO" secondAttribute="top" id="tmH-W7-ZRy"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ldB-yp-HpN">
-                                <rect key="frame" x="0.0" y="70" width="320" height="1"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.92851163903061229" green="0.92851163903061229" blue="0.92851163903061229" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="kuc-is-JkG"/>
-                                </constraints>
-                            </imageView>
                             <view tag="20" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="79v-82-czP">
                                 <rect key="frame" x="0.0" y="71" width="320" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -157,16 +149,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="79v-82-czP" firstAttribute="leading" secondItem="Aez-4K-qcM" secondAttribute="leading" id="16p-SZ-7fX"/>
-                            <constraint firstItem="ldB-yp-HpN" firstAttribute="leading" secondItem="Aez-4K-qcM" secondAttribute="leading" id="1bE-jg-AOv"/>
                             <constraint firstItem="ki8-f1-Gfh" firstAttribute="top" secondItem="Aez-4K-qcM" secondAttribute="top" id="3Rg-Yd-hTc"/>
-                            <constraint firstItem="79v-82-czP" firstAttribute="top" secondItem="ldB-yp-HpN" secondAttribute="bottom" id="R49-Mi-E4u"/>
+                            <constraint firstItem="79v-82-czP" firstAttribute="top" secondItem="ki8-f1-Gfh" secondAttribute="bottom" constant="1" id="6r9-s3-veJ"/>
                             <constraint firstItem="79v-82-czP" firstAttribute="trailing" secondItem="Aez-4K-qcM" secondAttribute="trailing" id="RSB-Xs-nci"/>
                             <constraint firstItem="ki8-f1-Gfh" firstAttribute="leading" secondItem="Aez-4K-qcM" secondAttribute="leading" id="UWQ-CB-0hY"/>
                             <constraint firstAttribute="bottom" secondItem="79v-82-czP" secondAttribute="bottom" id="dSh-NM-UKH"/>
                             <constraint firstItem="ki8-f1-Gfh" firstAttribute="trailing" secondItem="Aez-4K-qcM" secondAttribute="trailing" id="pnn-79-e8V"/>
                             <constraint firstAttribute="width" constant="320" id="pyx-Cn-N9f"/>
-                            <constraint firstItem="ldB-yp-HpN" firstAttribute="top" secondItem="ki8-f1-Gfh" secondAttribute="bottom" id="u2i-Hl-26J"/>
-                            <constraint firstItem="ldB-yp-HpN" firstAttribute="trailing" secondItem="Aez-4K-qcM" secondAttribute="trailing" id="uz8-ca-ofz"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -198,27 +187,4 @@
     <resources>
         <image name="missingprofile.png" width="44" height="44"/>
     </resources>
-    <classes>
-        <class className="ANRHitCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ANRHitCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="nameOne" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nameTwo" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="profileImageOne" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="profileImageTwo" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="screenNameOne" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="screenNameTwo" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tweetContainer" candidateClass="UIView"/>
-                <relationship kind="outlet" name="tweetOne" candidateClass="UIView"/>
-                <relationship kind="outlet" name="tweetTextOne" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tweetTextTwo" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tweetTwo" candidateClass="UIView"/>
-                <relationship kind="outlet" name="warningOne" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="warningTwo" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-    </classes>
 </document>
