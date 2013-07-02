@@ -65,8 +65,8 @@
     underView.translatesAutoresizingMaskIntoConstraints = NO;
     underView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
     
-    UIButton *approveButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    UIButton *rejectButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    UIButton *approveButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *rejectButton = [UIButton buttonWithType:UIButtonTypeCustom];
     approveButton.translatesAutoresizingMaskIntoConstraints = NO;
     rejectButton.translatesAutoresizingMaskIntoConstraints = NO;
     [approveButton setImage:[UIImage imageNamed:@"check64"] forState:UIControlStateNormal];
@@ -75,7 +75,7 @@
     rejectButton.backgroundColor = [UIColor colorWithWhite:0.7 alpha:1.0];//[[UIColor redColor]colorWithAlphaComponent:0.2];
     [underView addSubview:approveButton];
     [underView addSubview:rejectButton];
-    underView.tintColor = [UIColor blackColor];
+//    underView.tintColor = [UIColor blackColor];
     self.activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
     [underView addSubview:self.activityIndicator];
