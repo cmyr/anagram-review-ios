@@ -20,24 +20,25 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        self.backgroundColor = [UIColor whiteColor];
     }
     return self;
 }
 
 #define DROPDOWN_VIEW_HEIGHT 44.0
--(id)initForScreen{
-//    assigns a frame based on screen size
-    CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
-    CGRect viewRect = CGRectMake(0, -DROPDOWN_VIEW_HEIGHT,
-                          screenRect.size.width,
-                          DROPDOWN_VIEW_HEIGHT);
-    self.backgroundColor = [UIColor whiteColor];
-    return [self initWithFrame:viewRect];
-}
+//-(id)initForScreen{
+////    assigns a frame based on screen size
+////    CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
+////    CGRect viewRect = CGRectMake(0, -DROPDOWN_VIEW_HEIGHT,
+////                          screenRect.size.width,
+////                          DROPDOWN_VIEW_HEIGHT);
+////    self.backgroundColor = [UIColor whiteColor];
+////    return [self initWithFrame:viewRect];
+//}
 
 -(UILabel*)notificationLabel{
     if (!_notificationLabel) {
-        _notificationLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, DROPDOWN_VIEW_HEIGHT)];
+        _notificationLabel = [[UILabel alloc]init];
         _notificationLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _notificationLabel.font = [UIFont systemFontOfSize:14.0];
         [self addSubview:_notificationLabel];
@@ -56,39 +57,43 @@
 -(void)setNotification:(NSString *)notification{
     _notification = notification;
     self.notificationLabel.text = notification;
-    [self.notificationLabel sizeToFit];
-    self.notificationLabel.backgroundColor = [UIColor orangeColor];
+//    [self.notificationLabel sizeToFit];
+//    self.notificationLabel.backgroundColor = [UIColor orangeColor];
 }
 
--(void)showIndefiniteNotification:(NSString *)notification{
-    self.notification = notification;
-    self.isActive = YES;
-}
+//-(void)showIndefiniteNotification:(NSString *)notification{
+//    self.notification = notification;
+//    self.isActive = YES;
+//}
 
--(void)showNotification:(NSString *)notification autohide:(BOOL)hide{
+-(void)showNotification:(NSString *)notification autohide:(float)seconds{
     self.notification = notification;
     self.isActive = YES;
+    self.hidden = NO;
     [UIView animateWithDuration:0.5
                      animations:^{
                          self.frame = CGRectMake(0, 0,
                                                  self.frame.size.width,
                                                  self.frame.size.height);
                      } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.5
-                                               delay:5.0
-                                             options:0
-                                          animations:^{
-                                              self.frame = CGRectMake(0,
-                                                                      -DROPDOWN_VIEW_HEIGHT,
-                                                                      self.frame.size.width,
-                                                                      self.frame.size.height);
-                                       } completion:^(BOOL finished) {
-                                           self.isActive = NO;
-                                       }];}];
+                         if (seconds)
+                             [self performSelector:@selector(hideNotification) withObject:nil afterDelay:seconds];
+                     }];
 }
 
 -(void)hideNotification{
-    
+    [UIView animateWithDuration:0.5
+                          delay:5.0
+                        options:0
+                     animations:^{
+                         self.frame = CGRectMake(0,
+                                                 -self.frame.size.height,
+                                                 self.frame.size.width,
+                                                 self.frame.size.height);
+                     } completion:^(BOOL finished) {
+                         self.isActive = NO;
+                         self.hidden = YES;
+                     }];
 }
 
 

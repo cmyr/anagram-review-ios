@@ -18,6 +18,7 @@
 
 @interface ANRServerHandler ()
 @property (strong, nonatomic) NSMutableData* responseData;
+@property (strong, nonatomic) NSMutableDictionary *hitsAwaitingResponses;
 @end
 
 @implementation ANRServerHandler
@@ -50,6 +51,10 @@
     return self;
 }
 
+-(NSMutableDictionary*)hitsAwaitingResponses {
+    if (!_hitsAwaitingResponses) _hitsAwaitingResponses = [[NSMutableDictionary alloc]init];
+    return _hitsAwaitingResponses;
+}
 
 -(void)requestHits{
 //    private method for accepting bad certs
@@ -62,16 +67,26 @@
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 }
 
--(void)setStatus:(NSString *)status forHit:(NSDictionary *)hit{
-    NSString* urlString = [NSString stringWithFormat:@"%@/mod?id=%@&status=%@",ANR_BASE_URL, hit[@"id"], status];
+-(void)setStatus:(NSString *)status forHit:(Hit *)hit{
+    NSString* urlString = [NSString stringWithFormat:@"%@/mod?id=%@&status=%@",ANR_BASE_URL, hit.id_num, status];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request addValue:ANR_AUTH_TOKEN forHTTPHeaderField:@"Authorization"];
     (void)[NSURLConnection connectionWithRequest:request
                                         delegate:self];
+    self.hitsAwaitingResponses[hit.id_num] = hit;
 }
 
--(void)postHit:(NSDictionary *)hit{
-    [self setStatus:@"post" forHit:hit];
+-(void)postHit:(Hit *)hit{
+    [self setStatus:HIT_STATUS_POST forHit:hit];
+}
+
+-(void)rejectHit:(Hit *)hit {
+    [self setStatus:HIT_STATUS_REJECT forHit:hit];
+    
+}
+
+-(void)approveHit:(Hit*)hit {
+    [self setStatus:HIT_STATUS_APPROVE forHit:hit];
 }
 
 #pragma mark - nsconnectiondelgate methods
@@ -91,8 +106,9 @@
         [self processHits:newHits];
     }else if ([response objectForKey:@"hit"]){
 //        response is a response to a hit modification request
-        BOOL successFlag = [response[@"response"]boolValue];
-        [self.delegate AGServerDid:successFlag updateStatusForHit:response[@"hit"]];
+        BOOL success = [response[@"response"]boolValue];
+        Hit *hit = self.hitsAwaitingResponses[response[@"hit"][HIT_ID]];
+        [self.delegate AGServerDid:success updateStatus:response[@"hit"][HIT_STATUS] ForHit:hit];
     }
 //    clear responseData to receive another response
     self.responseData = [NSMutableData data];
@@ -102,7 +118,7 @@
 -(void)processHits:(NSArray*)newHits {
     NSUInteger fetchRequestCount = 0;
     NSMutableSet *hitIDs = [NSMutableSet set];
-    
+    [self.delegate AGServerDidReceiveHits:newHits.count];
     for (NSDictionary* newHit in newHits) {
         [hitIDs addObject: [newHit valueForKeyPath:HIT_ID]];
     }
@@ -116,8 +132,11 @@
     if (!results)
         NSLog(@"error fetching hits returned nil?");
     for (Hit* hit in results) {
-        if (![hitIDs containsObject:hit])
+        NSLog(@"hit ID: %@", hit.id_num);
+//        NSLog(@"hit status: %@", hit.fetched);
+        if (![hitIDs containsObject:hit.id_num]){
             [self.delegate.managedObjectContext deleteObject:hit];
+        }
     }
     [self.delegate.managedObjectContext save:&error];
     if (error) NSLog(@"saving error: %@", error);
@@ -128,7 +147,8 @@
            Hit* hit = [Hit hitWithServerInfo:newHit inManagedContext:self.delegate.managedObjectContext];
         [hitIDs addObject:hit.id_num];
 //        fetch the first tweet;
-        if (hit.fetched) continue;
+        NSLog(@"hit status: %@", hit.fetched);
+        if ([hit.fetched boolValue]) continue;
 //        because tweets is a set, i'm fetching both even if maybe only one needs it. not super efficient, I acknowledge.
         [self.twitter getStatusWithID:[newHit valueForKeyPath:TWEET_ONE_ID]
                       includeEntities:YES

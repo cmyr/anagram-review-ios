@@ -71,11 +71,28 @@
     rejectButton.translatesAutoresizingMaskIntoConstraints = NO;
     [approveButton setImage:[UIImage imageNamed:@"check64"] forState:UIControlStateNormal];
     [rejectButton setImage:[UIImage imageNamed:@"cross64"] forState:UIControlStateNormal];
-    approveButton.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];//[[UIColor greenColor]colorWithAlphaComponent:0.2];
-    rejectButton.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];//[[UIColor redColor]colorWithAlphaComponent:0.2];
+    approveButton.backgroundColor = [UIColor colorWithWhite:0.7 alpha:1.0];//[[UIColor greenColor]colorWithAlphaComponent:0.2];
+    rejectButton.backgroundColor = [UIColor colorWithWhite:0.7 alpha:1.0];//[[UIColor redColor]colorWithAlphaComponent:0.2];
     [underView addSubview:approveButton];
     [underView addSubview:rejectButton];
     underView.tintColor = [UIColor blackColor];
+    self.activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+    [underView addSubview:self.activityIndicator];
+    [underView addConstraint:[NSLayoutConstraint constraintWithItem:self.activityIndicator
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:underView
+                                                          attribute:NSLayoutAttributeCenterX multiplier:1.0
+                                                           constant:0.0]];
+    [underView addConstraint:[NSLayoutConstraint constraintWithItem:self.activityIndicator
+                                                          attribute:NSLayoutAttributeCenterY
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:underView
+                                                          attribute:NSLayoutAttributeCenterY multiplier:1.0
+                                                           constant:0.0]];
+    
+     
     
 //    button actions to show touch events:
     [approveButton addTarget:self action:@selector(approveButtonDown) forControlEvents:UIControlEventTouchDown];
@@ -159,11 +176,27 @@
 }
 
 -(void)approveButtonUp {
-     self.approveButton.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+     self.approveButton.backgroundColor = [UIColor colorWithWhite:0.7 alpha:1.0];
 }
 
 -(void)rejectButtonUp {
-     self.rejectButton.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+     self.rejectButton.backgroundColor = [UIColor colorWithWhite:0.7 alpha:1.0];
+}
+
+-(void)showActivityIndicator:(BOOL)show {
+    if (show){
+        [UIView animateWithDuration:0.3 animations:^{
+            self.approveButton.alpha = 0.0;
+            self.rejectButton.alpha = 0.0;
+        }];
+        [self.activityIndicator startAnimating];
+    }else{
+        [UIView animateWithDuration:0.3 animations:^{
+            self.approveButton.alpha = 1.0;
+            self.rejectButton.alpha = 1.0;
+        }];
+        [self.activityIndicator stopAnimating];
+    }
 }
 
 #define TWEET_VIEW_OVERHANG 10.0

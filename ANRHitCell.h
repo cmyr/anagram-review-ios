@@ -26,13 +26,14 @@
 
 @property (strong, nonatomic) UIButton *approveButton;
 @property (strong, nonatomic) UIButton *rejectButton;
-
+@property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic) BOOL hasMoved;
 
 
 -(void)showButtons;
 -(void)hideButtons;
 
+-(void)showActivityIndicator:(BOOL)show;
 //call to reset some drawing properties that might've been changed;
 -(void)reset;
 //dynamic behaviors

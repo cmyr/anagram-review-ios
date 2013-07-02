@@ -30,12 +30,13 @@
 #define TWITTER_USER_IMG_URL @"user.profile_image_url"
 #define TWITTER_CREATED_DATE @"created_at"
 @class STTwitterAPIWrapper;
-
+@class Hit;
 
 @protocol ANRServerDelegateProtocol <NSObject>
 //-(void)AGServerRetrievedHits:(NSArray*)hits;
--(void)AGServerDid:(BOOL)successFlag updateStatusForHit:(NSDictionary*)hit;
+-(void)AGServerDid:(BOOL)success updateStatus:(NSString*)status ForHit:(Hit*)hit;
 -(void)AGServerFailedWithError:(NSError*)error;
+-(void)AGServerDidReceiveHits:(NSUInteger)hitCount;
 @property (strong, nonatomic) NSManagedObjectContext* managedObjectContext;
 @end
 
@@ -45,7 +46,9 @@
 @property (strong, nonatomic) STTwitterAPIWrapper *twitter;
 +(instancetype)sharedInstance;
 -(void)requestHits;
--(void)setStatus:(NSString*)status forHit:(NSDictionary*)hit;
--(void)postHit:(NSDictionary*)hit;
+//-(void)setStatus:(NSString*)status forHit:(NSDictionary*)hit;
+-(void)postHit:(Hit*)hit;
+-(void)rejectHit:(Hit*)hit;
+-(void)approveHit:(Hit*)hit;
 
 @end

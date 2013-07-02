@@ -18,8 +18,10 @@
     Hit *hit = nil;
 //    check to see if this hit is already stored;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Hit"];
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"status" ascending:YES]];
-    request.predicate = [NSPredicate predicateWithFormat:@"id_num = %@", hitDict[HIT_ID]];
+//    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"status" ascending:YES]];
+    NSNumber *hitID = hitDict[HIT_ID];
+    assert([hitID isKindOfClass:[NSNumber class]]);
+    request.predicate = [NSPredicate predicateWithFormat:@"id_num == %@", hitID];
     
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];

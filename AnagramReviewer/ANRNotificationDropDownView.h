@@ -13,7 +13,7 @@
 @property (nonatomic) BOOL isActive;
 @property (strong, nonatomic) UIDynamicAnimator *dynamicAnimator;
 
--(void)showNotification:(NSString*)notification autohide:(BOOL)hide;
+-(void)showNotification:(NSString*)notification autohide:(float)seconds;
 -(void)showIndefiniteNotification:(NSString*)notification;
 -(void)hideNotification;
 -(id)initForScreen;

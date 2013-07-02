@@ -51,6 +51,17 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"hitCellView" bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
     self.tableView.delegate = self;
+    [self setupNotificationView];
+}
+
+-(void)setupNotificationView {
+    self.notificationView = [[ANRNotificationDropDownView alloc]init];
+    self.notificationView.frame = CGRectMake(0, -56.0, self.view.frame.size.width,
+                                             56.0);
+    [self.view addSubview:self.notificationView];
+    self.notificationView.hidden = YES;
+//    [self.notificationView showNotification:@"hi" autohide:YES];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -90,7 +101,7 @@
 
 -(void)fetchHits
 {
-//    [self.serverHandler requestHits];
+    [self.serverHandler requestHits];
 //    rediculously hacky way of saving when we're debugging
     [self performSelector:@selector(saveDocument) withObject:Nil afterDelay:60.0];
 #warning network activity disabled for debug
@@ -155,9 +166,22 @@
 }
 
 #pragma mark - hit server delegate methods
--(void)AGServerDid:(BOOL)successFlag updateStatusForHit:(NSDictionary *)hit
+-(void)AGServerDid:(BOOL)success updateStatus:(NSString*)status ForHit:(Hit *)hit
 {
+//    stop the cell from animatin
+    ANRHitCell *cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.fetchedResultsController indexPathForObject:hit]];
+    [cell showActivityIndicator:NO];
+    [cell hideButtons];
     
+    if (success) {
+        [self.notificationView showNotification:[NSString stringWithFormat:@"Hit %@ %@ successfully", hit.id_num, status] autohide:1.0];
+        hit.status = status;
+        if ([status isEqualToString:HIT_STATUS_POST])
+            [self.managedObjectContext deleteObject:hit];
+    }else {
+        [self.notificationView showNotification:[NSString stringWithFormat:@"Hit %@ update failed", hit.id_num] autohide:1.0];
+    }
+
 }
 
 -(void)AGServerRetrievedHits:(NSArray *)hits
@@ -173,14 +197,29 @@
     NSLog(@"AGServer failed with error: %@", error);
 }
 
+-(void)AGServerDidReceiveHits:(NSUInteger)hitCount {
+    [self.notificationView showNotification:[NSString stringWithFormat:@"Retreived %i hits from server", hitCount] autohide:3.0];
+}
+
 #pragma mark - handling cell actions
 
 -(void)cellApproveAction {
     NSLog(@"approve action");
+    ANRHitCell * cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
+    [cell showActivityIndicator:YES];
+    Hit *hit = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+    if ([hit.status isEqualToString:HIT_STATUS_APPROVE]) {
+        [self.serverHandler postHit:hit];
+    }else if ([hit.status isEqualToString:HIT_STATUS_REVIEW] || [hit.status isEqualToString:HIT_STATUS_REJECT])
+        [self.serverHandler approveHit:hit];    
 }
 
 -(void)cellRejectAction {
-    NSLog(@"reject action");    
+    NSLog(@"reject action");
+    ANRHitCell * cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
+    [cell showActivityIndicator:YES];
+    Hit *hit = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+    [self.serverHandler rejectHit:hit];
 }
 
 #pragma mark - Fetching
