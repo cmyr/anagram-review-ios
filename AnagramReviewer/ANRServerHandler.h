@@ -36,7 +36,7 @@
 //-(void)AGServerRetrievedHits:(NSArray*)hits;
 -(void)AGServerDid:(BOOL)success updateStatus:(NSString*)status ForHit:(Hit*)hit;
 -(void)AGServerFailedWithError:(NSError*)error;
--(void)AGServerDidReceiveHits:(NSUInteger)hitCount;
+-(void)AGServerDidReceiveHits:(NSUInteger)hitCount New:(NSUInteger)newCount;
 @property (strong, nonatomic) NSManagedObjectContext* managedObjectContext;
 @end
 

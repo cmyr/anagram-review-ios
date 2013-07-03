@@ -41,7 +41,11 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.managedObjectContext) [self loadDocument];
+    if (!self.managedObjectContext){
+     [self loadDocument];
+    }else{
+        [self fetchHits];
+    }
 
 }
 
@@ -52,6 +56,8 @@
          forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
     self.tableView.delegate = self;
     [self setupNotificationView];
+    self.tableView.frame = CGRectMake(0, 0, self.tableView.frame.size.width,
+                                      self.tableView.frame.size.height);
 }
 
 -(void)setupNotificationView {
@@ -103,7 +109,7 @@
 {
     [self.serverHandler requestHits];
 //    rediculously hacky way of saving when we're debugging
-    [self performSelector:@selector(saveDocument) withObject:Nil afterDelay:60.0];
+    [self performSelector:@selector(saveDocument) withObject:Nil afterDelay:15.0];
 #warning network activity disabled for debug
 }
 
@@ -140,6 +146,7 @@
 }
 
 -(void)saveDocument {
+    [self.managedObjectContext save:NULL];
     NSURL *url = [[[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]lastObject];
     url = [url URLByAppendingPathComponent:DOCUMENT_NAME];
     [self.document
@@ -197,11 +204,14 @@
     NSLog(@"AGServer failed with error: %@", error);
 }
 
--(void)AGServerDidReceiveHits:(NSUInteger)hitCount {
-    [self.notificationView showNotification:[NSString stringWithFormat:@"Retreived %i hits from server", hitCount] autohide:3.0];
+-(void)AGServerDidReceiveHits:(NSUInteger)hitCount New:(NSUInteger)newCount{
+    [self.notificationView showNotification:[NSString stringWithFormat:@"Retreived %i  new of %i total hits", newCount, hitCount] autohide:3.0];
 }
 
 #pragma mark - handling cell actions
+- (IBAction)refreshAction:(id)sender {
+    [self fetchHits];
+}
 
 -(void)cellApproveAction {
     NSLog(@"approve action");

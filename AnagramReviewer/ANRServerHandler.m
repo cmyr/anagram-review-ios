@@ -118,7 +118,8 @@
 -(void)processHits:(NSArray*)newHits {
     NSUInteger fetchRequestCount = 0;
     NSMutableSet *hitIDs = [NSMutableSet set];
-    [self.delegate AGServerDidReceiveHits:newHits.count];
+    NSUInteger newCount = 0;
+    
     for (NSDictionary* newHit in newHits) {
         [hitIDs addObject: [newHit valueForKeyPath:HIT_ID]];
     }
@@ -136,8 +137,11 @@
 //        NSLog(@"hit status: %@", hit.fetched);
         if (![hitIDs containsObject:hit.id_num]){
             [self.delegate.managedObjectContext deleteObject:hit];
+        }else {
         }
     }
+    
+    [self.delegate AGServerDidReceiveHits:newHits.count New:newCount];
     [self.delegate.managedObjectContext save:&error];
     if (error) NSLog(@"saving error: %@", error);
 

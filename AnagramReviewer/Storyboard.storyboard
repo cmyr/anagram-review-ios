@@ -13,7 +13,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="fdp-NM-3kF">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="fdp-NM-3kF">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -22,8 +22,26 @@
                                     <outlet property="delegate" destination="6z9-9n-bKo" id="LgQ-jr-IP6"/>
                                 </connections>
                             </tableView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9nM-M3-AO6">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="z8z-YF-71O"/>
+                                    <barButtonItem systemItem="refresh" id="i8D-L0-DrT">
+                                        <connections>
+                                            <action selector="refreshAction:" destination="6z9-9n-bKo" id="jgm-ke-igO"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="fdp-NM-3kF" firstAttribute="leading" secondItem="m3h-ga-cMv" secondAttribute="leading" id="415-5x-zxn"/>
+                            <constraint firstItem="fdp-NM-3kF" firstAttribute="bottom" secondItem="m3h-ga-cMv" secondAttribute="bottom" id="qLx-h9-5Im"/>
+                            <constraint firstItem="fdp-NM-3kF" firstAttribute="trailing" secondItem="m3h-ga-cMv" secondAttribute="trailing" id="rfz-ca-uFp"/>
+                            <constraint firstItem="fdp-NM-3kF" firstAttribute="top" secondItem="m3h-ga-cMv" secondAttribute="top" id="zy7-BY-AA2"/>
+                        </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <connections>
@@ -35,14 +53,6 @@
             <point key="canvasLocation" x="125" y="130"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="ANRHitsCDTVC" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ANRHitsCDTVC.h"/>
-            <relationships>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
