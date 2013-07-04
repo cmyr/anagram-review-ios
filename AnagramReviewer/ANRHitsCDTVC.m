@@ -56,8 +56,6 @@
          forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
     self.tableView.delegate = self;
     [self setupNotificationView];
-    self.tableView.frame = CGRectMake(0, 0, self.tableView.frame.size.width,
-                                      self.tableView.frame.size.height);
 }
 
 -(void)setupNotificationView {
@@ -376,7 +374,7 @@
 #define DEFAULT_CELL_HEIGHT 141.0
 #define DEFAULT_CELL_WIDTH  320.0
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+{    
     static NSString *CellIdentifier = CELL_REUSE_IDENTIFIER;
     ANRHitCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     assert([cell isKindOfClass:[ANRHitCell class]]);
@@ -386,7 +384,16 @@
     cell.tweetOne.frame = CGRectMake(0, 0, cell.tweetOne.frame.size.width, cell.tweetOne.frame.size.height);
     cell.tweetTwo.frame = CGRectMake(0, cell.tweetOne.frame.size.height + 1,
                                      cell.tweetTwo.frame.size.width, cell.tweetTwo.frame.size.height);
+//    set the fonts, again
+    cell.nameOne.font = [UIFont boldSystemFontOfSize:12.0];
+    cell.nameTwo.font = [UIFont boldSystemFontOfSize:12.0];
+    cell.screenNameOne.font = [UIFont systemFontOfSize:12.0];
+    cell.screenNameTwo.font = [UIFont systemFontOfSize:12.0];
+    cell.screenNameOne.textColor = [UIColor grayColor];
+    cell.screenNameTwo.textColor = [UIColor grayColor];
     
+    cell.tweetTextOne.font = [UIFont systemFontOfSize:14.0];
+    cell.tweetTextTwo.font = [UIFont systemFontOfSize:14.0];
 //    set button actions;
     [cell reset];
     [cell.approveButton addTarget:self action:@selector(cellApproveAction) forControlEvents:UIControlEventTouchUpInside];
@@ -423,6 +430,10 @@
     cell.warningTwo.hidden = YES;
     if (!tweetTwo.username && !tweetTwo.screenname) cell.warningTwo.hidden = NO;
  
+    //so hacking our tableview keeps moving
+    self.view.frame = CGRectMake(0, 0,
+                                 self.view.frame.size.width,
+                                 self.view.frame.size.height);
     return cell;
 }
 
