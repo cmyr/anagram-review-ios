@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4457.9" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="6z9-9n-bKo">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4457.9" systemVersion="12E3067" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="6z9-9n-bKo">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3682.9"/>
@@ -10,11 +10,14 @@
             <objects>
                 <viewController id="6z9-9n-bKo" customClass="ANRHitsCDTVC" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="m3h-ga-cMv">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <userGuides>
+                            <userLayoutGuide location="285" affinity="minY"/>
+                        </userGuides>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="fdp-NM-3kF">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="fdp-NM-3kF">
+                                <rect key="frame" x="-10" y="64" width="330" height="416"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <connections>
@@ -22,8 +25,8 @@
                                     <outlet property="delegate" destination="6z9-9n-bKo" id="LgQ-jr-IP6"/>
                                 </connections>
                             </tableView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9nM-M3-AO6">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9nM-M3-AO6">
+                                <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="z8z-YF-71O"/>
@@ -36,15 +39,25 @@
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9nM-M3-AO6" firstAttribute="leading" secondItem="m3h-ga-cMv" secondAttribute="leading" id="DZw-Ut-Qev"/>
+                            <constraint firstItem="fdp-NM-3kF" firstAttribute="trailing" secondItem="m3h-ga-cMv" secondAttribute="trailing" id="PzA-vS-IvI"/>
+                            <constraint firstItem="fdp-NM-3kF" firstAttribute="leading" secondItem="m3h-ga-cMv" secondAttribute="leading" constant="-10" id="ZDi-oj-2cy"/>
+                            <constraint firstItem="9nM-M3-AO6" firstAttribute="trailing" secondItem="m3h-ga-cMv" secondAttribute="trailing" id="eaU-hR-CLz"/>
+                            <constraint firstItem="fdp-NM-3kF" firstAttribute="top" secondItem="9nM-M3-AO6" secondAttribute="bottom" id="gJT-AM-2xw"/>
+                            <constraint firstItem="fdp-NM-3kF" firstAttribute="bottom" secondItem="m3h-ga-cMv" secondAttribute="bottom" id="hwV-5X-wny"/>
+                            <constraint firstItem="9nM-M3-AO6" firstAttribute="top" secondItem="m3h-ga-cMv" secondAttribute="top" constant="20" id="lPr-8Q-StE"/>
+                        </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="fdp-NM-3kF" id="mUQ-c5-v4o"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6k4-Tt-TAe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="125" y="130"/>
+            <point key="canvasLocation" x="128" y="120"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
