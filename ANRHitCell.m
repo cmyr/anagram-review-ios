@@ -7,6 +7,8 @@
 //
 
 #import "ANRHitCell.h"
+#import "ANRHit.h"
+#import "ANRTweet.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface ANRHitCell()
@@ -28,21 +30,8 @@
 
 -(void)awakeFromNib {
     [self configureSubviews];
-//    [self configureDynamics];
 }
 
-//-(void)setHasMoved:(BOOL)hasMoved
-//{
-////    we'll use this to add and remove our attachment behaviour
-//    _hasMoved = hasMoved;
-//    if (self.hasMoved){
-////        [self.dynamicAnimator addBehavior:self.tweetViewAnchor];
-//        UISnapBehavior *tweetSnap = [[UISnapBehavior alloc]initWithItem:self.tweetContainer
-//                                                            snapToPoint:self.dynamicAnimator.referenceView.center];
-//    }else{
-//        [self.dynamicAnimator removeBehavior:self.tweetViewAnchor];
-//    }
-//}
 
 -(void)configureSubviews {
     
@@ -135,18 +124,10 @@
     
 }
 
-//-(void)configureDynamics {
-//    self.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.contentView];
-//    self.tweetViewSnap = [[UISnapBehavior alloc]initWithItem:self.tweetContainer
-//                                                        snapToPoint:self.dynamicAnimator.referenceView.center];
-
-//    self.tweetViewAnchor = [[UIAttachmentBehavior alloc]initWithItem:self.tweetContainer
-//                                                               point:CGPointMake(self.frame.size.width -1, self.frame.size.height/2)
-//                                                    attachedToAnchor:CGPointMake(self.contentView.frame.size.width -1, self.contentView.frame.size.height/2)];
-    
-    
-//    [self.dynamicAnimator addBehavior:self.tweetViewAnchor];
-//}
+-(void)setPropertiesFromHit:(ANRHit*)hit{
+    self.tweetTextOne.text = hit.tweet1.text;
+    self.tweetTextTwo.text = hit.tweet2.text;
+}
 
 -(void)snapToPlace {
     [self.dynamicAnimator addBehavior:self.tweetViewSnap];

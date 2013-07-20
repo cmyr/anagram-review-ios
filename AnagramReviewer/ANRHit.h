@@ -16,4 +16,6 @@
 @property (nonatomic, retain) NSString * status;
 @property (strong, nonatomic) ANRTweet* tweet1;
 @property (strong, nonatomic) ANRTweet* tweet2;
+
++(instancetype)hitFromDict:(NSDictionary*)dict;
 @end

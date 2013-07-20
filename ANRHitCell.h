@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class ANRHit;
 
 @interface ANRHitCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIView *tweetContainer;
@@ -32,7 +33,7 @@
 
 -(void)showButtons;
 -(void)hideButtons;
-
+-(void)setPropertiesFromHit:(ANRHit*)hit;
 -(void)showActivityIndicator:(BOOL)show;
 //call to reset some drawing properties that might've been changed;
 -(void)reset;

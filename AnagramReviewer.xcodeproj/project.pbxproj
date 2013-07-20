@@ -30,8 +30,6 @@
 		6297B77B1780B5D0003A084D /* check128.png in Resources */ = {isa = PBXBuildFile; fileRef = 6297B7791780B5D0003A084D /* check128.png */; };
 		62C8746717720DBD00042795 /* Hit+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C8746617720DBD00042795 /* Hit+Create.m */; };
 		62C8746A1772118400042795 /* Tweet+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C874691772118400042795 /* Tweet+Create.m */; };
-		62D50000176FF46A002E2BCB /* ANRHitsCDTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D5FFFF176FF46A002E2BCB /* ANRHitsCDTVC.m */; };
-		62D50001176FF46A002E2BCB /* ANRHitsCDTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D5FFFF176FF46A002E2BCB /* ANRHitsCDTVC.m */; };
 		62D50004176FF558002E2BCB /* ANRServerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D50003176FF558002E2BCB /* ANRServerHandler.m */; };
 		62D50005176FF558002E2BCB /* ANRServerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D50003176FF558002E2BCB /* ANRServerHandler.m */; };
 		62D50008176FF641002E2BCB /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 62D50007176FF641002E2BCB /* Storyboard.storyboard */; };
@@ -401,7 +399,6 @@
 				6BED24B517769DF20072E327 /* ANRSlideGestureRecognizer.m in Sources */,
 				62D5FFCB176FED7C002E2BCB /* ANRAppDelegate.m in Sources */,
 				624F233E179A134100B5FDF6 /* ANRNewTableVC.m in Sources */,
-				62D50000176FF46A002E2BCB /* ANRHitsCDTVC.m in Sources */,
 				62D50004176FF558002E2BCB /* ANRServerHandler.m in Sources */,
 				6224381C1774F2FE002B17A2 /* STTwitterAppOnly.m in Sources */,
 				62D5FFCE176FED7C002E2BCB /* AnagramReviewer.xcdatamodeld in Sources */,
@@ -427,7 +424,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				62D50001176FF46A002E2BCB /* ANRHitsCDTVC.m in Sources */,
 				62D50005176FF558002E2BCB /* ANRServerHandler.m in Sources */,
 				62D5FFE4176FED7C002E2BCB /* AnagramReviewerTests.m in Sources */,
 			);

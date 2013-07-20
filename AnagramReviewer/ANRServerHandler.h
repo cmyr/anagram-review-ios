@@ -11,10 +11,10 @@
 
 #define HIT_ID @"id"
 #define HIT_STATUS @"status"
-#define TWEET_ONE_ID @"tweet_one.id"
-#define TWEET_TWO_ID @"tweet_two.id"
-#define TWEET_ONE_TEXT @"tweet_one.text"
-#define TWEET_TWO_TEXT @"tweet_two.text"
+#define TWEET_ONE_ID @"tweet_one.tweet_id"
+#define TWEET_TWO_ID @"tweet_two.tweet_id"
+#define TWEET_ONE_TEXT @"tweet_one.tweet_text"
+#define TWEET_TWO_TEXT @"tweet_two.tweet_text"
 
 
 #define HIT_STATUS_POST @"posted"
@@ -33,11 +33,9 @@
 @class Hit;
 
 @protocol ANRServerDelegateProtocol <NSObject>
-//-(void)AGServerRetrievedHits:(NSArray*)hits;
--(void)AGServerDid:(BOOL)success updateStatus:(NSString*)status ForHit:(Hit*)hit;
--(void)AGServerFailedWithError:(NSError*)error;
--(void)AGServerDidReceiveHits:(NSUInteger)hitCount New:(NSUInteger)newCount;
-@property (strong, nonatomic) NSManagedObjectContext* managedObjectContext;
+-(void)ANRServerFailedWithError:(NSError*)error;
+-(void)ANRServerDidReceiveHits:(NSArray*)hits;
+-(NSUInteger)lastHitID;
 @end
 
 @interface ANRServerHandler : NSObject <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
@@ -46,9 +44,4 @@
 @property (strong, nonatomic) STTwitterAPIWrapper *twitter;
 +(instancetype)sharedInstance;
 -(void)requestHits;
-//-(void)setStatus:(NSString*)status forHit:(NSDictionary*)hit;
--(void)postHit:(Hit*)hit;
--(void)rejectHit:(Hit*)hit;
--(void)approveHit:(Hit*)hit;
-
 @end
