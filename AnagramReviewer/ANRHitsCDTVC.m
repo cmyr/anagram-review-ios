@@ -378,12 +378,13 @@
     static NSString *CellIdentifier = CELL_REUSE_IDENTIFIER;
     ANRHitCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     assert([cell isKindOfClass:[ANRHitCell class]]);
-    cell.tweetContainer.frame = CGRectMake(0, 0, DEFAULT_CELL_WIDTH, DEFAULT_CELL_HEIGHT);
+//    cell.tweetContainer.frame = CGRectMake(0, 0, DEFAULT_CELL_WIDTH, DEFAULT_CELL_HEIGHT);
 
 //    set frames;
-    cell.tweetOne.frame = CGRectMake(0, 0, cell.tweetOne.frame.size.width, cell.tweetOne.frame.size.height);
-    cell.tweetTwo.frame = CGRectMake(0, cell.tweetOne.frame.size.height + 1,
-                                     cell.tweetTwo.frame.size.width, cell.tweetTwo.frame.size.height);
+//    cell.tweetOne.frame = CGRectMake(0, 0, cell.tweetOne.frame.size.width, cell.tweetOne.frame.size.height);
+//    cell.tweetTwo.frame = CGRectMake(0, cell.tweetOne.frame.size.height + 1,
+//                                     cell.tweetTwo.frame.size.width, cell.tweetTwo.frame.size.height);
+
 //    set the fonts, again
     cell.nameOne.font = [UIFont boldSystemFontOfSize:12.0];
     cell.nameTwo.font = [UIFont boldSystemFontOfSize:12.0];
