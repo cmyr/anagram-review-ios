@@ -8,10 +8,19 @@
 
 #import "ANRNewTableVC.h"
 #import "ANRHitCell.h"
+#import "ANRHit.h"
+#import "ANRTweet.h"
+#import "STTwitterAPIWrapper.h"
+#import "ANRAuth.h"
+
 
 @interface ANRNewTableVC ()
 @property (strong, nonatomic) NSMutableArray *hits;
 @property (strong, nonatomic) ANRServerHandler *serverHandler;
+@property (nonatomic) BOOL isWaitingForHits;
+@property (strong, nonatomic) STTwitterAPIWrapper *twitter;
+
+
 @end
 
 #define CELL_REUSE_IDENTIFIER @"Hit"
@@ -22,7 +31,6 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
@@ -41,6 +49,17 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.twitter = [STTwitterAPIWrapper twitterAPIWithOAuthConsumerName:@"name?"
+                                                            consumerKey:TWITTER_CONSUMER_KEY
+                                                         consumerSecret:TWITTER_CONSUMER_SECRET
+                                                             oauthToken:TWITTER_ACCESS_KEY
+                                                       oauthTokenSecret:TWITTER_ACCESS_SECRET];
+    [self.twitter verifyCredentialsWithSuccessBlock:^(NSString *username) {
+        NSLog(@"successfully logged into twitter with as %@", username);
+    } errorBlock:^(NSError *error) {
+        [self ANRServerFailedWithError:error];
+    }];
+    
     [self.serverHandler requestHits];
     [self.tableView registerNib:[UINib nibWithNibName:@"hitCellView" bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
@@ -63,20 +82,21 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - serverhandler delegate
-
+#pragma mark - serverhandler delegate & related
 
 -(void)ANRServerDidReceiveHits:(NSArray *)hits {
     [self.hits addObjectsFromArray:hits];
     [self.tableView reloadData];
+    self.isWaitingForHits = NO;
 }
 
 -(void)ANRServerFailedWithError:(NSError *)error {
     
 }
 
--(NSUInteger)lastHitID {
-    return 0;
+-(NSNumber*)lastHitID {
+    ANRHit *lastHit = [self.hits lastObject];
+    return lastHit.hitID;
 }
 #pragma mark - Table view data source
 
@@ -93,9 +113,51 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+   
     ANRHitCell *cell = (ANRHitCell*)[tableView dequeueReusableCellWithIdentifier:CELL_REUSE_IDENTIFIER forIndexPath:indexPath];
     NSAssert([cell isKindOfClass:[ANRHitCell class]], @"cell of wrong type");
-    [cell setPropertiesFromHit:[self.hits objectAtIndex:indexPath.row]];
+    ANRHit *hit = [self.hits objectAtIndex:indexPath.row];
+    cell.hitForDisplay = hit;
+    
+    if (!hit.tweet1.fetched && !hit.tweet1.error){
+        NSLog(@"requesting tweet");
+        [self.twitter getStatusWithID:[hit.tweet1.tweetID stringValue]
+                      includeEntities:YES
+                         successBlock:^(NSDictionary *status) {
+                             [hit.tweet1 updateWithTwitterInfo:status];
+                             if ([cell isDisplayingHit:hit]){
+                                 cell.hitForDisplay = hit;
+                                 [cell setNeedsLayout];
+                             }
+                                    } errorBlock:^(NSError *error) {
+                                        [hit.tweet1 updateFailedWitheError:error];
+                                        if ([cell isDisplayingHit:hit]){
+                                            cell.hitForDisplay = hit;
+                                            [cell setNeedsLayout];
+                                        }
+                                    }];
+
+    }
+    if (!hit.tweet2.fetched && !hit.tweet2.error){
+        NSLog(@"requesting tweet");
+        [self.twitter getStatusWithID:[hit.tweet2.tweetID stringValue]
+                      includeEntities:YES
+                         successBlock:^(NSDictionary *status) {
+                             [hit.tweet2 updateWithTwitterInfo:status];
+                             if ([cell isDisplayingHit:hit]){
+                                 cell.hitForDisplay = hit;
+                                [cell setNeedsLayout];
+                             }
+                         } errorBlock:^(NSError *error) {
+                             [hit.tweet2 updateFailedWitheError:error];
+                             if ([cell isDisplayingHit:hit]){
+                                 cell.hitForDisplay = hit;
+                                 [cell setNeedsLayout];
+                             }
+                         }];
+
+    }
+//    check if we need to retrieve twitter data for this hit:
     
     return cell;
 }
@@ -105,6 +167,27 @@
     return 141.0;
 }
 
+#define UNVIEWED_HITS_BEFORE_REQUEST 1.0
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+//    check if we should get more hits;
+    if ((self.hits.count - indexPath.row <= UNVIEWED_HITS_BEFORE_REQUEST) && (!self.isWaitingForHits)){
+        [self.serverHandler requestHits];
+        self.isWaitingForHits = YES;
+    }
+
+    
+    ANRHitCell *hitCell = (ANRHitCell*)cell;
+    NSAssert([cell isKindOfClass:[ANRHitCell class]], @"cell of wrong type");
+    
+    if (indexPath.row % 2){
+        hitCell.tweetOne.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+        hitCell.tweetTwo.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+    }else{
+        hitCell.tweetOne.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+        hitCell.tweetTwo.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+    }
+
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

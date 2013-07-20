@@ -35,13 +35,13 @@
 @protocol ANRServerDelegateProtocol <NSObject>
 -(void)ANRServerFailedWithError:(NSError*)error;
 -(void)ANRServerDidReceiveHits:(NSArray*)hits;
--(NSUInteger)lastHitID;
+-(NSNumber*)lastHitID;
 @end
 
 @interface ANRServerHandler : NSObject <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 
 @property id<ANRServerDelegateProtocol> delegate;
-@property (strong, nonatomic) STTwitterAPIWrapper *twitter;
+//@property (strong, nonatomic) STTwitterAPIWrapper *twitter;
 +(instancetype)sharedInstance;
 -(void)requestHits;
 @end

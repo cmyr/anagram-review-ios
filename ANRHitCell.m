@@ -7,7 +7,6 @@
 //
 
 #import "ANRHitCell.h"
-#import "ANRHit.h"
 #import "ANRTweet.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -15,6 +14,8 @@
 @property (strong, nonatomic) UIDynamicAnimator *dynamicAnimator;
 @property (strong, nonatomic) UIAttachmentBehavior *tweetViewAnchor;
 @property (strong, nonatomic) UISnapBehavior *tweetViewSnap;
+@property (nonatomic) BOOL isObservingTweetOne;
+@property (nonatomic) BOOL isObservingTweetTwo;
 @end
 @implementation ANRHitCell
 
@@ -31,7 +32,30 @@
 -(void)awakeFromNib {
     [self configureSubviews];
 }
+#define PROFILE_IMAGE_KEY @"profile_img"
+static int oneObservanceContext;
+static int twoObservanceContext;
+-(void)setHitForDisplay:(ANRHit *)hitForDisplay {
+    if (self.isObservingTweetOne) {
+        [_hitForDisplay.tweet1 removeObserver:self forKeyPath:PROFILE_IMAGE_KEY context:&oneObservanceContext];
+        self.isObservingTweetOne = NO;
+    }
+    if (self.isObservingTweetTwo) {
+        [_hitForDisplay.tweet2 removeObserver:self forKeyPath:PROFILE_IMAGE_KEY context:&twoObservanceContext];
+        self.isObservingTweetTwo = NO;
+    }
 
+
+    _hitForDisplay = hitForDisplay;
+    [self setPropertiesFromHit:self.hitForDisplay];
+}
+
+-(BOOL)isDisplayingHit:(ANRHit *)hit {
+    if ([self.hitForDisplay isEqual:hit]){
+        return YES;
+    }
+    return NO;
+}
 
 -(void)configureSubviews {
     
@@ -124,9 +148,50 @@
     
 }
 
+
 -(void)setPropertiesFromHit:(ANRHit*)hit{
-    self.tweetTextOne.text = hit.tweet1.text;
-    self.tweetTextTwo.text = hit.tweet2.text;
+    if (1) {
+        self.warningOne.hidden = YES;
+        self.tweetTextOne.text = hit.tweet1.text;
+        self.nameOne.text = hit.tweet1.username;
+        self.screenNameOne.text = hit.tweet1.screenname;
+        if (self.hitForDisplay.tweet1.error) {
+            self.warningOne.hidden = NO;
+        }
+        if (hit.tweet1.profile_img){
+            self.profileImageOne.image = hit.tweet1.profile_img;
+        }else{
+            [hit.tweet1 addObserver:self
+                         forKeyPath:PROFILE_IMAGE_KEY
+                            options:NSKeyValueObservingOptionNew
+                            context:&oneObservanceContext];
+            self.isObservingTweetOne = YES;
+        }
+
+    }
+
+    if (1) {
+        self.warningTwo.hidden = YES;
+        self.tweetTextTwo.text = hit.tweet2.text;
+        self.nameTwo.text = hit.tweet2.username;
+        self.screenNameTwo.text = hit.tweet2.screenname;
+        if (self.hitForDisplay.tweet2.error) {
+            self.warningTwo.hidden = NO;
+        }
+        if (hit.tweet2.profile_img){
+            self.profileImageTwo.image = hit.tweet2.profile_img;
+        }else{
+            [hit.tweet2 addObserver:self
+                         forKeyPath:PROFILE_IMAGE_KEY
+                            options:NSKeyValueObservingOptionNew
+                            context:&twoObservanceContext];
+            self.isObservingTweetTwo = YES;
+        }
+        
+    }
+
+    
+    
 }
 
 -(void)snapToPlace {
@@ -147,6 +212,7 @@
 
     // Configure the view for the selected state
 }
+
 #pragma mark - button actions
 -(void)approveButtonDown {
     self.approveButton.backgroundColor = [UIColor whiteColor];
@@ -223,6 +289,14 @@
 //                                                                self.tweetContainer.frame.size.width,
 //                                                                self.tweetContainer.frame.size.height);
                      }];
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([object isEqual:self.hitForDisplay.tweet1]) {
+        self.profileImageOne.image = [object valueForKey:PROFILE_IMAGE_KEY];
+    }else if ([object isEqual:self.hitForDisplay.tweet2]) {
+        self.profileImageTwo.image = [object valueForKey:PROFILE_IMAGE_KEY];
+    }
 }
 
 @end

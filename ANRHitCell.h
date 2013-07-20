@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class ANRHit;
+#import "ANRHit.h"
 
 @interface ANRHitCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIView *tweetContainer;
@@ -30,7 +30,9 @@
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic) BOOL hasMoved;
 
+@property (strong, nonatomic) ANRHit *hitForDisplay;
 
+-(BOOL)isDisplayingHit:(ANRHit*)hit;
 -(void)showButtons;
 -(void)hideButtons;
 -(void)setPropertiesFromHit:(ANRHit*)hit;

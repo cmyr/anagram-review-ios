@@ -11,7 +11,7 @@
 @interface ANRTweet : NSObject
 @property (nonatomic, retain) NSString * tweetHash;
 @property (nonatomic, retain) NSNumber * tweetID;
-@property (nonatomic, retain) NSData * profile_img;
+@property (nonatomic, retain) UIImage * profile_img;
 @property (nonatomic, retain) NSString * profile_img_url;
 @property (nonatomic, retain) NSString * screenname;
 @property (nonatomic, retain) NSString * text;
@@ -19,4 +19,7 @@
 @property (nonatomic) BOOL fetched;
 @property (nonatomic) BOOL error;
 @property (nonatomic, retain) NSDate * creationDate;
+
+-(void)updateWithTwitterInfo:(NSDictionary*)twitterInfo;
+-(void)updateFailedWitheError:(NSError*)error;
 @end

@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @class ANRTweet;
+@class ANRHit;
+@protocol HitDisplayDelegate <NSObject>
+-(void)hitDidReceiveUpdate:(ANRHit*)hit;
+@end
 
 @interface ANRHit : NSObject
 @property (nonatomic, retain) NSNumber * hitID;

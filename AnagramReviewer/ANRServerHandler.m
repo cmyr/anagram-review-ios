@@ -35,18 +35,6 @@
 -(id)init{
     if (self = [super init]){
         self.responseData = [NSMutableData data];
-//        set up twitter handler:
-        self.twitter = [STTwitterAPIWrapper twitterAPIWithOAuthConsumerName:@"name?"
-                                                                consumerKey:TWITTER_CONSUMER_KEY
-                                                             consumerSecret:TWITTER_CONSUMER_SECRET
-                                                                 oauthToken:TWITTER_ACCESS_KEY
-                                                           oauthTokenSecret:TWITTER_ACCESS_SECRET];
-        [self.twitter verifyCredentialsWithSuccessBlock:^(NSString *username) {
-            NSLog(@"successfully logged into twitter with as %@", username);
-        } errorBlock:^(NSError *error) {
-            [self.delegate ANRServerFailedWithError:error];
-        }];
-
     }
     return self;
 }
@@ -58,17 +46,17 @@
 
 -(void)requestHits{
 //    private method for accepting bad certs
-    NSUInteger count = 50;
+    NSUInteger count = 5;
     [NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:@"h.cmyr.net"];
-//    NSString *queryString = [NSString stringWithFormat:@"count=%i",count];
-//    NSUInteger lastHit = [self.delegate lastHitID];
-//    if (lastHit){
-//        queryString = [queryString stringByAppendingString:
-//                       [NSString stringWithFormat:@"&older_than=%i",lastHit]];
-//        
-//    }
-//    queryString = [queryString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString* urlString = [NSString stringWithFormat:@"%@/2.0/hits?%@", ANR_BASE_URL, nil];
+    NSString *queryString = [NSString stringWithFormat:@"count=%i",count];
+    NSNumber *lastHit = [self.delegate lastHitID];
+    if (lastHit){
+        queryString = [queryString stringByAppendingString:
+                       [NSString stringWithFormat:@"&older_than=%@",[lastHit stringValue]]];
+        
+    }
+    queryString = [queryString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString* urlString = [NSString stringWithFormat:@"%@/2.0/hits?%@", ANR_BASE_URL, queryString];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request addValue:ANR_AUTH_TOKEN forHTTPHeaderField:@"Authorization"];
     (void)[NSURLConnection connectionWithRequest:request
