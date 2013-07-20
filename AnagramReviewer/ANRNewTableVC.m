@@ -117,6 +117,10 @@
     ANRHitCell *cell = (ANRHitCell*)[tableView dequeueReusableCellWithIdentifier:CELL_REUSE_IDENTIFIER forIndexPath:indexPath];
     NSAssert([cell isKindOfClass:[ANRHitCell class]], @"cell of wrong type");
     ANRHit *hit = [self.hits objectAtIndex:indexPath.row];
+    
+    [cell reset];
+    [cell.approveButton addTarget:self action:@selector(cellApproveAction) forControlEvents:UIControlEventTouchUpInside];
+    [cell.rejectButton addTarget:self action:@selector(cellRejectAction) forControlEvents:UIControlEventTouchUpInside];
     cell.hitForDisplay = hit;
     
     if (!hit.tweet1.fetched && !hit.tweet1.error){
@@ -167,6 +171,16 @@
     return 141.0;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    ANRHitCell *cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell showButtons];
+}
+
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    ANRHitCell *cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell hideButtons];
+}
+
 #define UNVIEWED_HITS_BEFORE_REQUEST 1.0
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 //    check if we should get more hits;
@@ -187,6 +201,23 @@
         hitCell.tweetTwo.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
     }
 
+}
+
+-(void)cellApproveAction {
+//    NSLog(@"approve action");
+//    ANRHitCell * cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
+//    [cell showActivityIndicator:YES];
+//    Hit *hit = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+//        [self.serverHandler postHit:hit];
+
+}
+
+-(void)cellRejectAction {
+//    NSLog(@"reject action");
+//    ANRHitCell * cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
+//    [cell showActivityIndicator:YES];
+//    Hit *hit = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+//    [self.serverHandler rejectHit:hit];
 }
 /*
 // Override to support conditional editing of the table view.

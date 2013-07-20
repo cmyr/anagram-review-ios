@@ -201,6 +201,7 @@ static int twoObservanceContext;
 -(void)reset {
     self.tweetTwo.layer.masksToBounds = YES;
     self.tweetContainer.userInteractionEnabled = YES;
+    [self showActivityIndicator:NO];
 }
 -(void)resetDynamics {
     [self.dynamicAnimator removeAllBehaviors];
