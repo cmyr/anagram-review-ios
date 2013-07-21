@@ -31,6 +31,7 @@
 #define TWITTER_CREATED_DATE @"created_at"
 @class STTwitterAPIWrapper;
 @class Hit;
+@class ANRHit;
 
 @protocol ANRServerDelegateProtocol <NSObject>
 -(void)ANRServerFailedWithError:(NSError*)error;
@@ -44,4 +45,6 @@
 //@property (strong, nonatomic) STTwitterAPIWrapper *twitter;
 +(instancetype)sharedInstance;
 -(void)requestHits;
+-(void)addHitToBlacklist:(ANRHit*)hit;
+-(void)approveHit:(ANRHit*)hit postImmediately:(BOOL)postNow;
 @end

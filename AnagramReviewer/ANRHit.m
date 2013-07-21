@@ -27,6 +27,7 @@
     hit.hitID = dict[HIT_ID];
     hit.status = dict[HIT_STATUS];
     hit.rating = @0.0;
+    hit.hitHash = dict[@"hash"];
     hit.tweet1.tweetID = [dict valueForKeyPath:TWEET_ONE_ID];
     hit.tweet1.text = [dict valueForKeyPath:TWEET_ONE_TEXT];
     hit.tweet2.tweetID = [dict valueForKeyPath:TWEET_TWO_ID];

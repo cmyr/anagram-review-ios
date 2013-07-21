@@ -46,7 +46,7 @@
 
 -(void)requestHits{
 //    private method for accepting bad certs
-    NSUInteger count = 5;
+    NSUInteger count = 15;
     [NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:@"h.cmyr.net"];
     NSString *queryString = [NSString stringWithFormat:@"count=%i",count];
     NSNumber *lastHit = [self.delegate lastHitID];
@@ -65,6 +65,21 @@
 }
 
 
+-(void)addHitToBlacklist:(ANRHit *)hit {
+    NSString* urlString = [NSString stringWithFormat:@"%@/blacklist?hash=%@", ANR_BASE_URL, hit.hitHash];
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [request addValue:ANR_AUTH_TOKEN forHTTPHeaderField:@"Authorization"];
+    (void)[NSURLConnection connectionWithRequest:request
+                                        delegate:self];
+}
+
+-(void)approveHit:(ANRHit *)hit postImmediately:(BOOL)postNow {
+    NSString* urlString = [NSString stringWithFormat:@"%@/approve?id=%@&post_now=%i", ANR_BASE_URL, [hit.hitID stringValue], postNow];
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [request addValue:ANR_AUTH_TOKEN forHTTPHeaderField:@"Authorization"];
+    (void)[NSURLConnection connectionWithRequest:request
+                                        delegate:self];
+}
 
 //-(void)setStatus:(NSString *)status forHit:(Hit *)hit{
 //    NSString* urlString = [NSString stringWithFormat:@"%@/mod?id=%@&status=%@",ANR_BASE_URL, hit.id_num, status];
@@ -93,10 +108,12 @@
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection{
 //    find out what exactly we received;
     NSError *jsonError;
-    NSDictionary* response = [NSJSONSerialization JSONObjectWithData:self.responseData options:0 error:&jsonError];
+    NSDictionary* response = [NSJSONSerialization JSONObjectWithData:self.responseData options:NSJSONReadingAllowFragments error:&jsonError];
     if (jsonError){
         NSLog(@"%@", jsonError);
         [self.delegate ANRServerFailedWithError:jsonError];
+        self.responseData = [NSMutableData data];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         return;
     }
     NSArray* newHits = [response objectForKey:@"hits"];

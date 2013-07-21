@@ -161,6 +161,7 @@ static int twoObservanceContext;
         if (hit.tweet1.profile_img){
             self.profileImageOne.image = hit.tweet1.profile_img;
         }else{
+            self.profileImageOne.image = [UIImage imageNamed:@"missingprofile"];
             [hit.tweet1 addObserver:self
                          forKeyPath:PROFILE_IMAGE_KEY
                             options:NSKeyValueObservingOptionNew
@@ -181,6 +182,7 @@ static int twoObservanceContext;
         if (hit.tweet2.profile_img){
             self.profileImageTwo.image = hit.tweet2.profile_img;
         }else{
+            self.profileImageTwo.image = [UIImage imageNamed:@"missingprofile"];
             [hit.tweet2 addObserver:self
                          forKeyPath:PROFILE_IMAGE_KEY
                             options:NSKeyValueObservingOptionNew
@@ -202,6 +204,7 @@ static int twoObservanceContext;
     self.tweetTwo.layer.masksToBounds = YES;
     self.tweetContainer.userInteractionEnabled = YES;
     [self showActivityIndicator:NO];
+    [self hideButtons];
 }
 -(void)resetDynamics {
     [self.dynamicAnimator removeAllBehaviors];

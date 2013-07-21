@@ -12,7 +12,12 @@
 @implementation ANRTweet
 
 -(void)updateWithTwitterInfo:(NSDictionary *)twitterInfo {
-    self.text = twitterInfo[TWITTER_TEXT];
+//    correct encoded characters
+    NSString *tweetText = [twitterInfo[TWITTER_TEXT] stringByReplacingOccurrencesOfString:@"&amp;" withString:@"&"];
+    tweetText = [tweetText stringByReplacingOccurrencesOfString:@"&lt;" withString:@"<"];
+    tweetText = [tweetText stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
+    
+    self.text =tweetText;
     self.screenname = [@"@" stringByAppendingString:[twitterInfo valueForKeyPath:TWITTER_USER_SCREENNAME]];
     self.username = [twitterInfo valueForKeyPath:TWITTER_USER_NAME];
     self.profile_img_url = [twitterInfo valueForKeyPath:TWITTER_USER_IMG_URL];

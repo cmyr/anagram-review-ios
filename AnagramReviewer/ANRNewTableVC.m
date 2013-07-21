@@ -91,7 +91,8 @@
 }
 
 -(void)ANRServerFailedWithError:(NSError *)error {
-    
+    NSLog(@"table view received error: %@", error);
+    self.isWaitingForHits = NO;
 }
 
 -(NSNumber*)lastHitID {
@@ -181,7 +182,7 @@
     [cell hideButtons];
 }
 
-#define UNVIEWED_HITS_BEFORE_REQUEST 1.0
+#define UNVIEWED_HITS_BEFORE_REQUEST 5.0
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 //    check if we should get more hits;
     if ((self.hits.count - indexPath.row <= UNVIEWED_HITS_BEFORE_REQUEST) && (!self.isWaitingForHits)){
@@ -204,6 +205,11 @@
 }
 
 -(void)cellApproveAction {
+    ANRHit *hit = [self.hits objectAtIndex:self.tableView.indexPathForSelectedRow.row];
+    [self.serverHandler approveHit:hit postImmediately:YES];
+    [self.hits removeObject:hit];
+    [self.tableView deleteRowsAtIndexPaths:@[self.tableView.indexPathForSelectedRow] withRowAnimation:UITableViewRowAnimationRight];
+    
 //    NSLog(@"approve action");
 //    ANRHitCell * cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
 //    [cell showActivityIndicator:YES];
@@ -213,11 +219,10 @@
 }
 
 -(void)cellRejectAction {
-//    NSLog(@"reject action");
-//    ANRHitCell * cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
-//    [cell showActivityIndicator:YES];
-//    Hit *hit = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
-//    [self.serverHandler rejectHit:hit];
+    ANRHit *hit = [self.hits objectAtIndex:self.tableView.indexPathForSelectedRow.row];
+    [self.serverHandler addHitToBlacklist:hit];
+    [self.hits removeObject:hit];
+    [self.tableView deleteRowsAtIndexPaths:@[self.tableView.indexPathForSelectedRow] withRowAnimation:UITableViewRowAnimationRight];
 }
 /*
 // Override to support conditional editing of the table view.

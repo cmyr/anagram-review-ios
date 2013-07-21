@@ -16,6 +16,7 @@
 
 @interface ANRHit : NSObject
 @property (nonatomic, retain) NSNumber * hitID;
+@property (nonatomic, strong) NSString *hitHash;
 @property (nonatomic, retain) NSNumber * rating;
 @property (nonatomic, retain) NSString * status;
 @property (strong, nonatomic) ANRTweet* tweet1;
