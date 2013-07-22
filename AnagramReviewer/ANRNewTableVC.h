@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ANRServerHandler.h"
 @interface ANRNewTableVC : UITableViewController <ANRServerDelegateProtocol>
+@property (weak, nonatomic) IBOutlet UISegmentedControl *displaySelectionControl;
+- (IBAction)selectionControlAction:(UISegmentedControl *)sender;
 
 @end

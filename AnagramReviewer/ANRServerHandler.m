@@ -44,16 +44,20 @@
     return _hitsAwaitingResponses;
 }
 
--(void)requestHits{
+-(void)requestHits:(BOOL)new_hits{
 //    private method for accepting bad certs
     NSUInteger count = 15;
     [NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:@"h.cmyr.net"];
-    NSString *queryString = [NSString stringWithFormat:@"count=%i",count];
+    NSString *queryString = [NSString stringWithFormat:@"count=%i&status=%@",count, self.delegate.statusToFetch];
     NSNumber *lastHit = [self.delegate lastHitID];
-    if (lastHit){
+    if (!new_hits && lastHit){
         queryString = [queryString stringByAppendingString:
-                       [NSString stringWithFormat:@"&older_than=%@",[lastHit stringValue]]];
+                       [NSString stringWithFormat:@"&cutoff=%@",[lastHit stringValue]]];
         
+    }
+    if (new_hits) {
+        queryString = [queryString stringByAppendingString:
+                       [NSString stringWithFormat:@"&cutoff=%@&get_new=%i",self.delegate.firstHitID, new_hits]];
     }
     queryString = [queryString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString* urlString = [NSString stringWithFormat:@"%@/2.0/hits?%@", ANR_BASE_URL, queryString];
@@ -74,6 +78,7 @@
 }
 
 -(void)approveHit:(ANRHit *)hit postImmediately:(BOOL)postNow {
+//   NSString *boolString = postNow ? @"true" : @"false";
     NSString* urlString = [NSString stringWithFormat:@"%@/approve?id=%@&post_now=%i", ANR_BASE_URL, [hit.hitID stringValue], postNow];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request addValue:ANR_AUTH_TOKEN forHTTPHeaderField:@"Authorization"];

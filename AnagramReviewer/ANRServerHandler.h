@@ -37,6 +37,8 @@
 -(void)ANRServerFailedWithError:(NSError*)error;
 -(void)ANRServerDidReceiveHits:(NSArray*)hits;
 -(NSNumber*)lastHitID;
+-(NSNumber*)firstHitID;
+-(NSString*)statusToFetch;
 @end
 
 @interface ANRServerHandler : NSObject <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
@@ -44,7 +46,7 @@
 @property id<ANRServerDelegateProtocol> delegate;
 //@property (strong, nonatomic) STTwitterAPIWrapper *twitter;
 +(instancetype)sharedInstance;
--(void)requestHits;
+-(void)requestHits:(BOOL)new_hits;
 -(void)addHitToBlacklist:(ANRHit*)hit;
 -(void)approveHit:(ANRHit*)hit postImmediately:(BOOL)postNow;
 @end

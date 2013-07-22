@@ -13,13 +13,15 @@
 #import "STTwitterAPIWrapper.h"
 #import "ANRAuth.h"
 
-
 @interface ANRNewTableVC ()
-@property (strong, nonatomic) NSMutableArray *hits;
+@property (strong, nonatomic) NSMutableArray *reviewHits;
+@property (strong, nonatomic) NSMutableArray *approvedHits;
+@property (strong, nonatomic) NSMutableSet *seenHits;
+@property (weak, nonatomic) NSMutableArray *activeTable;
 @property (strong, nonatomic) ANRServerHandler *serverHandler;
 @property (nonatomic) BOOL isWaitingForHits;
 @property (strong, nonatomic) STTwitterAPIWrapper *twitter;
-
+@property (strong, nonatomic) NSString *statusToFetch;
 
 @end
 
@@ -35,9 +37,15 @@
     return self;
 }
 
--(NSMutableArray*)hits {
-    if (!_hits) _hits = [[NSMutableArray alloc]init];
-    return _hits;
+
+-(NSMutableArray*)reviewHits {
+    if (!_reviewHits) _reviewHits = [[NSMutableArray alloc]init];
+    return _reviewHits;
+}
+
+-(NSMutableArray*)approvedHits {
+    if (!_approvedHits) _approvedHits = [[NSMutableArray alloc]init];
+    return _approvedHits;
 }
 
 -(ANRServerHandler*)serverHandler {
@@ -46,6 +54,10 @@
     return _serverHandler;
 }
 
+-(NSMutableSet*)seenHits {
+    if (!_seenHits) _seenHits = [[NSMutableSet alloc]init];
+    return _seenHits;
+}
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -60,7 +72,7 @@
         [self ANRServerFailedWithError:error];
     }];
     
-    [self.serverHandler requestHits];
+    [self showReviewTable];
     [self.tableView registerNib:[UINib nibWithNibName:@"hitCellView" bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
     
@@ -68,12 +80,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+//    self.tableView.tableHeaderView = self.tableHeader;
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+    [self.displaySelectionControl setEnabled:NO forSegmentAtIndex:2];
+    [self.refreshControl addTarget:self action:@selector(refreshAction) forControlEvents:UIControlEventValueChanged];
 }
 
 - (void)didReceiveMemoryWarning
@@ -85,9 +100,43 @@
 #pragma mark - serverhandler delegate & related
 
 -(void)ANRServerDidReceiveHits:(NSArray *)hits {
-    [self.hits addObjectsFromArray:hits];
-    [self.tableView reloadData];
     self.isWaitingForHits = NO;
+//    for checking where we should be adding hits we receive:
+    ANRHit *firstReviewHit = [self.reviewHits firstObject];
+    ANRHit *firstApprovedHit = [self.approvedHits firstObject];
+
+    for (ANRHit *hit in hits) {
+        if ([self.seenHits containsObject:hit.hitID]){
+            continue;
+        }
+        [self.seenHits addObject:hit.hitID];
+        
+        
+        if ([hit.status isEqualToString:HIT_STATUS_REVIEW]) {
+            if (!firstReviewHit){
+//                yes this is ugly :-{
+                [self.reviewHits addObject:hit];
+                continue;
+            }
+            if ([hit.hitID compare:firstReviewHit.hitID] == NSOrderedDescending){
+                [self.reviewHits insertObject:hit atIndex:0];
+            }else{
+            [self.reviewHits addObject:hit];
+            }
+        }else if ([hit.status isEqualToString:HIT_STATUS_APPROVE]) {
+            if (!firstApprovedHit){
+                [self.approvedHits addObject:hit];
+                continue;
+            }
+            if ([hit.hitID compare:firstApprovedHit.hitID] == NSOrderedDescending){
+                [self.approvedHits insertObject:hit atIndex:0];
+            }else{
+                [self.approvedHits addObject:hit];
+            }
+        }
+    }
+    [self.tableView reloadData];
+    [self.refreshControl endRefreshing];
 }
 
 -(void)ANRServerFailedWithError:(NSError *)error {
@@ -96,8 +145,13 @@
 }
 
 -(NSNumber*)lastHitID {
-    ANRHit *lastHit = [self.hits lastObject];
+    ANRHit *lastHit = [self.activeTable lastObject];
     return lastHit.hitID;
+}
+
+-(NSNumber*)firstHitID {
+    ANRHit *firstHit = [self.activeTable firstObject];
+    return firstHit.hitID;
 }
 #pragma mark - Table view data source
 
@@ -109,7 +163,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.hits.count;
+    return self.activeTable.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -117,7 +171,7 @@
    
     ANRHitCell *cell = (ANRHitCell*)[tableView dequeueReusableCellWithIdentifier:CELL_REUSE_IDENTIFIER forIndexPath:indexPath];
     NSAssert([cell isKindOfClass:[ANRHitCell class]], @"cell of wrong type");
-    ANRHit *hit = [self.hits objectAtIndex:indexPath.row];
+    ANRHit *hit = [self.activeTable objectAtIndex:indexPath.row];
     
     [cell reset];
     [cell.approveButton addTarget:self action:@selector(cellApproveAction) forControlEvents:UIControlEventTouchUpInside];
@@ -185,8 +239,8 @@
 #define UNVIEWED_HITS_BEFORE_REQUEST 5.0
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 //    check if we should get more hits;
-    if ((self.hits.count - indexPath.row <= UNVIEWED_HITS_BEFORE_REQUEST) && (!self.isWaitingForHits)){
-        [self.serverHandler requestHits];
+    if ((self.activeTable.count - indexPath.row <= UNVIEWED_HITS_BEFORE_REQUEST) && (!self.isWaitingForHits)){
+        [self.serverHandler requestHits:NO];
         self.isWaitingForHits = YES;
     }
 
@@ -204,10 +258,15 @@
 
 }
 
+#pragma mark - UI & interactions
 -(void)cellApproveAction {
-    ANRHit *hit = [self.hits objectAtIndex:self.tableView.indexPathForSelectedRow.row];
-    [self.serverHandler approveHit:hit postImmediately:YES];
-    [self.hits removeObject:hit];
+    ANRHit *hit = [self.activeTable objectAtIndex:self.tableView.indexPathForSelectedRow.row];
+    BOOL postNow = [hit.status isEqualToString:HIT_STATUS_APPROVE] ? YES : NO;
+    [self.serverHandler approveHit:hit postImmediately:postNow];
+    [self.activeTable removeObject:hit];
+    if (!postNow) {
+        [self.approvedHits addObject:hit];
+    }
     [self.tableView deleteRowsAtIndexPaths:@[self.tableView.indexPathForSelectedRow] withRowAnimation:UITableViewRowAnimationRight];
     
 //    NSLog(@"approve action");
@@ -219,10 +278,58 @@
 }
 
 -(void)cellRejectAction {
-    ANRHit *hit = [self.hits objectAtIndex:self.tableView.indexPathForSelectedRow.row];
+    ANRHit *hit = [self.activeTable objectAtIndex:self.tableView.indexPathForSelectedRow.row];
     [self.serverHandler addHitToBlacklist:hit];
-    [self.hits removeObject:hit];
+    [self.activeTable removeObject:hit];
     [self.tableView deleteRowsAtIndexPaths:@[self.tableView.indexPathForSelectedRow] withRowAnimation:UITableViewRowAnimationRight];
+}
+
+- (IBAction)selectionControlAction:(UISegmentedControl *)sender {
+    switch (sender.selectedSegmentIndex) {
+        case 0:
+//            review
+            [self showReviewTable];
+            break;
+        case 1:
+//            approved
+            [self showApprovedTable];
+            break;
+        case 2:
+//            queue
+            break;
+            
+        default:
+            break;
+    }
+}
+
+-(void)showReviewTable {
+    self.statusToFetch = HIT_STATUS_REVIEW;
+    self.activeTable = self.reviewHits;
+    [self.tableView reloadData];
+    if (!self.reviewHits.count) {
+        [self.serverHandler requestHits:NO];
+    }
+    
+}
+
+-(void)showApprovedTable {
+    self.statusToFetch = HIT_STATUS_APPROVE;
+    self.activeTable = self.approvedHits;
+    [self.tableView reloadData];
+    if (!self.approvedHits.count) {
+        [self.serverHandler requestHits:NO];
+    }
+}
+
+-(void)showQueueTable {
+    
+}
+
+-(void)refreshAction {
+    [self.serverHandler requestHits:YES];
+    self.isWaitingForHits = YES;
+    
 }
 /*
 // Override to support conditional editing of the table view.
@@ -274,5 +381,6 @@
 }
 
  */
+
 
 @end
