@@ -10,6 +10,10 @@
 #import "ANRServerHandler.h"
 @interface ANRNewTableVC : UITableViewController <ANRServerDelegateProtocol>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *displaySelectionControl;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+
 - (IBAction)selectionControlAction:(UISegmentedControl *)sender;
+- (IBAction)updateInfoButton:(UIButton *)sender;
+@property (weak, nonatomic) IBOutlet UILabel *infoLabel;
 
 @end

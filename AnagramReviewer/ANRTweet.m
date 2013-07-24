@@ -43,6 +43,7 @@
 
 -(void)fetchProfileImage
 {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     NSString *url = self.profile_img_url;
     url = [url stringByReplacingOccurrencesOfString:@"_normal" withString:@"_bigger"];
     NSBlockOperation *fetchOperation = [NSBlockOperation blockOperationWithBlock:^{
@@ -52,6 +53,7 @@
         if (imageData){
             self.profile_img = [UIImage imageWithData:imageData];
         }
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }];
     [fetchOperation start];
     

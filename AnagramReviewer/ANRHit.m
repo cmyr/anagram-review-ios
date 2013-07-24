@@ -34,4 +34,17 @@
     hit.tweet2.text = [dict valueForKeyPath:TWEET_TWO_TEXT];
     return hit;
 }
+
+-(BOOL)isEqual:(id)object {
+    if ([object isKindOfClass:[ANRHit class]]) {
+        ANRHit* otherhit = (ANRHit*)object;
+        return [otherhit.hitID isEqual:self.hitID];
+    }
+    return NO;
+}
+
+-(NSUInteger)hash {
+    return self.hitID.hash;
+}
+
 @end

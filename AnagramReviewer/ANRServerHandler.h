@@ -36,6 +36,7 @@
 @protocol ANRServerDelegateProtocol <NSObject>
 -(void)ANRServerFailedWithError:(NSError*)error;
 -(void)ANRServerDidReceiveHits:(NSArray*)hits;
+-(void)ANRServerDidReceiveInfo:(NSDictionary*)info;
 -(NSNumber*)lastHitID;
 -(NSNumber*)firstHitID;
 -(NSString*)statusToFetch;
@@ -49,4 +50,5 @@
 -(void)requestHits:(BOOL)new_hits;
 -(void)addHitToBlacklist:(ANRHit*)hit;
 -(void)approveHit:(ANRHit*)hit postImmediately:(BOOL)postNow;
+-(void)getInfo;
 @end

@@ -14,10 +14,10 @@
 #import "ANRAuth.h"
 
 @interface ANRNewTableVC ()
-@property (strong, nonatomic) NSMutableArray *reviewHits;
-@property (strong, nonatomic) NSMutableArray *approvedHits;
-@property (strong, nonatomic) NSMutableSet *seenHits;
-@property (weak, nonatomic) NSMutableArray *activeTable;
+@property (strong, nonatomic) NSMutableOrderedSet *reviewHits;
+@property (strong, nonatomic) NSMutableOrderedSet *approvedHits;
+//@property (strong, nonatomic) NSMutableSet *seenHits;
+@property (weak, nonatomic) NSMutableOrderedSet *activeTable;
 @property (strong, nonatomic) ANRServerHandler *serverHandler;
 @property (nonatomic) BOOL isWaitingForHits;
 @property (strong, nonatomic) STTwitterAPIWrapper *twitter;
@@ -38,13 +38,13 @@
 }
 
 
--(NSMutableArray*)reviewHits {
-    if (!_reviewHits) _reviewHits = [[NSMutableArray alloc]init];
+-(NSMutableOrderedSet*)reviewHits {
+    if (!_reviewHits) _reviewHits = [[NSMutableOrderedSet alloc]init];
     return _reviewHits;
 }
 
--(NSMutableArray*)approvedHits {
-    if (!_approvedHits) _approvedHits = [[NSMutableArray alloc]init];
+-(NSMutableOrderedSet*)approvedHits {
+    if (!_approvedHits) _approvedHits = [[NSMutableOrderedSet alloc]init];
     return _approvedHits;
 }
 
@@ -54,10 +54,11 @@
     return _serverHandler;
 }
 
--(NSMutableSet*)seenHits {
-    if (!_seenHits) _seenHits = [[NSMutableSet alloc]init];
-    return _seenHits;
-}
+//-(NSMutableSet*)seenHits {
+//    if (!_seenHits) _seenHits = [[NSMutableSet alloc]init];
+//    return _seenHits;
+//}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -71,7 +72,7 @@
     } errorBlock:^(NSError *error) {
         [self ANRServerFailedWithError:error];
     }];
-    
+    [self.serverHandler getInfo];
     [self showReviewTable];
     [self.tableView registerNib:[UINib nibWithNibName:@"hitCellView" bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
@@ -101,17 +102,12 @@
 
 -(void)ANRServerDidReceiveHits:(NSArray *)hits {
     self.isWaitingForHits = NO;
+    [self serverIsOnline];
 //    for checking where we should be adding hits we receive:
     ANRHit *firstReviewHit = [self.reviewHits firstObject];
     ANRHit *firstApprovedHit = [self.approvedHits firstObject];
 
     for (ANRHit *hit in hits) {
-        if ([self.seenHits containsObject:hit.hitID]){
-            continue;
-        }
-        [self.seenHits addObject:hit.hitID];
-        
-        
         if ([hit.status isEqualToString:HIT_STATUS_REVIEW]) {
             if (!firstReviewHit){
 //                yes this is ugly :-{
@@ -139,9 +135,29 @@
     [self.refreshControl endRefreshing];
 }
 
+-(void)ANRServerDidReceiveInfo:(NSDictionary *)info {
+    [self serverIsOnline];
+    self.infoLabel.alpha = 0.0;
+    self.infoLabel.text = [[info[@"new_hits"] stringValue] stringByAppendingString:@" New Hits"];
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         self.infoLabel.alpha = 1.0;
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:0.5
+                                               delay:5.0
+                                             options:0
+                                          animations:^{
+                                              self.infoLabel.alpha = 0.0;
+                                          } completion:NULL];
+                     }];
+}
+
 -(void)ANRServerFailedWithError:(NSError *)error {
     NSLog(@"table view received error: %@", error);
     self.isWaitingForHits = NO;
+    self.statusLabel.text = [NSString stringWithFormat:@"%@", error];
+    self.statusLabel.textColor = [UIColor blackColor];
+    self.statusLabel.hidden = NO;
 }
 
 -(NSNumber*)lastHitID {
@@ -180,15 +196,18 @@
     
     if (!hit.tweet1.fetched && !hit.tweet1.error){
         NSLog(@"requesting tweet");
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         [self.twitter getStatusWithID:[hit.tweet1.tweetID stringValue]
                       includeEntities:YES
                          successBlock:^(NSDictionary *status) {
+                             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                              [hit.tweet1 updateWithTwitterInfo:status];
                              if ([cell isDisplayingHit:hit]){
                                  cell.hitForDisplay = hit;
                                  [cell setNeedsLayout];
                              }
                                     } errorBlock:^(NSError *error) {
+                                        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                                         [hit.tweet1 updateFailedWitheError:error];
                                         if ([cell isDisplayingHit:hit]){
                                             cell.hitForDisplay = hit;
@@ -199,6 +218,7 @@
     }
     if (!hit.tweet2.fetched && !hit.tweet2.error){
         NSLog(@"requesting tweet");
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         [self.twitter getStatusWithID:[hit.tweet2.tweetID stringValue]
                       includeEntities:YES
                          successBlock:^(NSDictionary *status) {
@@ -206,12 +226,14 @@
                              if ([cell isDisplayingHit:hit]){
                                  cell.hitForDisplay = hit;
                                 [cell setNeedsLayout];
+                                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                              }
                          } errorBlock:^(NSError *error) {
                              [hit.tweet2 updateFailedWitheError:error];
                              if ([cell isDisplayingHit:hit]){
                                  cell.hitForDisplay = hit;
                                  [cell setNeedsLayout];
+                                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                              }
                          }];
 
@@ -303,6 +325,10 @@
     }
 }
 
+- (IBAction)updateInfoButton:(UIButton *)sender {
+    [self.serverHandler getInfo];
+}
+
 -(void)showReviewTable {
     self.statusToFetch = HIT_STATUS_REVIEW;
     self.activeTable = self.reviewHits;
@@ -327,9 +353,19 @@
 }
 
 -(void)refreshAction {
+    if ([self.activeTable isEqual:self.approvedHits]) {
+        [self.approvedHits removeAllObjects];
+    }
     [self.serverHandler requestHits:YES];
     self.isWaitingForHits = YES;
     
+}
+
+-(void)serverIsOnline {
+//    show the 'online' label
+    self.statusLabel.text = @"ONLINE";
+    self.statusLabel.textColor = [UIColor colorWithRed:0.098 green:0.753 blue:0.02 alpha:1.0];
+    self.statusLabel.hidden = NO;
 }
 /*
 // Override to support conditional editing of the table view.
