@@ -17,8 +17,6 @@
 @end
 
 @interface ANRServerHandler ()
-//@property (strong, nonatomic) NSMutableData* responseData;
-//@property (strong, nonatomic) NSMutableDictionary *hitsAwaitingResponses;
 @property (strong, nonatomic) NSMutableDictionary *responseDatum;
 @property (strong, nonatomic) NSMutableArray *keyList;
 @end
@@ -53,7 +51,7 @@
 -(void)requestHits:(BOOL)new_hits{
 //    private method for accepting bad certs
     NSUInteger count = 15;
-    [NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:@"h.cmyr.net"];
+    [NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:ANR_HOST];
     NSString *queryString = [NSString stringWithFormat:@"count=%i&status=%@",count, self.delegate.statusToFetch];
     NSNumber *lastHit = [self.delegate lastHitID];
     if (!new_hits && lastHit){
@@ -100,7 +98,7 @@
 }
 
 -(void)getInfo {
-    [NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:@"h.cmyr.net"];
+    [NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:ANR_HOST];
     NSString* urlString = [NSString stringWithFormat:@"%@/info?", ANR_BASE_URL];
     NSNumber* mostRecentHit = self.delegate.firstHitID;
     if (mostRecentHit) {
@@ -113,9 +111,10 @@
 
     self.responseDatum[request] = [NSMutableData data];
     [self.keyList addObject:request];
-    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
 }
+
 //-(void)setStatus:(NSString *)status forHit:(Hit *)hit{
 //    NSString* urlString = [NSString stringWithFormat:@"%@/mod?id=%@&status=%@",ANR_BASE_URL, hit.id_num, status];
 //    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];

@@ -16,7 +16,6 @@
 @interface ANRNewTableVC ()
 @property (strong, nonatomic) NSMutableOrderedSet *reviewHits;
 @property (strong, nonatomic) NSMutableOrderedSet *approvedHits;
-//@property (strong, nonatomic) NSMutableSet *seenHits;
 @property (weak, nonatomic) NSMutableOrderedSet *activeTable;
 @property (strong, nonatomic) ANRServerHandler *serverHandler;
 @property (nonatomic) BOOL isWaitingForHits;
@@ -153,10 +152,22 @@
 }
 
 -(void)ANRServerFailedWithError:(NSError *)error {
+    NSString* errorString = error.description;
+    UIColor* labelTextColor = [UIColor blackColor];
     NSLog(@"table view received error: %@", error);
+    if (error.code == -1202) {
+//        bad SSL certs
+        errorString = @"Invalid Certificate";
+    }
+    if (error.code == 404) {
+//        host offline
+        errorString = @"Offline";
+        labelTextColor = [UIColor colorWithRed:0.75 green:0 blue:0 alpha:1.0];
+    }
+    
     self.isWaitingForHits = NO;
-    self.statusLabel.text = [NSString stringWithFormat:@"%@", error];
-    self.statusLabel.textColor = [UIColor blackColor];
+    self.statusLabel.text = errorString;
+    self.statusLabel.textColor = labelTextColor;
     self.statusLabel.hidden = NO;
 }
 
