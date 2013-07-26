@@ -7,12 +7,15 @@
 //
 
 #import "ANRHitCell.h"
+#import "ANRTweet.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface ANRHitCell()
 @property (strong, nonatomic) UIDynamicAnimator *dynamicAnimator;
 @property (strong, nonatomic) UIAttachmentBehavior *tweetViewAnchor;
 @property (strong, nonatomic) UISnapBehavior *tweetViewSnap;
+@property (nonatomic) BOOL isObservingTweetOne;
+@property (nonatomic) BOOL isObservingTweetTwo;
 @end
 @implementation ANRHitCell
 
@@ -28,21 +31,31 @@
 
 -(void)awakeFromNib {
     [self configureSubviews];
-//    [self configureDynamics];
+}
+#define PROFILE_IMAGE_KEY @"profile_img"
+static int oneObservanceContext;
+static int twoObservanceContext;
+-(void)setHitForDisplay:(ANRHit *)hitForDisplay {
+    if (self.isObservingTweetOne) {
+        [_hitForDisplay.tweet1 removeObserver:self forKeyPath:PROFILE_IMAGE_KEY context:&oneObservanceContext];
+        self.isObservingTweetOne = NO;
+    }
+    if (self.isObservingTweetTwo) {
+        [_hitForDisplay.tweet2 removeObserver:self forKeyPath:PROFILE_IMAGE_KEY context:&twoObservanceContext];
+        self.isObservingTweetTwo = NO;
+    }
+
+
+    _hitForDisplay = hitForDisplay;
+    [self setPropertiesFromHit:self.hitForDisplay];
 }
 
-//-(void)setHasMoved:(BOOL)hasMoved
-//{
-////    we'll use this to add and remove our attachment behaviour
-//    _hasMoved = hasMoved;
-//    if (self.hasMoved){
-////        [self.dynamicAnimator addBehavior:self.tweetViewAnchor];
-//        UISnapBehavior *tweetSnap = [[UISnapBehavior alloc]initWithItem:self.tweetContainer
-//                                                            snapToPoint:self.dynamicAnimator.referenceView.center];
-//    }else{
-//        [self.dynamicAnimator removeBehavior:self.tweetViewAnchor];
-//    }
-//}
+-(BOOL)isDisplayingHit:(ANRHit *)hit {
+    if ([self.hitForDisplay isEqual:hit]){
+        return YES;
+    }
+    return NO;
+}
 
 -(void)configureSubviews {
     
@@ -135,18 +148,53 @@
     
 }
 
-//-(void)configureDynamics {
-//    self.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.contentView];
-//    self.tweetViewSnap = [[UISnapBehavior alloc]initWithItem:self.tweetContainer
-//                                                        snapToPoint:self.dynamicAnimator.referenceView.center];
 
-//    self.tweetViewAnchor = [[UIAttachmentBehavior alloc]initWithItem:self.tweetContainer
-//                                                               point:CGPointMake(self.frame.size.width -1, self.frame.size.height/2)
-//                                                    attachedToAnchor:CGPointMake(self.contentView.frame.size.width -1, self.contentView.frame.size.height/2)];
+-(void)setPropertiesFromHit:(ANRHit*)hit{
+    if (1) {
+        self.warningOne.hidden = YES;
+        self.tweetTextOne.text = hit.tweet1.text;
+        self.nameOne.text = hit.tweet1.username;
+        self.screenNameOne.text = hit.tweet1.screenname;
+        if (self.hitForDisplay.tweet1.error) {
+            self.warningOne.hidden = NO;
+        }
+        if (hit.tweet1.profile_img){
+            self.profileImageOne.image = hit.tweet1.profile_img;
+        }else{
+            self.profileImageOne.image = [UIImage imageNamed:@"missingprofile"];
+            [hit.tweet1 addObserver:self
+                         forKeyPath:PROFILE_IMAGE_KEY
+                            options:NSKeyValueObservingOptionNew
+                            context:&oneObservanceContext];
+            self.isObservingTweetOne = YES;
+        }
+
+    }
+
+    if (1) {
+        self.warningTwo.hidden = YES;
+        self.tweetTextTwo.text = hit.tweet2.text;
+        self.nameTwo.text = hit.tweet2.username;
+        self.screenNameTwo.text = hit.tweet2.screenname;
+        if (self.hitForDisplay.tweet2.error) {
+            self.warningTwo.hidden = NO;
+        }
+        if (hit.tweet2.profile_img){
+            self.profileImageTwo.image = hit.tweet2.profile_img;
+        }else{
+            self.profileImageTwo.image = [UIImage imageNamed:@"missingprofile"];
+            [hit.tweet2 addObserver:self
+                         forKeyPath:PROFILE_IMAGE_KEY
+                            options:NSKeyValueObservingOptionNew
+                            context:&twoObservanceContext];
+            self.isObservingTweetTwo = YES;
+        }
+        
+    }
+
     
     
-//    [self.dynamicAnimator addBehavior:self.tweetViewAnchor];
-//}
+}
 
 -(void)snapToPlace {
     [self.dynamicAnimator addBehavior:self.tweetViewSnap];
@@ -155,6 +203,8 @@
 -(void)reset {
     self.tweetTwo.layer.masksToBounds = YES;
     self.tweetContainer.userInteractionEnabled = YES;
+    [self showActivityIndicator:NO];
+    [self hideButtons];
 }
 -(void)resetDynamics {
     [self.dynamicAnimator removeAllBehaviors];
@@ -166,6 +216,7 @@
 
     // Configure the view for the selected state
 }
+
 #pragma mark - button actions
 -(void)approveButtonDown {
     self.approveButton.backgroundColor = [UIColor whiteColor];
@@ -242,6 +293,14 @@
 //                                                                self.tweetContainer.frame.size.width,
 //                                                                self.tweetContainer.frame.size.height);
                      }];
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([object isEqual:self.hitForDisplay.tweet1]) {
+        self.profileImageOne.image = [object valueForKey:PROFILE_IMAGE_KEY];
+    }else if ([object isEqual:self.hitForDisplay.tweet2]) {
+        self.profileImageTwo.image = [object valueForKey:PROFILE_IMAGE_KEY];
+    }
 }
 
 @end

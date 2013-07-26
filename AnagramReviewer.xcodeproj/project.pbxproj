@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		62064852179F3D2C00747BD0 /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62064851179F3D2C00747BD0 /* Images-2.xcassets */; };
 		622438171774F2FE002B17A2 /* STHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 622438091774F2FE002B17A2 /* STHTTPRequest.m */; };
 		622438181774F2FE002B17A2 /* STTwitterAPIWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6224380B1774F2FE002B17A2 /* STTwitterAPIWrapper.m */; };
 		622438191774F2FE002B17A2 /* STTwitterHTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 6224380D1774F2FE002B17A2 /* STTwitterHTML.m */; };
@@ -17,6 +18,9 @@
 		622438291774FD48002B17A2 /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 622438281774FD48002B17A2 /* Tweet.m */; };
 		6224382C1774FE07002B17A2 /* Hit.m in Sources */ = {isa = PBXBuildFile; fileRef = 6224382B1774FE07002B17A2 /* Hit.m */; };
 		623E342617768DD6004281FC /* ANRNotificationDropDownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 623E342517768DD6004281FC /* ANRNotificationDropDownView.m */; };
+		624F233E179A134100B5FDF6 /* ANRNewTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 624F233D179A134100B5FDF6 /* ANRNewTableVC.m */; };
+		624F2341179A15A300B5FDF6 /* ANRTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 624F2340179A15A300B5FDF6 /* ANRTweet.m */; };
+		624F2344179A15AB00B5FDF6 /* ANRHit.m in Sources */ = {isa = PBXBuildFile; fileRef = 624F2343179A15AB00B5FDF6 /* ANRHit.m */; };
 		627D94F017764B62009A8F42 /* ANRHitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 627D94EF17764B62009A8F42 /* ANRHitCell.m */; };
 		627D94F2177654D3009A8F42 /* hitCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 627D94F1177654D3009A8F42 /* hitCellView.xib */; };
 		627D94F517765F8B009A8F42 /* missingprofile.png in Resources */ = {isa = PBXBuildFile; fileRef = 627D94F317765F8B009A8F42 /* missingprofile.png */; };
@@ -27,8 +31,6 @@
 		6297B77B1780B5D0003A084D /* check128.png in Resources */ = {isa = PBXBuildFile; fileRef = 6297B7791780B5D0003A084D /* check128.png */; };
 		62C8746717720DBD00042795 /* Hit+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C8746617720DBD00042795 /* Hit+Create.m */; };
 		62C8746A1772118400042795 /* Tweet+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C874691772118400042795 /* Tweet+Create.m */; };
-		62D50000176FF46A002E2BCB /* ANRHitsCDTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D5FFFF176FF46A002E2BCB /* ANRHitsCDTVC.m */; };
-		62D50001176FF46A002E2BCB /* ANRHitsCDTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D5FFFF176FF46A002E2BCB /* ANRHitsCDTVC.m */; };
 		62D50004176FF558002E2BCB /* ANRServerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D50003176FF558002E2BCB /* ANRServerHandler.m */; };
 		62D50005176FF558002E2BCB /* ANRServerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D50003176FF558002E2BCB /* ANRServerHandler.m */; };
 		62D50008176FF641002E2BCB /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 62D50007176FF641002E2BCB /* Storyboard.storyboard */; };
@@ -61,6 +63,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		62064851179F3D2C00747BD0 /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Images-2.xcassets"; sourceTree = "<group>"; };
 		622438081774F2FE002B17A2 /* STHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STHTTPRequest.h; sourceTree = "<group>"; };
 		622438091774F2FE002B17A2 /* STHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STHTTPRequest.m; sourceTree = "<group>"; };
 		6224380A1774F2FE002B17A2 /* STTwitterAPIWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTwitterAPIWrapper.h; sourceTree = "<group>"; };
@@ -82,6 +85,12 @@
 		6224382B1774FE07002B17A2 /* Hit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hit.m; sourceTree = "<group>"; };
 		623E342417768DD6004281FC /* ANRNotificationDropDownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANRNotificationDropDownView.h; sourceTree = "<group>"; };
 		623E342517768DD6004281FC /* ANRNotificationDropDownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANRNotificationDropDownView.m; sourceTree = "<group>"; };
+		624F233C179A134100B5FDF6 /* ANRNewTableVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANRNewTableVC.h; sourceTree = "<group>"; };
+		624F233D179A134100B5FDF6 /* ANRNewTableVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANRNewTableVC.m; sourceTree = "<group>"; };
+		624F233F179A15A300B5FDF6 /* ANRTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANRTweet.h; sourceTree = "<group>"; };
+		624F2340179A15A300B5FDF6 /* ANRTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANRTweet.m; sourceTree = "<group>"; };
+		624F2342179A15AB00B5FDF6 /* ANRHit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANRHit.h; sourceTree = "<group>"; };
+		624F2343179A15AB00B5FDF6 /* ANRHit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANRHit.m; sourceTree = "<group>"; };
 		627D94EE17764B62009A8F42 /* ANRHitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ANRHitCell.h; path = ../ANRHitCell.h; sourceTree = "<group>"; };
 		627D94EF17764B62009A8F42 /* ANRHitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ANRHitCell.m; path = ../ANRHitCell.m; sourceTree = "<group>"; };
 		627D94F1177654D3009A8F42 /* hitCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = hitCellView.xib; sourceTree = "<group>"; };
@@ -210,14 +219,20 @@
 				62D5FFCA176FED7C002E2BCB /* ANRAppDelegate.m */,
 				62D50002176FF558002E2BCB /* ANRServerHandler.h */,
 				62D50003176FF558002E2BCB /* ANRServerHandler.m */,
-				62D5FFFE176FF46A002E2BCB /* ANRHitsCDTVC.h */,
-				62D5FFFF176FF46A002E2BCB /* ANRHitsCDTVC.m */,
+				624F233F179A15A300B5FDF6 /* ANRTweet.h */,
+				624F2340179A15A300B5FDF6 /* ANRTweet.m */,
+				624F2342179A15AB00B5FDF6 /* ANRHit.h */,
+				624F2343179A15AB00B5FDF6 /* ANRHit.m */,
 				6BED24B317769DF20072E327 /* ANRSlideGestureRecognizer.h */,
 				6BED24B417769DF20072E327 /* ANRSlideGestureRecognizer.m */,
 				627D94EE17764B62009A8F42 /* ANRHitCell.h */,
 				627D94EF17764B62009A8F42 /* ANRHitCell.m */,
 				623E342417768DD6004281FC /* ANRNotificationDropDownView.h */,
 				623E342517768DD6004281FC /* ANRNotificationDropDownView.m */,
+				624F233C179A134100B5FDF6 /* ANRNewTableVC.h */,
+				624F233D179A134100B5FDF6 /* ANRNewTableVC.m */,
+				62D5FFFE176FF46A002E2BCB /* ANRHitsCDTVC.h */,
+				62D5FFFF176FF46A002E2BCB /* ANRHitsCDTVC.m */,
 				627D94F1177654D3009A8F42 /* hitCellView.xib */,
 				62D50007176FF641002E2BCB /* Storyboard.storyboard */,
 				62D5FFCF176FED7C002E2BCB /* Images.xcassets */,
@@ -229,6 +244,7 @@
 				627D94F417765F8B009A8F42 /* missingprofile@2x.png */,
 				622438071774F2E5002B17A2 /* twitter */,
 				62D5FFFD176FF043002E2BCB /* coredata */,
+				62064851179F3D2C00747BD0 /* Images-2.xcassets */,
 				62D5FFC1176FED7C002E2BCB /* Supporting Files */,
 			);
 			path = AnagramReviewer;
@@ -361,6 +377,7 @@
 				6297B7771780B4CF003A084D /* cross64.png in Resources */,
 				6297B7761780B4CF003A084D /* check64.png in Resources */,
 				62D5FFC5176FED7C002E2BCB /* InfoPlist.strings in Resources */,
+				62064852179F3D2C00747BD0 /* Images-2.xcassets in Resources */,
 				6297B77A1780B5D0003A084D /* cross128.png in Resources */,
 				62D5FFD0176FED7C002E2BCB /* Images.xcassets in Resources */,
 				627D94F617765F8B009A8F42 /* missingprofile@2x.png in Resources */,
@@ -385,7 +402,7 @@
 			files = (
 				6BED24B517769DF20072E327 /* ANRSlideGestureRecognizer.m in Sources */,
 				62D5FFCB176FED7C002E2BCB /* ANRAppDelegate.m in Sources */,
-				62D50000176FF46A002E2BCB /* ANRHitsCDTVC.m in Sources */,
+				624F233E179A134100B5FDF6 /* ANRNewTableVC.m in Sources */,
 				62D50004176FF558002E2BCB /* ANRServerHandler.m in Sources */,
 				6224381C1774F2FE002B17A2 /* STTwitterAppOnly.m in Sources */,
 				62D5FFCE176FED7C002E2BCB /* AnagramReviewer.xcdatamodeld in Sources */,
@@ -397,7 +414,9 @@
 				623E342617768DD6004281FC /* ANRNotificationDropDownView.m in Sources */,
 				6224381B1774F2FE002B17A2 /* STTwitterOAuthOSX.m in Sources */,
 				622438191774F2FE002B17A2 /* STTwitterHTML.m in Sources */,
+				624F2341179A15A300B5FDF6 /* ANRTweet.m in Sources */,
 				622438291774FD48002B17A2 /* Tweet.m in Sources */,
+				624F2344179A15AB00B5FDF6 /* ANRHit.m in Sources */,
 				6224381D1774F2FE002B17A2 /* NSString+STTwitter.m in Sources */,
 				6224381A1774F2FE002B17A2 /* STTwitterOAuth.m in Sources */,
 				622438171774F2FE002B17A2 /* STHTTPRequest.m in Sources */,
@@ -409,7 +428,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				62D50001176FF46A002E2BCB /* ANRHitsCDTVC.m in Sources */,
 				62D50005176FF558002E2BCB /* ANRServerHandler.m in Sources */,
 				62D5FFE4176FED7C002E2BCB /* AnagramReviewerTests.m in Sources */,
 			);

@@ -31,24 +31,24 @@
 #define TWITTER_CREATED_DATE @"created_at"
 @class STTwitterAPIWrapper;
 @class Hit;
+@class ANRHit;
 
 @protocol ANRServerDelegateProtocol <NSObject>
-//-(void)AGServerRetrievedHits:(NSArray*)hits;
--(void)AGServerDid:(BOOL)success updateStatus:(NSString*)status ForHit:(Hit*)hit;
--(void)AGServerFailedWithError:(NSError*)error;
--(void)AGServerDidReceiveHits:(NSUInteger)hitCount New:(NSUInteger)newCount;
-@property (strong, nonatomic) NSManagedObjectContext* managedObjectContext;
+-(void)ANRServerFailedWithError:(NSError*)error;
+-(void)ANRServerDidReceiveHits:(NSArray*)hits;
+-(void)ANRServerDidReceiveInfo:(NSDictionary*)info;
+-(NSNumber*)lastHitID;
+-(NSNumber*)firstHitID;
+-(NSString*)statusToFetch;
 @end
 
 @interface ANRServerHandler : NSObject <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 
 @property id<ANRServerDelegateProtocol> delegate;
-@property (strong, nonatomic) STTwitterAPIWrapper *twitter;
+//@property (strong, nonatomic) STTwitterAPIWrapper *twitter;
 +(instancetype)sharedInstance;
--(void)requestHits;
-//-(void)setStatus:(NSString*)status forHit:(NSDictionary*)hit;
--(void)postHit:(Hit*)hit;
--(void)rejectHit:(Hit*)hit;
--(void)approveHit:(Hit*)hit;
-
+-(void)requestHits:(BOOL)new_hits;
+-(void)addHitToBlacklist:(ANRHit*)hit;
+-(void)approveHit:(ANRHit*)hit postImmediately:(BOOL)postNow;
+-(void)getInfo;
 @end

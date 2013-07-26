@@ -2,11 +2,11 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4457.9" systemVersion="12E3067" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="6z9-9n-bKo">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3682.9"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3697.3"/>
     </dependencies>
     <scenes>
-        <!--HitsCDTVC-->
-        <scene sceneID="q1G-7a-x2W">
+        <!--New TableVC-->
+        <scene sceneID="ayx-D3-saP">
             <objects>
                 <viewController id="6z9-9n-bKo" customClass="ANRHitsCDTVC" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="m3h-ga-cMv">
@@ -52,10 +52,12 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
-                        <outlet property="tableView" destination="fdp-NM-3kF" id="mUQ-c5-v4o"/>
+                        <outlet property="displaySelectionControl" destination="D5k-wS-JJt" id="LDV-BO-wLY"/>
+                        <outlet property="infoLabel" destination="Z9Z-2X-ci2" id="EL4-Za-ipn"/>
+                        <outlet property="statusLabel" destination="Z8a-Mt-EC2" id="xoj-zz-RGQ"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6k4-Tt-TAe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aXk-qW-JMo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="128" y="120"/>
         </scene>
@@ -63,6 +65,6 @@
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
+        <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
 </document>

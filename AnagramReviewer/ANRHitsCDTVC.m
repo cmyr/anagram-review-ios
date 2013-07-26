@@ -11,7 +11,7 @@
 #import "ANRNotificationDropDownView.h"
 #import "ANRSlideGestureRecognizer.h"
 #import "Hit+Create.h"
-#import "Tweet+Create.h"
+#import "Tweet+Create.h"b
 
 
 #define CELL_REUSE_IDENTIFIER @"Hit"
@@ -108,7 +108,7 @@
     [self.serverHandler requestHits];
 //    rediculously hacky way of saving when we're debugging
     [self performSelector:@selector(saveDocument) withObject:Nil afterDelay:15.0];
-#warning network activity disabled for debug
+//#warning network activity disabled for debug
 }
 
 #define DOCUMENT_NAME @"hitsfile"

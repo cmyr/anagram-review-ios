@@ -8,7 +8,7 @@
 
 #import "STHTTPRequest.h"
 
-//#define DEBUG 0
+#define DEBUG 0
 
 NSUInteger const kSTHTTPRequestCancellationError = 1;
 NSUInteger const kSTHTTPRequestDefaultTimeout = 5;
