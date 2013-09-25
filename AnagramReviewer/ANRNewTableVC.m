@@ -297,7 +297,7 @@
     BOOL postNow = [hit.status isEqualToString:HIT_STATUS_APPROVE] ? YES : NO;
     [self.serverHandler approveHit:hit postImmediately:postNow];
     [self.activeTable removeObject:hit];
-    if (!postNow) {
+    if ([self.activeTable isEqual:self.reviewHits]) {
         [self.approvedHits addObject:hit];
     }
     [self.tableView deleteRowsAtIndexPaths:@[self.tableView.indexPathForSelectedRow] withRowAnimation:UITableViewRowAnimationRight];
