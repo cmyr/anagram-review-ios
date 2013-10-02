@@ -32,6 +32,12 @@
     hit.tweet1.text = [dict valueForKeyPath:TWEET_ONE_TEXT];
     hit.tweet2.tweetID = [dict valueForKeyPath:TWEET_TWO_ID];
     hit.tweet2.text = [dict valueForKeyPath:TWEET_TWO_TEXT];
+    if ([dict valueForKeyPath:TWEET_ONE_DICT]){
+        [hit.tweet1 updateWithTwitterInfo:[dict valueForKeyPath:TWEET_ONE_DICT]];
+        [hit.tweet2 updateWithTwitterInfo:[dict valueForKeyPath:TWEET_TWO_DICT]];
+    }else{
+        NSLog(@"no dict found");
+    }
     return hit;
 }
 @end

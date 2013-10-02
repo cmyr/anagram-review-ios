@@ -60,7 +60,7 @@
                        [NSString stringWithFormat:@"&cutoff=%@&get_new=%i",self.delegate.firstHitID, new_hits]];
     }
     queryString = [queryString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString* urlString = [NSString stringWithFormat:@"%@/2.0/hits?%@", ANR_BASE_URL, queryString];
+    NSString* urlString = [NSString stringWithFormat:@"%@/hits?%@", ANR_BASE_URL, queryString];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request addValue:ANR_AUTH_TOKEN forHTTPHeaderField:@"Authorization"];
     (void)[NSURLConnection connectionWithRequest:request

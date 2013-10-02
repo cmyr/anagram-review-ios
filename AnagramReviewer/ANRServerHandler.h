@@ -15,6 +15,8 @@
 #define TWEET_TWO_ID @"tweet_two.tweet_id"
 #define TWEET_ONE_TEXT @"tweet_one.tweet_text"
 #define TWEET_TWO_TEXT @"tweet_two.tweet_text"
+#define TWEET_ONE_DICT @"tweet_one.fetched"
+#define TWEET_TWO_DICT @"tweet_two.fetched"
 
 
 #define HIT_STATUS_POST @"posted"

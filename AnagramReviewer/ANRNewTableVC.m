@@ -87,7 +87,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
-    [self.displaySelectionControl setEnabled:NO forSegmentAtIndex:2];
+//    [self.displaySelectionControl setEnabled:NO forSegmentAtIndex:2];
     [self.refreshControl addTarget:self action:@selector(refreshAction) forControlEvents:UIControlEventValueChanged];
 }
 
