@@ -11,6 +11,18 @@
 
 @implementation ANRTweet
 
++(instancetype)tweetFromFetchedInfo:(NSDictionary *)info {
+    ANRTweet *tweet = [[ANRTweet alloc]init];
+    tweet.text = info[TWITTER_TEXT];
+    tweet.screenname = [@"@" stringByAppendingString:[info valueForKeyPath:TWITTER_USER_SCREENNAME]];
+    tweet.username = [info valueForKeyPath:TWITTER_USER_NAME];
+    tweet.profile_img_url = [info valueForKeyPath:TWITTER_USER_IMG_URL];
+    tweet.creationDate = [tweet dateFromString:[info valueForKey:TWITTER_CREATED_DATE]];
+    tweet.fetched = YES;
+    
+    return tweet;
+}
+
 -(void)updateWithTwitterInfo:(NSDictionary *)twitterInfo {
 //    correct encoded characters
     NSString *tweetText = [twitterInfo[TWITTER_TEXT] stringByReplacingOccurrencesOfString:@"&amp;" withString:@"&"];

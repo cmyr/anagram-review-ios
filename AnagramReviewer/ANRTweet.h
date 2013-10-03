@@ -22,4 +22,5 @@
 
 -(void)updateWithTwitterInfo:(NSDictionary*)twitterInfo;
 -(void)updateFailedWitheError:(NSError*)error;
++(instancetype)tweetFromFetchedInfo:(NSDictionary*)info;
 @end

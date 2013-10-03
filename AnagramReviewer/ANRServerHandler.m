@@ -48,23 +48,31 @@
     if (!_keyList) _keyList = [[NSMutableArray alloc]init];
     return _keyList;
 }
+
 -(void)requestHits:(BOOL)new_hits{
 //    private method for accepting bad certs
     NSUInteger count = 15;
     [NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:ANR_HOST];
     NSString *queryString = [NSString stringWithFormat:@"count=%i&status=%@",count, self.delegate.statusToFetch];
     NSNumber *lastHit = [self.delegate lastHitID];
-    if (!new_hits && lastHit){
+//    if (!new_hits && lastHit){
+//        queryString = [queryString stringByAppendingString:
+//                       [NSString stringWithFormat:@"&cutoff=%@",[lastHit stringValue]]];
+//        
+//    }
+//    if (new_hits) {
+//        queryString = [queryString stringByAppendingString:
+//                       [NSString stringWithFormat:@"&cutoff=%@&get_new=%i",self.delegate.firstHitID, new_hits]];
+//    }
+    
+    if (lastHit) {
         queryString = [queryString stringByAppendingString:
                        [NSString stringWithFormat:@"&cutoff=%@",[lastHit stringValue]]];
         
     }
-    if (new_hits) {
-        queryString = [queryString stringByAppendingString:
-                       [NSString stringWithFormat:@"&cutoff=%@&get_new=%i",self.delegate.firstHitID, new_hits]];
-    }
+    
     queryString = [queryString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString* urlString = [NSString stringWithFormat:@"%@/2.0/hits?%@", ANR_BASE_URL, queryString];
+    NSString* urlString = [NSString stringWithFormat:@"%@/hits?%@", ANR_BASE_URL, queryString];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request addValue:ANR_AUTH_TOKEN forHTTPHeaderField:@"Authorization"];
     (void)[NSURLConnection connectionWithRequest:request

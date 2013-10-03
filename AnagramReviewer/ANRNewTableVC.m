@@ -87,7 +87,6 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
-    [self.displaySelectionControl setEnabled:NO forSegmentAtIndex:2];
     [self.refreshControl addTarget:self action:@selector(refreshAction) forControlEvents:UIControlEventValueChanged];
 }
 
@@ -135,20 +134,20 @@
 }
 
 -(void)ANRServerDidReceiveInfo:(NSDictionary *)info {
-    [self serverIsOnline];
-    self.infoLabel.alpha = 0.0;
-    self.infoLabel.text = [[info[@"new_hits"] stringValue] stringByAppendingString:@" New Hits"];
-    [UIView animateWithDuration:0.5
-                     animations:^{
-                         self.infoLabel.alpha = 1.0;
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.5
-                                               delay:5.0
-                                             options:0
-                                          animations:^{
-                                              self.infoLabel.alpha = 0.0;
-                                          } completion:NULL];
-                     }];
+//    [self serverIsOnline];
+//    self.infoLabel.alpha = 0.0;
+//    self.infoLabel.text = [[info[@"new_hits"] stringValue] stringByAppendingString:@" New Hits"];
+//    [UIView animateWithDuration:0.5
+//                     animations:^{
+//                         self.infoLabel.alpha = 1.0;
+//                     } completion:^(BOOL finished) {
+//                         [UIView animateWithDuration:0.5
+//                                               delay:5.0
+//                                             options:0
+//                                          animations:^{
+//                                              self.infoLabel.alpha = 0.0;
+//                                          } completion:NULL];
+//                     }];
 }
 
 -(void)ANRServerFailedWithError:(NSError *)error {
@@ -166,9 +165,9 @@
     }
     
     self.isWaitingForHits = NO;
-    self.statusLabel.text = errorString;
-    self.statusLabel.textColor = labelTextColor;
-    self.statusLabel.hidden = NO;
+//    self.statusLabel.text = errorString;
+//    self.statusLabel.textColor = labelTextColor;
+//    self.statusLabel.hidden = NO;
 }
 
 -(NSNumber*)lastHitID {
@@ -374,9 +373,9 @@
 
 -(void)serverIsOnline {
 //    show the 'online' label
-    self.statusLabel.text = @"ONLINE";
-    self.statusLabel.textColor = [UIColor colorWithRed:0.098 green:0.753 blue:0.02 alpha:1.0];
-    self.statusLabel.hidden = NO;
+//    self.statusLabel.text = @"ONLINE";
+//    self.statusLabel.textColor = [UIColor colorWithRed:0.098 green:0.753 blue:0.02 alpha:1.0];
+//    self.statusLabel.hidden = NO;
 }
 /*
 // Override to support conditional editing of the table view.

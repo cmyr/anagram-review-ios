@@ -13,6 +13,8 @@
 #define HIT_STATUS @"status"
 #define TWEET_ONE_ID @"tweet_one.tweet_id"
 #define TWEET_TWO_ID @"tweet_two.tweet_id"
+#define TWEET_ONE_FETCHED @"tweet_one.fetched"
+#define TWEET_TWO_FETCHED @"tweet_two.fetched"
 #define TWEET_ONE_TEXT @"tweet_one.tweet_text"
 #define TWEET_TWO_TEXT @"tweet_two.tweet_text"
 

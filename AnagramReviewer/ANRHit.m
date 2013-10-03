@@ -28,10 +28,16 @@
     hit.status = dict[HIT_STATUS];
     hit.rating = @0.0;
     hit.hitHash = dict[@"hash"];
-    hit.tweet1.tweetID = [dict valueForKeyPath:TWEET_ONE_ID];
-    hit.tweet1.text = [dict valueForKeyPath:TWEET_ONE_TEXT];
-    hit.tweet2.tweetID = [dict valueForKeyPath:TWEET_TWO_ID];
-    hit.tweet2.text = [dict valueForKeyPath:TWEET_TWO_TEXT];
+    
+    if ([dict valueForKeyPath:TWEET_ONE_FETCHED]) {
+        hit.tweet1 = [ANRTweet tweetFromFetchedInfo:[dict valueForKeyPath:TWEET_ONE_FETCHED]];
+        hit.tweet2 = [ANRTweet tweetFromFetchedInfo:[dict valueForKeyPath:TWEET_TWO_FETCHED]];
+    }else {
+        hit.tweet1.tweetID = [dict valueForKeyPath:TWEET_ONE_ID];
+        hit.tweet1.text = [dict valueForKeyPath:TWEET_ONE_TEXT];
+        hit.tweet2.tweetID = [dict valueForKeyPath:TWEET_TWO_ID];
+        hit.tweet2.text = [dict valueForKeyPath:TWEET_TWO_TEXT];
+    }
     return hit;
 }
 
