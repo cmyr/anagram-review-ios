@@ -55,15 +55,7 @@
     [NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:ANR_HOST];
     NSString *queryString = [NSString stringWithFormat:@"count=%i&status=%@",count, self.delegate.statusToFetch];
     NSNumber *lastHit = [self.delegate lastHitID];
-//    if (!new_hits && lastHit){
-//        queryString = [queryString stringByAppendingString:
-//                       [NSString stringWithFormat:@"&cutoff=%@",[lastHit stringValue]]];
-//        
-//    }
-//    if (new_hits) {
-//        queryString = [queryString stringByAppendingString:
-//                       [NSString stringWithFormat:@"&cutoff=%@&get_new=%i",self.delegate.firstHitID, new_hits]];
-//    }
+
     
     if (lastHit) {
         queryString = [queryString stringByAppendingString:
@@ -84,8 +76,20 @@
 }
 
 
--(void)addHitToBlacklist:(ANRHit *)hit {
-    NSString* urlString = [NSString stringWithFormat:@"%@/blacklist?hash=%@", ANR_BASE_URL, hit.hitHash];
+//-(void)addHitToBlacklist:(ANRHit *)hit {
+//    NSString* urlString = [NSString stringWithFormat:@"%@/blacklist?hash=%@", ANR_BASE_URL, hit.hitHash];
+//    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+//    [request addValue:ANR_AUTH_TOKEN forHTTPHeaderField:@"Authorization"];
+//    (void)[NSURLConnection connectionWithRequest:request
+//                                        delegate:self];
+//    self.responseDatum[request] = [NSMutableData data];
+//    [self.keyList addObject:request];
+//}
+
+-(void)markHitsAsSeen:(NSSet *)hitIDs {
+    NSArray *hitsArray = [hitIDs allObjects];
+    NSString *hitString = [hitsArray componentsJoinedByString:@","];
+    NSString* urlString = [NSString stringWithFormat:@"%@/seen?hits=%@", ANR_BASE_URL, hitString];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request addValue:ANR_AUTH_TOKEN forHTTPHeaderField:@"Authorization"];
     (void)[NSURLConnection connectionWithRequest:request
@@ -108,9 +112,9 @@
 -(void)getInfo {
     [NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:ANR_HOST];
     NSString* urlString = [NSString stringWithFormat:@"%@/info?", ANR_BASE_URL];
-    NSNumber* mostRecentHit = self.delegate.firstHitID;
-    if (mostRecentHit) {
-        urlString = [urlString stringByAppendingString:[NSString stringWithFormat:@"last_hit=%@", [mostRecentHit stringValue]]];
+    NSNumber* lastHit = self.delegate.lastHitID;
+    if (lastHit) {
+        urlString = [urlString stringByAppendingString:[NSString stringWithFormat:@"last_hit=%@", [lastHit stringValue]]];
     }
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request addValue:ANR_AUTH_TOKEN forHTTPHeaderField:@"Authorization"];

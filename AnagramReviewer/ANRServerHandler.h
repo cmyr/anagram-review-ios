@@ -50,7 +50,8 @@
 //@property (strong, nonatomic) STTwitterAPIWrapper *twitter;
 +(instancetype)sharedInstance;
 -(void)requestHits:(BOOL)new_hits;
--(void)addHitToBlacklist:(ANRHit*)hit;
+//-(void)addHitToBlacklist:(ANRHit*)hit;
+-(void)markHitsAsSeen:(NSSet*)hitIDs;
 -(void)approveHit:(ANRHit*)hit postImmediately:(BOOL)postNow;
 -(void)getInfo;
 @end

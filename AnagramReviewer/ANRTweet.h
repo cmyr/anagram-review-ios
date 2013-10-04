@@ -17,10 +17,12 @@
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSString * username;
 @property (nonatomic) BOOL fetched;
+@property (nonatomic) BOOL imageMissing;
 @property (nonatomic) BOOL error;
 @property (nonatomic, retain) NSDate * creationDate;
 
 -(void)updateWithTwitterInfo:(NSDictionary*)twitterInfo;
 -(void)updateFailedWitheError:(NSError*)error;
 +(instancetype)tweetFromFetchedInfo:(NSDictionary*)info;
+-(void)fetchProfileImage;
 @end

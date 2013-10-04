@@ -65,6 +65,10 @@
         if (imageData){
             self.profile_img = [UIImage imageWithData:imageData];
         }
+        else{
+            self.imageMissing = YES;
+            self.profile_img = [UIImage imageNamed:@"missingprofile"];
+        }
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }];
     [fetchOperation start];

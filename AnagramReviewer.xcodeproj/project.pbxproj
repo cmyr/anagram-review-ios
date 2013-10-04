@@ -180,6 +180,19 @@
 			name = twitter;
 			sourceTree = "<group>";
 		};
+		62C6EDA417FE05BA00EE3C5D /* deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				6BED24B317769DF20072E327 /* ANRSlideGestureRecognizer.h */,
+				6BED24B417769DF20072E327 /* ANRSlideGestureRecognizer.m */,
+				623E342417768DD6004281FC /* ANRNotificationDropDownView.h */,
+				623E342517768DD6004281FC /* ANRNotificationDropDownView.m */,
+				62D5FFFE176FF46A002E2BCB /* ANRHitsCDTVC.h */,
+				62D5FFFF176FF46A002E2BCB /* ANRHitsCDTVC.m */,
+			);
+			name = deprecated;
+			sourceTree = "<group>";
+		};
 		62D5FFAC176FED7C002E2BCB = {
 			isa = PBXGroup;
 			children = (
@@ -223,16 +236,11 @@
 				624F2340179A15A300B5FDF6 /* ANRTweet.m */,
 				624F2342179A15AB00B5FDF6 /* ANRHit.h */,
 				624F2343179A15AB00B5FDF6 /* ANRHit.m */,
-				6BED24B317769DF20072E327 /* ANRSlideGestureRecognizer.h */,
-				6BED24B417769DF20072E327 /* ANRSlideGestureRecognizer.m */,
 				627D94EE17764B62009A8F42 /* ANRHitCell.h */,
 				627D94EF17764B62009A8F42 /* ANRHitCell.m */,
-				623E342417768DD6004281FC /* ANRNotificationDropDownView.h */,
-				623E342517768DD6004281FC /* ANRNotificationDropDownView.m */,
 				624F233C179A134100B5FDF6 /* ANRNewTableVC.h */,
 				624F233D179A134100B5FDF6 /* ANRNewTableVC.m */,
-				62D5FFFE176FF46A002E2BCB /* ANRHitsCDTVC.h */,
-				62D5FFFF176FF46A002E2BCB /* ANRHitsCDTVC.m */,
+				62C6EDA417FE05BA00EE3C5D /* deprecated */,
 				627D94F1177654D3009A8F42 /* hitCellView.xib */,
 				62D50007176FF641002E2BCB /* Storyboard.storyboard */,
 				62D5FFCF176FED7C002E2BCB /* Images.xcassets */,

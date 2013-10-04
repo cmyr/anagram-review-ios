@@ -17,10 +17,16 @@
 @property (strong, nonatomic) NSMutableOrderedSet *reviewHits;
 @property (strong, nonatomic) NSMutableOrderedSet *approvedHits;
 @property (weak, nonatomic) NSMutableOrderedSet *activeTable;
+@property (strong, nonatomic) NSMutableSet *seenHits;
 @property (strong, nonatomic) ANRServerHandler *serverHandler;
 @property (nonatomic) BOOL isWaitingForHits;
 @property (strong, nonatomic) STTwitterAPIWrapper *twitter;
 @property (strong, nonatomic) NSString *statusToFetch;
+@property (nonatomic) BOOL shouldClearHits;
+@property (nonatomic) BOOL serverExhausted;
+
+@property (strong, nonatomic) UIButton *footerButton;
+
 
 @end
 
@@ -53,9 +59,18 @@
     return _serverHandler;
 }
 
-//-(NSMutableSet*)seenHits {
-//    if (!_seenHits) _seenHits = [[NSMutableSet alloc]init];
-//    return _seenHits;
+
+-(NSMutableSet*)seenHits {
+    if (!_seenHits) _seenHits = [[NSMutableSet alloc]init];
+    return _seenHits;
+}
+
+//-(UIButton*)footerButton {
+//    if (!_footerButton){
+//        _footerButton = [[UIButton alloc]init];
+//        _footerButton.titleLabel.text = @"Mark All As Seen";
+//    }
+//    return _footerButton;
 //}
 
 -(void)viewWillAppear:(BOOL)animated
@@ -80,7 +95,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    self.tableView.tableHeaderView = self.tableHeader;
+    [self setupFooterButton];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -88,6 +103,14 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
     [self.refreshControl addTarget:self action:@selector(refreshAction) forControlEvents:UIControlEventValueChanged];
+}
+
+-(void)setupFooterButton {
+    self.footerButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.footerButton setTitle:@"Clear All" forState:UIControlStateNormal];
+    self.footerButton.frame = CGRectMake(0, 0, 100, 40);
+//    self.footerButton.backgroundColor = [UIColor redColor];
+    self.tableView.tableFooterView = self.footerButton;
 }
 
 - (void)didReceiveMemoryWarning
@@ -99,37 +122,27 @@
 #pragma mark - serverhandler delegate & related
 
 -(void)ANRServerDidReceiveHits:(NSArray *)hits {
-    self.isWaitingForHits = NO;
-    [self serverIsOnline];
-//    for checking where we should be adding hits we receive:
-    ANRHit *firstReviewHit = [self.reviewHits firstObject];
-    ANRHit *firstApprovedHit = [self.approvedHits firstObject];
 
+//    [self serverIsOnline];
+
+    if (self.shouldClearHits){
+        [self.activeTable removeAllObjects];
+        self.shouldClearHits = NO;
+    }
+    if (![hits count]) {
+//  if no hits are returned, set a flag so we stop requesting more
+        self.serverExhausted = YES;
+    }
     for (ANRHit *hit in hits) {
         if ([hit.status isEqualToString:HIT_STATUS_REVIEW]) {
-            if (!firstReviewHit){
-//                yes this is ugly :-{
-                [self.reviewHits addObject:hit];
-                continue;
-            }
-            if ([hit.hitID compare:firstReviewHit.hitID] == NSOrderedDescending){
-                [self.reviewHits insertObject:hit atIndex:0];
-            }else{
             [self.reviewHits addObject:hit];
-            }
         }else if ([hit.status isEqualToString:HIT_STATUS_APPROVE]) {
-            if (!firstApprovedHit){
-                [self.approvedHits addObject:hit];
-                continue;
-            }
-            if ([hit.hitID compare:firstApprovedHit.hitID] == NSOrderedDescending){
-                [self.approvedHits insertObject:hit atIndex:0];
-            }else{
-                [self.approvedHits addObject:hit];
+            [self.approvedHits addObject:hit];
             }
         }
-    }
+    
     [self.tableView reloadData];
+    self.isWaitingForHits = NO;
     [self.refreshControl endRefreshing];
 }
 
@@ -165,20 +178,18 @@
     }
     
     self.isWaitingForHits = NO;
-//    self.statusLabel.text = errorString;
-//    self.statusLabel.textColor = labelTextColor;
-//    self.statusLabel.hidden = NO;
 }
 
 -(NSNumber*)lastHitID {
+    if (self.shouldClearHits) return nil;
     ANRHit *lastHit = [self.activeTable lastObject];
     return lastHit.hitID;
 }
 
--(NSNumber*)firstHitID {
-    ANRHit *firstHit = [self.activeTable firstObject];
-    return firstHit.hitID;
-}
+//-(NSNumber*)firstHitID {
+//    ANRHit *firstHit = [self.activeTable firstObject];
+//    return firstHit.hitID;
+//}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -186,6 +197,10 @@
     // Return the number of sections.
     return 1;
 }
+
+//-(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+//    return self.footerButton;
+//}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -199,10 +214,23 @@
     NSAssert([cell isKindOfClass:[ANRHitCell class]], @"cell of wrong type");
     ANRHit *hit = [self.activeTable objectAtIndex:indexPath.row];
     
+    ANRHit *previousHit = [cell hitForDisplay];
+    if (previousHit) {
+        [self.seenHits addObject:previousHit];
+    }
+    
     [cell reset];
     [cell.approveButton addTarget:self action:@selector(cellApproveAction) forControlEvents:UIControlEventTouchUpInside];
     [cell.rejectButton addTarget:self action:@selector(cellRejectAction) forControlEvents:UIControlEventTouchUpInside];
     cell.hitForDisplay = hit;
+    
+    if (hit.tweet1.fetched && !hit.tweet1.profile_img && !hit.tweet1.imageMissing) {
+        [hit.tweet1 fetchProfileImage];
+    }
+    
+    if (hit.tweet2.fetched && !hit.tweet2.profile_img && !hit.tweet2.imageMissing) {
+        [hit.tweet2 fetchProfileImage];
+    }
     
     if (!hit.tweet1.fetched && !hit.tweet1.error){
         NSLog(@"requesting tweet");
@@ -271,7 +299,7 @@
 #define UNVIEWED_HITS_BEFORE_REQUEST 5.0
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 //    check if we should get more hits;
-    if ((self.activeTable.count - indexPath.row <= UNVIEWED_HITS_BEFORE_REQUEST) && (!self.isWaitingForHits)){
+    if ((self.activeTable.count - indexPath.row <= UNVIEWED_HITS_BEFORE_REQUEST) && (!self.isWaitingForHits) && (!self.serverExhausted)){
         [self.serverHandler requestHits:NO];
         self.isWaitingForHits = YES;
     }
@@ -311,7 +339,7 @@
 
 -(void)cellRejectAction {
     ANRHit *hit = [self.activeTable objectAtIndex:self.tableView.indexPathForSelectedRow.row];
-    [self.serverHandler addHitToBlacklist:hit];
+    [self.serverHandler  markHitsAsSeen:[NSSet setWithObject:hit.hitID]];
     [self.activeTable removeObject:hit];
     [self.tableView deleteRowsAtIndexPaths:@[self.tableView.indexPathForSelectedRow] withRowAnimation:UITableViewRowAnimationRight];
 }
@@ -333,6 +361,17 @@
         default:
             break;
     }
+    self.serverExhausted = NO;
+}
+
+-(void)footerButtonAction{
+    if (self.activeTable == self.approvedHits) return;
+    
+    NSMutableSet *seenList = [NSMutableSet set];
+    for (ANRHit* hit in self.reviewHits) {
+        [seenList addObject:hit.hitID];
+    }
+    [self.serverHandler markHitsAsSeen:seenList];
 }
 
 - (IBAction)updateInfoButton:(UIButton *)sender {
@@ -366,6 +405,7 @@
     if ([self.activeTable isEqual:self.approvedHits]) {
         [self.approvedHits removeAllObjects];
     }
+    self.shouldClearHits = YES;
     [self.serverHandler requestHits:YES];
     self.isWaitingForHits = YES;
     
