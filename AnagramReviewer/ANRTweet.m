@@ -58,10 +58,16 @@
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     NSString *url = self.profile_img_url;
     url = [url stringByReplacingOccurrencesOfString:@"_normal" withString:@"_bigger"];
-    NSBlockOperation *fetchOperation = [NSBlockOperation blockOperationWithBlock:^{
+
+
+    dispatch_queue_t fetchQ = dispatch_queue_create("image fetching", NULL);
+    dispatch_async(fetchQ, ^{
+        
         NSURLRequest *imageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
         NSData *imageData = [NSURLConnection sendSynchronousRequest:imageRequest returningResponse:nil error:nil];
         
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
         if (imageData){
             self.profile_img = [UIImage imageWithData:imageData];
         }
@@ -70,8 +76,9 @@
             self.profile_img = [UIImage imageNamed:@"missingprofile"];
         }
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    }];
-    [fetchOperation start];
+        });
+    });
+
     
 }
 

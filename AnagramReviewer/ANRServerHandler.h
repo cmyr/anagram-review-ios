@@ -40,13 +40,13 @@
 -(void)ANRServerDidReceiveHits:(NSArray*)hits;
 -(void)ANRServerDidReceiveInfo:(NSDictionary*)info;
 -(NSNumber*)lastHitID;
--(NSNumber*)firstHitID;
 -(NSString*)statusToFetch;
 @end
 
 @interface ANRServerHandler : NSObject <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 
 @property id<ANRServerDelegateProtocol> delegate;
+@property (nonatomic) NSUInteger fetchBatchSize;
 //@property (strong, nonatomic) STTwitterAPIWrapper *twitter;
 +(instancetype)sharedInstance;
 -(void)requestHits:(BOOL)new_hits;

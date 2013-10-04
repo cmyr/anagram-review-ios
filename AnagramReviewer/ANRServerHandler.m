@@ -35,6 +35,7 @@
 -(id)init{
     if (self = [super init]){
 //        self.responseData = [NSMutableData data];
+        self.fetchBatchSize = 15;
     }
     return self;
 }
@@ -51,9 +52,9 @@
 
 -(void)requestHits:(BOOL)new_hits{
 //    private method for accepting bad certs
-    NSUInteger count = 15;
+
     [NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:ANR_HOST];
-    NSString *queryString = [NSString stringWithFormat:@"count=%i&status=%@",count, self.delegate.statusToFetch];
+    NSString *queryString = [NSString stringWithFormat:@"count=%i&status=%@",self.fetchBatchSize, self.delegate.statusToFetch];
     NSNumber *lastHit = [self.delegate lastHitID];
 
     

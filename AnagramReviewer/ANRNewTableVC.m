@@ -109,7 +109,8 @@
     self.footerButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.footerButton setTitle:@"Clear All" forState:UIControlStateNormal];
     self.footerButton.frame = CGRectMake(0, 0, 100, 40);
-//    self.footerButton.backgroundColor = [UIColor redColor];
+
+    [self.footerButton addTarget:self action:@selector(footerButtonAction) forControlEvents:UIControlEventTouchUpInside];
     self.tableView.tableFooterView = self.footerButton;
 }
 
@@ -129,8 +130,8 @@
         [self.activeTable removeAllObjects];
         self.shouldClearHits = NO;
     }
-    if (![hits count]) {
-//  if no hits are returned, set a flag so we stop requesting more
+    if ([hits count] != self.serverHandler.fetchBatchSize) {
+//  if server returns fewer hits then requested we'll stop sending requests
         self.serverExhausted = YES;
     }
     for (ANRHit *hit in hits) {
