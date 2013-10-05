@@ -24,6 +24,7 @@
 #define HIT_STATUS_APPROVE @"approved"
 #define HIT_STATUS_FAILED @"failed"
 #define HIT_STATUS_REVIEW @"review"
+#define HIT_STATUS_SEEN @"seen"
 
 #define TWITTER_ID_STRING @"id_str"
 #define TWITTER_TEXT @"text"
@@ -37,8 +38,9 @@
 
 @protocol ANRServerDelegateProtocol <NSObject>
 -(void)ANRServerFailedWithError:(NSError*)error;
--(void)ANRServerDidReceiveHits:(NSArray*)hits;
+-(void)ANRServerDidReceiveHits:(NSArray*)hits Count:(NSUInteger)count;
 -(void)ANRServerDidReceiveInfo:(NSDictionary*)info;
+-(void)ANRServerDidReceiveResponse:(NSDictionary*)response;
 -(NSNumber*)lastHitID;
 -(NSString*)statusToFetch;
 @end
@@ -49,7 +51,7 @@
 @property (nonatomic) NSUInteger fetchBatchSize;
 //@property (strong, nonatomic) STTwitterAPIWrapper *twitter;
 +(instancetype)sharedInstance;
--(void)requestHits:(BOOL)new_hits;
+-(void)requestHits;
 //-(void)addHitToBlacklist:(ANRHit*)hit;
 -(void)markHitsAsSeen:(NSSet*)hitIDs;
 -(void)approveHit:(ANRHit*)hit postImmediately:(BOOL)postNow;

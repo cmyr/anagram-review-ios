@@ -34,14 +34,6 @@
 
 @implementation ANRNewTableVC
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-    }
-    return self;
-}
-
 
 -(NSMutableOrderedSet*)reviewHits {
     if (!_reviewHits) _reviewHits = [[NSMutableOrderedSet alloc]init];
@@ -65,13 +57,7 @@
     return _seenHits;
 }
 
-//-(UIButton*)footerButton {
-//    if (!_footerButton){
-//        _footerButton = [[UIButton alloc]init];
-//        _footerButton.titleLabel.text = @"Mark All As Seen";
-//    }
-//    return _footerButton;
-//}
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -90,19 +76,16 @@
     [self showReviewTable];
     [self.tableView registerNib:[UINib nibWithNibName:@"hitCellView" bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
     
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self setupFooterButton];
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
-    [self.refreshControl addTarget:self action:@selector(refreshAction) forControlEvents:UIControlEventValueChanged];
 }
 
 -(void)setupFooterButton {
@@ -122,13 +105,16 @@
 
 #pragma mark - serverhandler delegate & related
 
--(void)ANRServerDidReceiveHits:(NSArray *)hits {
+-(void)ANRServerDidReceiveHits:(NSArray *)hits Count:(NSUInteger)count {
 
 //    [self serverIsOnline];
+    NSString *message = [NSString stringWithFormat:@"%i hits on server", count];
+    [self displayMessage:message Color:[UIColor whiteColor] Duration:3.0];
 
     if (self.shouldClearHits){
         [self.activeTable removeAllObjects];
         self.shouldClearHits = NO;
+        self.serverExhausted = NO;
     }
     if ([hits count] != self.serverHandler.fetchBatchSize) {
 //  if server returns fewer hits then requested we'll stop sending requests
@@ -144,24 +130,30 @@
     
     [self.tableView reloadData];
     self.isWaitingForHits = NO;
-    [self.refreshControl endRefreshing];
+//    [self.refreshControl endRefreshing];
 }
 
 -(void)ANRServerDidReceiveInfo:(NSDictionary *)info {
-//    [self serverIsOnline];
-//    self.infoLabel.alpha = 0.0;
-//    self.infoLabel.text = [[info[@"new_hits"] stringValue] stringByAppendingString:@" New Hits"];
-//    [UIView animateWithDuration:0.5
-//                     animations:^{
-//                         self.infoLabel.alpha = 1.0;
-//                     } completion:^(BOOL finished) {
-//                         [UIView animateWithDuration:0.5
-//                                               delay:5.0
-//                                             options:0
-//                                          animations:^{
-//                                              self.infoLabel.alpha = 0.0;
-//                                          } completion:NULL];
-//                     }];
+    NSLog(@"%@", info);
+    [self serverIsOnline];
+    id lastPostTime = info[@"last_post"];
+    if ([lastPostTime respondsToSelector:@selector(doubleValue)]) {
+        NSDate *postDate = [NSDate dateWithTimeIntervalSince1970:(NSTimeInterval)[lastPostTime doubleValue]];
+
+        NSTimeInterval timeSinceLastPost = [postDate timeIntervalSinceNow];
+        NSUInteger hours = timeSinceLastPost / (60*60);
+        timeSinceLastPost -= hours * (60*60);
+        NSUInteger minutes = timeSinceLastPost / 60;
+        
+        NSString *intervalString;
+        if (hours){
+            intervalString = [NSString stringWithFormat:@"posted %ih ago", hours];
+        }else{
+            intervalString = [NSString stringWithFormat:@"posted %im ago", minutes];
+        }
+        [self displayMessage:intervalString Color:[UIColor whiteColor] Duration:4.0];
+        
+    }
 }
 
 -(void)ANRServerFailedWithError:(NSError *)error {
@@ -177,8 +169,31 @@
         errorString = @"Offline";
         labelTextColor = [UIColor colorWithRed:0.75 green:0 blue:0 alpha:1.0];
     }
+    if (error.code == -1004) {
+//        could not connect to server
+        [self serverIsOffline];
+    }
     
     self.isWaitingForHits = NO;
+}
+
+-(void)ANRServerDidReceiveResponse:(NSDictionary *)response {
+    NSLog(@"unhandled response: %@", response);
+    
+    if ([response[@"action"]isEqualToString:HIT_STATUS_SEEN] && [response[@"count"]intValue] > 1) {
+//        means we've cleared our review table
+
+        NSString *message = [NSString stringWithFormat:@"cleared %@ hits", response[@"count"]];
+        [self displayMessage:message Color:[UIColor whiteColor] Duration:3.0];
+    }
+    
+    if ([response[@"action"] isEqualToString:HIT_STATUS_POST]) {
+        if (response[@"success"]) {
+            [self displayMessage:@"Post Succeeded" Color:[UIColor whiteColor] Duration:3.0];
+        }else{
+            [self displayMessage:@"Post Failed" Color:[UIColor redColor] Duration:3.0];
+        }
+    }
 }
 
 -(NSNumber*)lastHitID {
@@ -301,7 +316,7 @@
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 //    check if we should get more hits;
     if ((self.activeTable.count - indexPath.row <= UNVIEWED_HITS_BEFORE_REQUEST) && (!self.isWaitingForHits) && (!self.serverExhausted)){
-        [self.serverHandler requestHits:NO];
+        [self.serverHandler requestHits];
         self.isWaitingForHits = YES;
     }
 
@@ -345,6 +360,12 @@
     [self.tableView deleteRowsAtIndexPaths:@[self.tableView.indexPathForSelectedRow] withRowAnimation:UITableViewRowAnimationRight];
 }
 
+- (IBAction)refreshAction:(UIButton *)sender {
+    self.shouldClearHits = YES;
+    [self.serverHandler requestHits];
+    self.isWaitingForHits = YES;
+}
+
 - (IBAction)selectionControlAction:(UISegmentedControl *)sender {
     switch (sender.selectedSegmentIndex) {
         case 0:
@@ -373,6 +394,8 @@
         [seenList addObject:hit.hitID];
     }
     [self.serverHandler markHitsAsSeen:seenList];
+    [self.reviewHits removeAllObjects];
+    [self.tableView reloadData];
 }
 
 - (IBAction)updateInfoButton:(UIButton *)sender {
@@ -384,7 +407,7 @@
     self.activeTable = self.reviewHits;
     [self.tableView reloadData];
     if (!self.reviewHits.count) {
-        [self.serverHandler requestHits:NO];
+        [self.serverHandler requestHits];
     }
     
 }
@@ -394,80 +417,61 @@
     self.activeTable = self.approvedHits;
     [self.tableView reloadData];
     if (!self.approvedHits.count) {
-        [self.serverHandler requestHits:NO];
+        [self.serverHandler requestHits];
     }
 }
 
--(void)showQueueTable {
-    
-}
 
--(void)refreshAction {
-    if ([self.activeTable isEqual:self.approvedHits]) {
-        [self.approvedHits removeAllObjects];
-    }
-    self.shouldClearHits = YES;
-    [self.serverHandler requestHits:YES];
-    self.isWaitingForHits = YES;
-    
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
 }
 
 -(void)serverIsOnline {
-//    show the 'online' label
-//    self.statusLabel.text = @"ONLINE";
-//    self.statusLabel.textColor = [UIColor colorWithRed:0.098 green:0.753 blue:0.02 alpha:1.0];
-//    self.statusLabel.hidden = NO;
-}
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+    [self displayMessage:@"ONLINE" Color:[UIColor colorWithRed:0.098 green:0.753 blue:0.02 alpha:1.0] Duration:3.0];
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
 
- */
+-(void)serverIsOffline {
+    [self displayMessage:@"OFFLINE" Color:[UIColor redColor] Duration:5.0];
+}
+
+-(void)displayMessage:(NSString*)message Color:(UIColor*)color Duration:(NSTimeInterval)duration {
+    [UIView animateWithDuration:0.2
+                          delay:0.0
+                        options: UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         self.titleLabel.alpha = 0.0;
+                     } completion:^(BOOL finished){
+                         self.titleLabel.text = message;
+                         self.titleLabel.textColor = color;
+                         [UIView animateWithDuration:0.2
+                                               delay:0.0
+                                             options:0
+                                          animations:^{
+                                              self.titleLabel.alpha = 1.0;
+                                          }
+                                          completion:^(BOOL finished){
+                                              [UIView animateWithDuration:0.2
+                                                                    delay:duration
+                                                                  options:0
+                                                               animations:^{
+                                                                   self.titleLabel.alpha = 0.0;
+                                                               } completion:^(BOOL finished) {
+                                                                   self.titleLabel.text = @"ANAGRAMATRON";
+                                                                   self.titleLabel.textColor = [UIColor whiteColor];
+                                                                   [UIView animateWithDuration:0.2
+                                                                                    animations:^{
+                                                                                        self.titleLabel.alpha = 1.0;
+                                                                                    } completion:^(BOOL finished) {
+                                                                                        self.titleLabel.alpha = 1.0;
+                                                                                    }];
+                                                                   
+                                                               }];
+                                          }];}
+     ];
+
+}
+
 
 
 @end

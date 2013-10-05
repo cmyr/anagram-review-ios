@@ -50,7 +50,7 @@
     return _keyList;
 }
 
--(void)requestHits:(BOOL)new_hits{
+-(void)requestHits{
 //    private method for accepting bad certs
 
     [NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:ANR_HOST];
@@ -128,27 +128,6 @@
     
 }
 
-//-(void)setStatus:(NSString *)status forHit:(Hit *)hit{
-//    NSString* urlString = [NSString stringWithFormat:@"%@/mod?id=%@&status=%@",ANR_BASE_URL, hit.id_num, status];
-//    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-//    [request addValue:ANR_AUTH_TOKEN forHTTPHeaderField:@"Authorization"];
-//    (void)[NSURLConnection connectionWithRequest:request
-//                                        delegate:self];
-//    self.hitsAwaitingResponses[hit.id_num] = hit;
-//}
-
-//-(void)postHit:(Hit *)hit{
-//    [self setStatus:HIT_STATUS_POST forHit:hit];
-//}
-//
-//-(void)rejectHit:(Hit *)hit {
-//    [self setStatus:HIT_STATUS_REJECT forHit:hit];
-//    
-//}
-//
-//-(void)approveHit:(Hit*)hit {
-//    [self setStatus:HIT_STATUS_APPROVE forHit:hit];
-//}
 
 #pragma mark - nsconnectiondelgate methods
 
@@ -176,27 +155,32 @@
     NSArray* newHits = [response objectForKey:@"hits"];
     if (newHits){
         if ([newHits isKindOfClass:[NSNull class]]){
-            [self.delegate ANRServerDidReceiveHits:nil];
+//            [self.delegate ANRServerDidReceiveHits:nil];
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             return;
         }
 //        response is a list of hits
-        [self processHits:newHits];
+        [self processHits:response];
         [self.responseDatum removeObjectForKey:dataKey];
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        return;
     }
     NSDictionary *stats = [response objectForKey:@"stats"];
     if (stats) {
         [self.delegate ANRServerDidReceiveInfo:response];
+        return;
     }
+    [self.delegate ANRServerDidReceiveResponse:response];
 }
 
--(void)processHits:(NSArray*)newHits {
+-(void)processHits:(NSDictionary*)response {
+    NSArray *newHits = response[@"hits"];
+    NSUInteger serverHitCount = [response[@"total_count"]unsignedIntegerValue];
     NSMutableArray *processedHits = [NSMutableArray array];
     for (NSDictionary* hitDict in newHits) {
         [processedHits addObject:[ANRHit hitFromDict:hitDict]];
     }
-    [self.delegate ANRServerDidReceiveHits:processedHits];
+    [self.delegate ANRServerDidReceiveHits:processedHits Count:serverHitCount];
     
 
 }
