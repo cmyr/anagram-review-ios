@@ -24,6 +24,7 @@
 @property (strong, nonatomic) NSString *statusToFetch;
 @property (nonatomic) BOOL shouldClearHits;
 @property (nonatomic) BOOL serverExhausted;
+@property (strong, nonatomic) UIColor *ourGreen;
 
 @property (strong, nonatomic) UIButton *footerButton;
 
@@ -57,6 +58,11 @@
     return _seenHits;
 }
 
+-(UIColor*)ourGreen {
+    if (!_ourGreen) _ourGreen = [UIColor colorWithRed:0.098 green:0.753 blue:0.02 alpha:1.0];
+    return _ourGreen;
+}
+
 
 
 -(void)viewWillAppear:(BOOL)animated
@@ -72,7 +78,6 @@
     } errorBlock:^(NSError *error) {
         [self ANRServerFailedWithError:error];
     }];
-    [self.serverHandler getInfo];
     [self showReviewTable];
     [self.tableView registerNib:[UINib nibWithNibName:@"hitCellView" bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
@@ -135,12 +140,11 @@
 
 -(void)ANRServerDidReceiveInfo:(NSDictionary *)info {
     NSLog(@"%@", info);
-    [self serverIsOnline];
     id lastPostTime = info[@"last_post"];
     if ([lastPostTime respondsToSelector:@selector(doubleValue)]) {
         NSDate *postDate = [NSDate dateWithTimeIntervalSince1970:(NSTimeInterval)[lastPostTime doubleValue]];
 
-        NSTimeInterval timeSinceLastPost = [postDate timeIntervalSinceNow];
+        NSTimeInterval timeSinceLastPost = abs([postDate timeIntervalSinceNow]);
         NSUInteger hours = timeSinceLastPost / (60*60);
         timeSinceLastPost -= hours * (60*60);
         NSUInteger minutes = timeSinceLastPost / 60;
@@ -167,7 +171,7 @@
     if (error.code == 404) {
 //        host offline
         errorString = @"Offline";
-        labelTextColor = [UIColor colorWithRed:0.75 green:0 blue:0 alpha:1.0];
+        labelTextColor = self.ourGreen;
     }
     if (error.code == -1004) {
 //        could not connect to server
@@ -189,9 +193,9 @@
     
     if ([response[@"action"] isEqualToString:HIT_STATUS_POST]) {
         if (response[@"success"]) {
-            [self displayMessage:@"Post Succeeded" Color:[UIColor whiteColor] Duration:3.0];
+            [self displayMessage:@"Post Succeeded" Color:self.ourGreen Duration:5.0];
         }else{
-            [self displayMessage:@"Post Failed" Color:[UIColor redColor] Duration:3.0];
+            [self displayMessage:@"Post Failed" Color:[UIColor redColor] Duration:5.0];
         }
     }
 }
@@ -366,6 +370,10 @@
     self.isWaitingForHits = YES;
 }
 
+- (IBAction)infoAction:(UIButton *)sender {
+    [self.serverHandler getInfo];
+}
+
 - (IBAction)selectionControlAction:(UISegmentedControl *)sender {
     switch (sender.selectedSegmentIndex) {
         case 0:
@@ -398,9 +406,7 @@
     [self.tableView reloadData];
 }
 
-- (IBAction)updateInfoButton:(UIButton *)sender {
-    [self.serverHandler getInfo];
-}
+
 
 -(void)showReviewTable {
     self.statusToFetch = HIT_STATUS_REVIEW;
@@ -408,6 +414,7 @@
     [self.tableView reloadData];
     if (!self.reviewHits.count) {
         [self.serverHandler requestHits];
+        self.isWaitingForHits = YES;
     }
     
 }
@@ -418,6 +425,7 @@
     [self.tableView reloadData];
     if (!self.approvedHits.count) {
         [self.serverHandler requestHits];
+        self.isWaitingForHits = YES;
     }
 }
 
@@ -427,7 +435,7 @@
 }
 
 -(void)serverIsOnline {
-    [self displayMessage:@"ONLINE" Color:[UIColor colorWithRed:0.098 green:0.753 blue:0.02 alpha:1.0] Duration:3.0];
+    [self displayMessage:@"ONLINE" Color:self.ourGreen Duration:3.0];
 
 }
 

@@ -168,6 +168,7 @@
     NSDictionary *stats = [response objectForKey:@"stats"];
     if (stats) {
         [self.delegate ANRServerDidReceiveInfo:response];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         return;
     }
     [self.delegate ANRServerDidReceiveResponse:response];

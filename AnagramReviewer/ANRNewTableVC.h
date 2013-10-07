@@ -13,6 +13,7 @@
 //@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 
 - (IBAction)refreshAction:(UIButton *)sender;
+- (IBAction)infoAction:(UIButton *)sender;
 - (IBAction)selectionControlAction:(UISegmentedControl *)sender;
 //- (IBAction)updateInfoButton:(UIButton *)sender;
 //@property (weak, nonatomic) IBOutlet UILabel *infoLabel;
