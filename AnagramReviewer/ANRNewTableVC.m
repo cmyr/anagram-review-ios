@@ -450,7 +450,7 @@
 -(void)displayMessage:(NSString*)message Color:(UIColor*)color Duration:(NSTimeInterval)duration {
     [UIView animateWithDuration:0.4
                           delay:0.0
-                        options: UIViewAnimationOptionBeginFromCurrentState
+                        options:0
                      animations:^{
                          self.titleLabel.alpha = 0.0;
                      } completion:^(BOOL finished){
@@ -458,7 +458,7 @@
                          self.titleLabel.textColor = color;
                          [UIView animateWithDuration:0.4
                                                delay:0.0
-                                             options:0
+                                             options:UIViewAnimationOptionBeginFromCurrentState
                                           animations:^{
                                               self.titleLabel.alpha = 1.0;
                                           }
