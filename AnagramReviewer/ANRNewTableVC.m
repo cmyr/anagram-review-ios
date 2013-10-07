@@ -68,6 +68,14 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self showReviewTable];
+    [self displayMessage:@"ANAGRAMATRON" Color:[UIColor whiteColor] Duration:4.0];
+//    [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+}
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
     self.twitter = [STTwitterAPIWrapper twitterAPIWithOAuthConsumerName:@"name?"
                                                             consumerKey:TWITTER_CONSUMER_KEY
                                                          consumerSecret:TWITTER_CONSUMER_SECRET
@@ -78,18 +86,12 @@
     } errorBlock:^(NSError *error) {
         [self ANRServerFailedWithError:error];
     }];
-    [self showReviewTable];
+
+    [self setupFooterButton];
     [self.tableView registerNib:[UINib nibWithNibName:@"hitCellView" bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-    [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
-    
-}
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self setupFooterButton];
 
 }
 
@@ -344,9 +346,9 @@
     BOOL postNow = [hit.status isEqualToString:HIT_STATUS_APPROVE] ? YES : NO;
     [self.serverHandler approveHit:hit postImmediately:postNow];
     [self.activeTable removeObject:hit];
-    if ([self.activeTable isEqual:self.reviewHits]) {
-        [self.approvedHits addObject:hit];
-    }
+//    if ([self.activeTable isEqual:self.reviewHits]) {
+//        [self.approvedHits addObject:hit];
+//    }
     [self.tableView deleteRowsAtIndexPaths:@[self.tableView.indexPathForSelectedRow] withRowAnimation:UITableViewRowAnimationRight];
     
 //    NSLog(@"approve action");
@@ -411,6 +413,7 @@
 -(void)showReviewTable {
     self.statusToFetch = HIT_STATUS_REVIEW;
     self.activeTable = self.reviewHits;
+    self.footerButton.hidden = NO;
     [self.tableView reloadData];
     if (!self.reviewHits.count) {
         [self.serverHandler requestHits];
@@ -422,6 +425,7 @@
 -(void)showApprovedTable {
     self.statusToFetch = HIT_STATUS_APPROVE;
     self.activeTable = self.approvedHits;
+    self.footerButton.hidden = YES;
     [self.tableView reloadData];
     if (!self.approvedHits.count) {
         [self.serverHandler requestHits];
@@ -444,7 +448,7 @@
 }
 
 -(void)displayMessage:(NSString*)message Color:(UIColor*)color Duration:(NSTimeInterval)duration {
-    [UIView animateWithDuration:0.2
+    [UIView animateWithDuration:0.4
                           delay:0.0
                         options: UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
@@ -452,22 +456,22 @@
                      } completion:^(BOOL finished){
                          self.titleLabel.text = message;
                          self.titleLabel.textColor = color;
-                         [UIView animateWithDuration:0.2
+                         [UIView animateWithDuration:0.4
                                                delay:0.0
                                              options:0
                                           animations:^{
                                               self.titleLabel.alpha = 1.0;
                                           }
                                           completion:^(BOOL finished){
-                                              [UIView animateWithDuration:0.2
+                                              [UIView animateWithDuration:0.4
                                                                     delay:duration
                                                                   options:0
                                                                animations:^{
                                                                    self.titleLabel.alpha = 0.0;
                                                                } completion:^(BOOL finished) {
-                                                                   self.titleLabel.text = @"ANAGRAMATRON";
+                                                                   self.titleLabel.text = @"";
                                                                    self.titleLabel.textColor = [UIColor whiteColor];
-                                                                   [UIView animateWithDuration:0.2
+                                                                   [UIView animateWithDuration:0.4
                                                                                     animations:^{
                                                                                         self.titleLabel.alpha = 1.0;
                                                                                     } completion:^(BOOL finished) {
