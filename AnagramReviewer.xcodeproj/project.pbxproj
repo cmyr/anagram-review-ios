@@ -48,6 +48,7 @@
 		62D5FFDA176FED7C002E2BCB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D5FFBE176FED7C002E2BCB /* CoreData.framework */; };
 		62D5FFE2176FED7C002E2BCB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62D5FFE0176FED7C002E2BCB /* InfoPlist.strings */; };
 		62D5FFE4176FED7C002E2BCB /* AnagramReviewerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D5FFE3176FED7C002E2BCB /* AnagramReviewerTests.m */; };
+		6B365416198D766300303599 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B721FEA198D727000C97FEF /* SwiftyJSON.swift */; };
 		6B721FC5198D5A7B00C97FEF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B721FC4198D5A7B00C97FEF /* AppDelegate.swift */; };
 		6B721FC7198D5A7B00C97FEF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B721FC6198D5A7B00C97FEF /* ViewController.swift */; };
 		6B721FCA198D5A7B00C97FEF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B721FC8198D5A7B00C97FEF /* Main.storyboard */; };
@@ -55,6 +56,9 @@
 		6B721FD8198D5A7B00C97FEF /* SwiftAnagramsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B721FD7198D5A7B00C97FEF /* SwiftAnagramsTests.swift */; };
 		6B721FE0198D5AE700C97FEF /* ServerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B721FDF198D5AE700C97FEF /* ServerHandler.swift */; };
 		6B721FE2198D5D5B00C97FEF /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B721FE1198D5D5B00C97FEF /* Auth.swift */; };
+		6B721FE3198D655200C97FEF /* ServerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B721FDF198D5AE700C97FEF /* ServerHandler.swift */; };
+		6B721FE4198D656D00C97FEF /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B721FE1198D5D5B00C97FEF /* Auth.swift */; };
+		6B721FEB198D727000C97FEF /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B721FEA198D727000C97FEF /* SwiftyJSON.swift */; };
 		6BED24B517769DF20072E327 /* ANRSlideGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BED24B417769DF20072E327 /* ANRSlideGestureRecognizer.m */; };
 /* End PBXBuildFile section */
 
@@ -151,6 +155,9 @@
 		6B721FD7198D5A7B00C97FEF /* SwiftAnagramsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftAnagramsTests.swift; sourceTree = "<group>"; };
 		6B721FDF198D5AE700C97FEF /* ServerHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerHandler.swift; sourceTree = "<group>"; };
 		6B721FE1198D5D5B00C97FEF /* Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Auth.swift; path = SwiftAnagrams/Auth.swift; sourceTree = SOURCE_ROOT; };
+		6B721FE5198D6C0600C97FEF /* acceptBadCerts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = acceptBadCerts.h; path = ../acceptBadCerts.h; sourceTree = "<group>"; };
+		6B721FE6198D6C4600C97FEF /* SwiftAnagrams-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftAnagrams-Bridging-Header.h"; sourceTree = "<group>"; };
+		6B721FEA198D727000C97FEF /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = ../SwiftyJSON.swift; sourceTree = "<group>"; };
 		6BED24B317769DF20072E327 /* ANRSlideGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANRSlideGestureRecognizer.h; sourceTree = "<group>"; };
 		6BED24B417769DF20072E327 /* ANRSlideGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANRSlideGestureRecognizer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -239,6 +246,7 @@
 				6B721FD4198D5A7B00C97FEF /* SwiftAnagramsTests */,
 				62D5FFB7176FED7C002E2BCB /* Frameworks */,
 				62D5FFB6176FED7C002E2BCB /* Products */,
+				6B721FE6198D6C4600C97FEF /* SwiftAnagrams-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -346,13 +354,15 @@
 		6B721FC1198D5A7B00C97FEF /* SwiftAnagrams */ = {
 			isa = PBXGroup;
 			children = (
+				6B721FEA198D727000C97FEF /* SwiftyJSON.swift */,
+				6B721FE5198D6C0600C97FEF /* acceptBadCerts.h */,
 				6B721FE1198D5D5B00C97FEF /* Auth.swift */,
 				6B721FC4198D5A7B00C97FEF /* AppDelegate.swift */,
 				6B721FC6198D5A7B00C97FEF /* ViewController.swift */,
+				6B721FDF198D5AE700C97FEF /* ServerHandler.swift */,
 				6B721FC8198D5A7B00C97FEF /* Main.storyboard */,
 				6B721FCB198D5A7B00C97FEF /* Images.xcassets */,
 				6B721FC2198D5A7B00C97FEF /* Supporting Files */,
-				6B721FDF198D5AE700C97FEF /* ServerHandler.swift */,
 			);
 			path = SwiftAnagrams;
 			sourceTree = "<group>";
@@ -587,6 +597,7 @@
 				6B721FE0198D5AE700C97FEF /* ServerHandler.swift in Sources */,
 				6B721FC7198D5A7B00C97FEF /* ViewController.swift in Sources */,
 				6B721FC5198D5A7B00C97FEF /* AppDelegate.swift in Sources */,
+				6B721FEB198D727000C97FEF /* SwiftyJSON.swift in Sources */,
 				6B721FE2198D5D5B00C97FEF /* Auth.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -596,6 +607,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B721FD8198D5A7B00C97FEF /* SwiftAnagramsTests.swift in Sources */,
+				6B721FE3198D655200C97FEF /* ServerHandler.swift in Sources */,
+				6B721FE4198D656D00C97FEF /* Auth.swift in Sources */,
+				6B365416198D766300303599 /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -787,6 +801,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -800,6 +815,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftAnagrams-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -810,6 +826,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -819,6 +836,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftAnagrams-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -844,6 +862,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftAnagrams-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
@@ -865,6 +884,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftAnagrams-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
@@ -906,6 +926,7 @@
 				6B721FDA198D5A7B00C97FEF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6B721FDE198D5A7B00C97FEF /* Build configuration list for PBXNativeTarget "SwiftAnagramsTests" */ = {
 			isa = XCConfigurationList;
@@ -914,6 +935,7 @@
 				6B721FDC198D5A7B00C97FEF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
