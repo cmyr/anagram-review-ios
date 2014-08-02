@@ -23,14 +23,36 @@ class SwiftAnagramsTests: XCTestCase {
     
     func testExample() {
         // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
+        let serverHandler = ServerHandler()
+        let testURL = ANR_BASE_URL + "/hits?count=10&status=review"
+        let request = NSMutableURLRequest(URL: NSURL(string: testURL))
+        request.addValue(ANR_AUTH_TOKEN, forHTTPHeaderField: "Authorization")
+        
+        let response = serverHandler._request(request)
+        
+        switch response {
+        case let .Success(json):
+            println("chill")
+        case let .Error(error):
+            println("bummer")
+        }
+        
     }
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measureBlock() {
+            let serverHandler = ServerHandler()
+            let testURL = ANR_BASE_URL + "/hits?count=10&status=review"
+            let request = NSMutableURLRequest(URL: NSURL(string: testURL))
+            request.addValue(ANR_AUTH_TOKEN, forHTTPHeaderField: "Authorization")
+            
+            let response = serverHandler._request(request)
+            
+            
             // Put the code you want to measure the time of here.
         }
     }
+    
     
 }

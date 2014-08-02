@@ -8,22 +8,6 @@
 
 import UIKit
 
-//let TWITTER_ID_STRING = "id_str"
-//let TWITTER_TEXT = "text"
-//let TWITTER_USER_NAME = "user.name"
-//let TWITTER_USER_SCREENNAME = "user.screen_name"
-//let TWITTER_USER_IMG_URL = "user.profile_image_url"
-//let TWITTER_CREATED_DATE = "created_at"
-
-//#define HIT_ID @"id"
-//#define HIT_STATUS @"status"
-//#define TWEET_ONE_ID @"tweet_one.tweet_id"
-//#define TWEET_TWO_ID @"tweet_two.tweet_id"
-//#define TWEET_ONE_FETCHED @"tweet_one.fetched"
-//#define TWEET_TWO_FETCHED @"tweet_two.fetched"
-//#define TWEET_ONE_TEXT @"tweet_one.tweet_text"
-//#define TWEET_TWO_TEXT @"tweet_two.tweet_text"
-
 
 struct Tweet {
     let profileImageURL: String!
