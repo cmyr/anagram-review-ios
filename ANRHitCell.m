@@ -303,4 +303,16 @@ static int twoObservanceContext;
     }
 }
 
+-(void)dealloc {
+    if (self.isObservingTweetOne) {
+        [_hitForDisplay.tweet1 removeObserver:self forKeyPath:PROFILE_IMAGE_KEY context:&oneObservanceContext];
+        self.isObservingTweetOne = NO;
+    }
+    if (self.isObservingTweetTwo) {
+        [_hitForDisplay.tweet2 removeObserver:self forKeyPath:PROFILE_IMAGE_KEY context:&twoObservanceContext];
+        self.isObservingTweetTwo = NO;
+    }
+    
+}
+
 @end
