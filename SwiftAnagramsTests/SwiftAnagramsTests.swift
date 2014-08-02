@@ -54,5 +54,16 @@ class SwiftAnagramsTests: XCTestCase {
         }
     }
     
+
+    func testJSONParsing() {
+        let data = NSData(contentsOfFile: NSBundle.mainBundle().pathForResource("testhits", ofType: "json"))
+        let json = JSONValue(data)
+        let anagram = AnagramPair(json: json)
+        XCTAssert(anagram.tweet1.text == "And you keep letting me down", "failed to set tweet text")
+        XCTAssert(anagram.tweet2.screenName == "mooanddco", "failed to set screen name")
+        XCTAssert(anagram.hitID == 1398833263101, "failed to set hit ID")
+        
+    }
+    
     
 }

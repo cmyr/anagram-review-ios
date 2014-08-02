@@ -49,6 +49,7 @@
 		62D5FFE2176FED7C002E2BCB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62D5FFE0176FED7C002E2BCB /* InfoPlist.strings */; };
 		62D5FFE4176FED7C002E2BCB /* AnagramReviewerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D5FFE3176FED7C002E2BCB /* AnagramReviewerTests.m */; };
 		6B365416198D766300303599 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B721FEA198D727000C97FEF /* SwiftyJSON.swift */; };
+		6B365418198D99DB00303599 /* testhits.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B365417198D99DB00303599 /* testhits.json */; };
 		6B721FC5198D5A7B00C97FEF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B721FC4198D5A7B00C97FEF /* AppDelegate.swift */; };
 		6B721FC7198D5A7B00C97FEF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B721FC6198D5A7B00C97FEF /* ViewController.swift */; };
 		6B721FCA198D5A7B00C97FEF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B721FC8198D5A7B00C97FEF /* Main.storyboard */; };
@@ -143,6 +144,7 @@
 		62D5FFE3176FED7C002E2BCB /* AnagramReviewerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnagramReviewerTests.m; sourceTree = "<group>"; };
 		62D5FFFE176FF46A002E2BCB /* ANRHitsCDTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANRHitsCDTVC.h; sourceTree = "<group>"; };
 		62D5FFFF176FF46A002E2BCB /* ANRHitsCDTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANRHitsCDTVC.m; sourceTree = "<group>"; };
+		6B365417198D99DB00303599 /* testhits.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = testhits.json; sourceTree = "<group>"; };
 		6B721F721772552600447432 /* ANRAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ANRAuth.h; path = ../ANRAuth.h; sourceTree = "<group>"; };
 		6B721FC0198D5A7B00C97FEF /* SwiftAnagrams.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftAnagrams.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B721FC3198D5A7B00C97FEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 			isa = PBXGroup;
 			children = (
 				6B721FD7198D5A7B00C97FEF /* SwiftAnagramsTests.swift */,
+				6B365417198D99DB00303599 /* testhits.json */,
 				6B721FD5198D5A7B00C97FEF /* Supporting Files */,
 			);
 			path = SwiftAnagramsTests;
@@ -547,6 +550,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B365418198D99DB00303599 /* testhits.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

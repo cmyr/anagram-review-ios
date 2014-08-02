@@ -1,0 +1,146 @@
+[
+ {
+  "status": "review", 
+  "rating": "0", 
+  "tweet_one": {
+   "tweet_id": 461191407361744896, 
+   "tweet_hash": "DBABAC@@@BA@AAA@AAA@@A", 
+   "tweet_text": "And you keep letting me down", 
+   "fetched": {
+    "text": "And you keep letting me down", 
+    "created_at": "Tue Apr 29 17:12:54 +0000 2014", 
+    "user": {
+     "name": "ana", 
+     "profile_image_url": "http://pbs.twimg.com/profile_images/456636679600627713/FcEZwYfV_normal.jpeg", 
+     "screen_name": "anaydg_"
+    }
+   }
+  }, 
+  "hash": "DBABAC@@@BA@AAA@AAA@@A", 
+  "tweet_two": {
+   "tweet_id": 461366259519852544, 
+   "tweet_hash": "DBABAC@@@BA@AAA@AAA@@A", 
+   "tweet_text": "I got my weekend planned out.", 
+   "fetched": {
+    "text": "I got my weekend planned out.", 
+    "created_at": "Wed Apr 30 04:47:42 +0000 2014", 
+    "user": {
+     "name": "moo\u270a", 
+     "profile_image_url": "http://pbs.twimg.com/profile_images/460222702104506369/gaoVSJv7_normal.jpeg", 
+     "screen_name": "mooanddco"
+    }
+   }
+  }, 
+  "flags": "0", 
+  "timestamp": 1398833268.63, 
+  "id": 1398833263101
+ }, 
+ {
+  "status": "review", 
+  "rating": "0", 
+  "tweet_one": {
+   "tweet_id": 460333890524422144, 
+   "tweet_hash": "B@ACA@A@AAB@AA@A@A@@A@", 
+   "tweet_text": "#oomf really devious!", 
+   "fetched": {
+    "text": "#oomf really devious!", 
+    "created_at": "Sun Apr 27 08:25:26 +0000 2014", 
+    "user": {
+     "name": "Jiggy", 
+     "profile_image_url": "http://pbs.twimg.com/profile_images/447436514998632448/5RCDjEH3_normal.jpeg", 
+     "screen_name": "JiggyRunTheCity"
+    }
+   }
+  }, 
+  "hash": "B@ACA@A@AAB@AA@A@A@@A@", 
+  "tweet_two": {
+   "tweet_id": 461369522931257347, 
+   "tweet_hash": "B@ACA@A@AAB@AA@A@A@@A@", 
+   "tweet_text": "I'll Dave some for you", 
+   "fetched": {
+    "text": "I'll Dave some for you", 
+    "created_at": "Wed Apr 30 05:00:40 +0000 2014", 
+    "user": {
+     "name": "12112", 
+     "profile_image_url": "http://pbs.twimg.com/profile_images/460671438811197440/vPECbHps_normal.jpeg", 
+     "screen_name": "aairotciv_19"
+    }
+   }
+  }, 
+  "flags": "0", 
+  "timestamp": 1398834043.01, 
+  "id": 1398834041181
+ }, 
+ {
+  "status": "review", 
+  "rating": "0", 
+  "tweet_one": {
+   "tweet_id": 451883164760539136, 
+   "tweet_hash": "DBACAAAAA@B@@AAA@@@@A@", 
+   "tweet_text": "Sofia won't let me love her \ud83d\udc94", 
+   "fetched": {
+    "text": "Sofia won't let me love her \ud83d\udc94", 
+    "created_at": "Fri Apr 04 00:45:16 +0000 2014", 
+    "user": {
+     "name": "Michelle Sweeney", 
+     "profile_image_url": "http://pbs.twimg.com/profile_images/440610331355013120/bqxSaRIF_normal.jpeg", 
+     "screen_name": "michelleesween"
+    }
+   }
+  }, 
+  "hash": "DBACAAAAA@B@@AAA@@@@A@", 
+  "tweet_two": {
+   "tweet_id": 461369526731288577, 
+   "tweet_hash": "DBACAAAAA@B@@AAA@@@@A@", 
+   "tweet_text": "No love for his lame tweet. \ud83d\ude02", 
+   "fetched": {
+    "text": "No love for his lame tweet. \ud83d\ude02", 
+    "created_at": "Wed Apr 30 05:00:41 +0000 2014", 
+    "user": {
+     "name": "Kiela Shroulote", 
+     "profile_image_url": "http://pbs.twimg.com/profile_images/459915888964022272/dTEhOPos_normal.jpeg", 
+     "screen_name": "kiela_xo"
+    }
+   }
+  }, 
+  "flags": "0", 
+  "timestamp": 1398834043.73, 
+  "id": 1398834043089
+ }, 
+ {
+  "status": "review", 
+  "rating": "0", 
+  "tweet_one": {
+   "tweet_id": 458230580950220801, 
+   "tweet_hash": "ABAACBCA@A@AAA@@@A@@@@A@", 
+   "tweet_text": "I miss the junction days! \ud83d\ude2d", 
+   "fetched": {
+    "text": "I miss the junction days! \ud83d\ude2d", 
+    "created_at": "Mon Apr 21 13:07:38 +0000 2014", 
+    "user": {
+     "name": "AK Guerrero", 
+     "profile_image_url": "http://pbs.twimg.com/profile_images/459304140837896192/yMjUipUH_normal.jpeg", 
+     "screen_name": "PrettyAiraKat"
+    }
+   }
+  }, 
+  "hash": "ABAACBCA@A@AAA@@@A@@@@A@", 
+  "tweet_two": {
+   "tweet_id": 461370009286369280, 
+   "tweet_hash": "ABAACBCA@A@AAA@@@A@@@@A@", 
+   "tweet_text": "Justin's icon is my death\ud83d\udc95", 
+   "fetched": {
+    "text": "Justin's icon is my death\ud83d\udc95", 
+    "created_at": "Wed Apr 30 05:02:36 +0000 2014", 
+    "user": {
+     "name": "Sharman\u265b", 
+     "profile_image_url": "http://pbs.twimg.com/profile_images/461254589476782080/mGJw8FB6_normal.jpeg", 
+     "screen_name": "beYou1234"
+    }
+   }
+  }, 
+  "flags": "0", 
+  "timestamp": 1398834158.76, 
+  "id": 1398834156973
+ }
+ ]
