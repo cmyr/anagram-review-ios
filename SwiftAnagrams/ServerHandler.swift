@@ -9,7 +9,7 @@
 import UIKit
 
 
-struct Tweet {
+struct Tweet : Printable {
     let profileImageURL: String!
     let tweetID: Int!
     let screenName: String!
@@ -18,54 +18,77 @@ struct Tweet {
     let createdAt: NSDate!
     var profileImage: UIImage?
     
-    init(json: Dictionary<String, JSONValue>) {
-        if let tweetText = json["text"]?.string {
+    var description : String {
+        return "\(tweetID) \(createdAt.description) \n \(userName) \(screenName) \n \(text)"
+    }
+    init(json: JSONValue) {
+        if let tweetText = json["tweet_text"].string {
             text = tweetText
+        }else{
+            text = ""
         }
-        if let idInt = json["id_str"]?.string?.toInt() {
+        if let idInt = json["tweet_id"].integer {
             tweetID = idInt
+        }else{
+            tweetID = 0
         }
-        if let createdString = json["created_at"]?.string {
+        if let createdString = json["fetched"]["created_at"].string {
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "EEE MMM dd HH:mm:ss Z Y"
             createdAt = dateFormatter.dateFromString(createdString)
+        }else{
+            createdAt = NSDate(timeIntervalSinceReferenceDate: 0)
         }
-        if let user = json["user"]?.object {
-            if let name = user["name"]?.string {
+        if let name = json["fetched"]["user"]["name"].string {
                 userName = name
+            }else{
+                userName = ""
             }
-            if let sName = user["screen_name"]?.string {
-                screenName = sName
-            }
-            if let imgURL = user["profile_image_url"]?.string {
-                profileImageURL = imgURL
-            }
+        if let sName = json["fetched"]["user"]["screen_name"].string {
+            screenName = sName
+        }else{
+            screenName = ""
         }
+        if let imgURL = json["fetched"]["user"]["profile_image_url"].string {
+            profileImageURL = imgURL
+        }else{
+            profileImageURL = ""
+        }
+    }
+
+
+    func debug_description() -> String {
+        return "\(tweetID) \(createdAt.description) \n \(userName) \(screenName) \n \(text)"
     }
 }
 
 
-struct AnagramPair {
-    let hitID : Int!
-    let hitHash : String!
-    let status : String!
-    let tweet1 : Tweet!
-    let tweet2: Tweet!
+struct AnagramPair : Printable {
+    var hitID : Int!
+    var hitHash : String!
+    var status : String!
+    var tweet1 : Tweet!
+    var tweet2: Tweet!
+    
+    var description : String {
+        return "\(hitID), \(status) \n \(tweet1.description)\n\(tweet2.description)"
+    }
     
     init(json: JSONValue) {
-        if let idInt = json["id"].string?.toInt() {
+        if let idInt = json["id"].integer {
             hitID = idInt
+        }else{
+            hitID = 0
         }
         if let hitStatus = json["status"].string {
             status = hitStatus
+        }else{
+            status = "no status"
         }
-        if let tweet1JSON = json["tweet_one"].object {
-            tweet1 = Tweet(json: tweet1JSON)
+            tweet1 = Tweet(json: json["tweet_one"])
+            tweet2 = Tweet(json: json["tweet_two"])
         }
-        if let tweet2JSON = json["tweet_two"].object {
-            tweet2 = Tweet(json: tweet2JSON)
-        }
-    }
+    
 }
 
 enum ServerResponse {
