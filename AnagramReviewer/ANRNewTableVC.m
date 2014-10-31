@@ -326,7 +326,7 @@
         (!self.isWaitingForHits) && (!self.serverExhausted) &&
         (self.reviewHits.count <= MAX_REVIEWED_HITS_BEFORE_HALT_REFRESH)
         ){
-        
+
         [self.serverHandler requestHits];
         self.isWaitingForHits = YES;
     }
@@ -400,6 +400,7 @@
     }
     self.serverExhausted = NO;
 }
+
 
 -(void)footerButtonAction{
     if (self.activeTable == self.approvedHits) return;
