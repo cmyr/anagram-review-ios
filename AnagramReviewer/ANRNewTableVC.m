@@ -319,9 +319,14 @@
 }
 
 #define UNVIEWED_HITS_BEFORE_REQUEST 5.0
+#define MAX_REVIEWED_HITS_BEFORE_HALT_REFRESH 50
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 //    check if we should get more hits;
-    if ((self.activeTable.count - indexPath.row <= UNVIEWED_HITS_BEFORE_REQUEST) && (!self.isWaitingForHits) && (!self.serverExhausted)){
+    if ((self.activeTable.count - indexPath.row <= UNVIEWED_HITS_BEFORE_REQUEST) &&
+        (!self.isWaitingForHits) && (!self.serverExhausted) &&
+        (self.reviewHits.count <= MAX_REVIEWED_HITS_BEFORE_HALT_REFRESH)
+        ){
+        
         [self.serverHandler requestHits];
         self.isWaitingForHits = YES;
     }

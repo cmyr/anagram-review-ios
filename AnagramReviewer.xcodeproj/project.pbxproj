@@ -127,7 +127,7 @@
 		62D5FFE3176FED7C002E2BCB /* AnagramReviewerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnagramReviewerTests.m; sourceTree = "<group>"; };
 		62D5FFFE176FF46A002E2BCB /* ANRHitsCDTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANRHitsCDTVC.h; sourceTree = "<group>"; };
 		62D5FFFF176FF46A002E2BCB /* ANRHitsCDTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANRHitsCDTVC.m; sourceTree = "<group>"; };
-		6B721F721772552600447432 /* ANRAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANRAuth.h; sourceTree = "<group>"; };
+		6B721F721772552600447432 /* ANRAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ANRAuth.h; path = ../ANRAuth.h; sourceTree = "<group>"; };
 		6BED24B317769DF20072E327 /* ANRSlideGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANRSlideGestureRecognizer.h; sourceTree = "<group>"; };
 		6BED24B417769DF20072E327 /* ANRSlideGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANRSlideGestureRecognizer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
