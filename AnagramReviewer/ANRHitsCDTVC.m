@@ -7,37 +7,65 @@
 //
 
 #import "ANRHitsCDTVC.h"
+#import "ANRHitCell.h"
+#import "ANRNotificationDropDownView.h"
+#import "ANRSlideGestureRecognizer.h"
 #import "Hit+Create.h"
+#import "Tweet+Create.h"b
+
+
+#define CELL_REUSE_IDENTIFIER @"Hit"
+#define SLIDE_GESTURE_START_KEYPATH @"startPoint"
+#define SLIDE_GESTURE_LENGTH_KEYPATH @"gestureLength"
 
 @interface ANRHitsCDTVC ()
 @property (nonatomic) BOOL beganUpdates;
 @property (strong, nonatomic) ANRServerHandler *serverHandler;
+@property (strong, nonatomic) UIManagedDocument *document;
+@property (strong, nonatomic) UIImage *placeholderImage;
+@property (strong, nonatomic) ANRNotificationDropDownView *notificationView;
+@property (nonatomic, weak) ANRHitCell *cellForSlideGesture;
+//@property (nonatomic) BOOL slideGestureInProgress;
 @end
 
 @implementation ANRHitsCDTVC
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+//- (id)initWithStyle:(UITableViewStyle)style
+//{
+//    self = [super initWithStyle:style];
+//    if (self) {
+//        // Custom initialization
+//    }
+//    return self;
+//}
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.managedObjectContext) [self loadDocument];
+    if (!self.managedObjectContext){
+     [self loadDocument];
+    }else{
+        [self fetchHits];
+    }
+
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.tableView registerNib:[UINib nibWithNibName:@"hitCellView" bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:CELL_REUSE_IDENTIFIER];
+    self.tableView.delegate = self;
+    [self setupNotificationView];
+}
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+-(void)setupNotificationView {
+    self.notificationView = [[ANRNotificationDropDownView alloc]init];
+    self.notificationView.frame = CGRectMake(0, -56.0, self.view.frame.size.width,
+                                             56.0);
+    [self.view addSubview:self.notificationView];
+    self.notificationView.hidden = YES;
+//    [self.notificationView showNotification:@"hi" autohide:YES];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -49,6 +77,16 @@
     if (!_serverHandler) _serverHandler = [[ANRServerHandler alloc]init];
     _serverHandler.delegate = self;
     return _serverHandler;
+}
+
+//this lets us receive touches in our buttons more quickly
+-(BOOL) touchesShouldCancelInContentView:(UIView *)view {
+    return YES;
+}
+
+-(UIImage*)placeholderImage {
+    if (!_placeholderImage) _placeholderImage = [UIImage imageNamed:@"missingprofile"];
+    return _placeholderImage;
 }
 
 -(void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
@@ -68,68 +106,128 @@
 -(void)fetchHits
 {
     [self.serverHandler requestHits];
+//    rediculously hacky way of saving when we're debugging
+    [self performSelector:@selector(saveDocument) withObject:Nil afterDelay:15.0];
+//#warning network activity disabled for debug
 }
 
 #define DOCUMENT_NAME @"hitsfile"
+
 -(void)loadDocument{
     NSURL *url = [[[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]lastObject];
     url = [url URLByAppendingPathComponent:DOCUMENT_NAME];
-    UIManagedDocument *document = [[UIManagedDocument alloc]initWithFileURL:url];
+    self.document = [[UIManagedDocument alloc]initWithFileURL:url];
     if (![[NSFileManager defaultManager] fileExistsAtPath:[url path]]){
 //        create
-        [document saveToURL:url
+        [self.document saveToURL:url
            forSaveOperation:UIDocumentSaveForCreating
           completionHandler:^(BOOL success) {
               if (success){
-                  self.managedObjectContext = document.managedObjectContext;
+                  self.managedObjectContext = self.document.managedObjectContext;
                   [self fetchHits];
+              }else{
+                  NSLog(@"failed to open document?");
               }
           }];
-    }else if (document.documentState == UIDocumentStateClosed) {
-        [document openWithCompletionHandler:^(BOOL success) {
+    }else if (self.document.documentState == UIDocumentStateClosed) {
+        [self.document openWithCompletionHandler:^(BOOL success) {
             if (success){
-                self.managedObjectContext = document.managedObjectContext;
+                self.managedObjectContext = self.document.managedObjectContext;
                 [self fetchHits];
             }
         }];
     }else {
-        self.managedObjectContext = document.managedObjectContext;
+        self.managedObjectContext = self.document.managedObjectContext;
         [self fetchHits];
         
     }
 }
 
+-(void)saveDocument {
+    [self.managedObjectContext save:NULL];
+    NSURL *url = [[[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]lastObject];
+    url = [url URLByAppendingPathComponent:DOCUMENT_NAME];
+    [self.document
+     saveToURL:url
+     forSaveOperation:UIDocumentSaveForOverwriting
+     completionHandler:^(BOOL success) {
+         if (success){
+             NSLog(@"document saved");
+         }else{
+             NSLog(@"document not saved");
+         }
+     }];
+}
+#pragma mark - table view delegate methods
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    ANRHitCell *cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell showButtons];    
+}
+
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    ANRHitCell *cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell hideButtons];
+}
+
 #pragma mark - hit server delegate methods
--(void)AGServerDid:(BOOL)successFlag updateStatusForHit:(NSDictionary *)hit
+-(void)AGServerDid:(BOOL)success updateStatus:(NSString*)status ForHit:(Hit *)hit
 {
+//    stop the cell from animatin
+    ANRHitCell *cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.fetchedResultsController indexPathForObject:hit]];
+    [cell showActivityIndicator:NO];
+    [cell hideButtons];
     
+    if (success) {
+        [self.notificationView showNotification:[NSString stringWithFormat:@"Hit %@ %@ successfully", hit.id_num, status] autohide:1.0];
+        hit.status = status;
+        if ([status isEqualToString:HIT_STATUS_POST])
+            [self.managedObjectContext deleteObject:hit];
+    }else {
+        [self.notificationView showNotification:[NSString stringWithFormat:@"Hit %@ update failed", hit.id_num] autohide:1.0];
+    }
+
 }
 
 -(void)AGServerRetrievedHits:(NSArray *)hits
 {
     for (NSDictionary *hit in hits)
     {
-//        if (![hit[@"status"]isEqualToString:HIT_STATUS_FAILED])
-//        [Hit hitWithServerInfo:hit inManagedContext:self.managedObjectContext];
-//        for each hit we want to retreive the actual info from twitter
-//        then make a hit object in our DB from that. cool? cool
-        dispatch_queue_t twitterQueue = dispatch_queue_create("com.cmyr.twitterQueue", NULL);
-        dispatch_async(twitterQueue, ^{
-            NSArray *twitterInfo = [ANRServerHandler twitterInfoForHit:hit];
-            if (twitterInfo){
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [Hit updateHit:hit
-                        withTweets:twitterInfo
-                  inManagedContext:self.managedObjectContext];
-                });
-            }
-        });
+        [Hit hitWithServerInfo:hit inManagedContext:self.managedObjectContext];
     }
 }
 
 -(void)AGServerFailedWithError:(NSError *)error
 {
-    
+    NSLog(@"AGServer failed with error: %@", error);
+}
+
+-(void)AGServerDidReceiveHits:(NSUInteger)hitCount New:(NSUInteger)newCount{
+    [self.notificationView showNotification:[NSString stringWithFormat:@"Retreived %i  new of %i total hits", newCount, hitCount] autohide:3.0];
+}
+
+#pragma mark - handling cell actions
+- (IBAction)refreshAction:(id)sender {
+    [self fetchHits];
+}
+
+-(void)cellApproveAction {
+    NSLog(@"approve action");
+    ANRHitCell * cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
+    [cell showActivityIndicator:YES];
+    Hit *hit = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+    if ([hit.status isEqualToString:HIT_STATUS_APPROVE]) {
+        [self.serverHandler postHit:hit];
+    }else if ([hit.status isEqualToString:HIT_STATUS_REVIEW] || [hit.status isEqualToString:HIT_STATUS_REJECT])
+        [self.serverHandler approveHit:hit];    
+}
+
+-(void)cellRejectAction {
+    NSLog(@"reject action");
+    ANRHitCell * cell = (ANRHitCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
+    [cell showActivityIndicator:YES];
+    Hit *hit = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+    [self.serverHandler rejectHit:hit];
 }
 
 #pragma mark - Fetching
@@ -250,6 +348,7 @@
     }
 }
 
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -267,25 +366,78 @@
 	return [[[self.fetchedResultsController sections] objectAtIndex:section] name];
 }
 
-//- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
-//{
-//	return [self.fetchedResultsController sectionForSectionIndexTitle:title atIndex:index];
-//}
-//
-//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-//{
-//    return [self.fetchedResultsController sectionIndexTitles];
-//}
-
--(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Hit"];
-    Hit *hit = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [hit.id_num stringValue];
-    cell.detailTextLabel.text = hit.status;
+    return 141.0;
+}
+
+#define DEFAULT_CELL_HEIGHT 141.0
+#define DEFAULT_CELL_WIDTH  320.0
+-(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{    
+    static NSString *CellIdentifier = CELL_REUSE_IDENTIFIER;
+    ANRHitCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    assert([cell isKindOfClass:[ANRHitCell class]]);
+//    cell.tweetContainer.frame = CGRectMake(0, 0, DEFAULT_CELL_WIDTH, DEFAULT_CELL_HEIGHT);
+
+//    set frames;
+//    cell.tweetOne.frame = CGRectMake(0, 0, cell.tweetOne.frame.size.width, cell.tweetOne.frame.size.height);
+//    cell.tweetTwo.frame = CGRectMake(0, cell.tweetOne.frame.size.height + 1,
+//                                     cell.tweetTwo.frame.size.width, cell.tweetTwo.frame.size.height);
+
+//    set the fonts, again
+    cell.nameOne.font = [UIFont boldSystemFontOfSize:12.0];
+    cell.nameTwo.font = [UIFont boldSystemFontOfSize:12.0];
+    cell.screenNameOne.font = [UIFont systemFontOfSize:12.0];
+    cell.screenNameTwo.font = [UIFont systemFontOfSize:12.0];
+    cell.screenNameOne.textColor = [UIColor grayColor];
+    cell.screenNameTwo.textColor = [UIColor grayColor];
     
+    cell.tweetTextOne.font = [UIFont systemFontOfSize:14.0];
+    cell.tweetTextTwo.font = [UIFont systemFontOfSize:14.0];
+//    set button actions;
+    [cell reset];
+    [cell.approveButton addTarget:self action:@selector(cellApproveAction) forControlEvents:UIControlEventTouchUpInside];
+    [cell.rejectButton addTarget:self action:@selector(cellRejectAction) forControlEvents:UIControlEventTouchUpInside];
+
+// set background colors for even / odd number cells;
+    if (indexPath.row % 2) {
+        cell.tweetOne.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+        cell.tweetTwo.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+    }else{
+        cell.tweetOne.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+        cell.tweetTwo.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+    }
+    
+    Hit *hit = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSArray* tweets = [hit.tweets allObjects];
+    Tweet* tweetOne = tweets[0];
+    Tweet* tweetTwo = tweets[1];
+    
+    if (tweetOne.profile_img_url && !tweetOne.profile_img) [tweetOne fetchProfileImage];
+    if (tweetTwo.profile_img_url && !tweetTwo.profile_img) [tweetTwo fetchProfileImage];
+            
+    cell.profileImageOne.image = tweetOne.profile_img ? [UIImage imageWithData:tweetOne.profile_img] : self.placeholderImage;
+    cell.nameOne.text = tweetOne.username ;
+    cell.screenNameOne.text = tweetOne.screenname ? [@"@" stringByAppendingString:tweetOne.screenname] : nil;
+    cell.tweetTextOne.text = tweetOne.text;
+    cell.warningOne.hidden = YES;
+    if (!tweetOne.username && !tweetOne.screenname) cell.warningOne.hidden = NO;
+
+    cell.profileImageTwo.image = tweetTwo.profile_img ? [UIImage imageWithData:tweetTwo.profile_img] : self.placeholderImage;
+    cell.nameTwo.text = tweetTwo.username ;
+    cell.screenNameTwo.text = tweetTwo.screenname ? [@"@" stringByAppendingString:tweetTwo.screenname] : nil;
+    cell.tweetTextTwo.text = tweetTwo.text;
+    cell.warningTwo.hidden = YES;
+    if (!tweetTwo.username && !tweetTwo.screenname) cell.warningTwo.hidden = NO;
+ 
+    //so hacking our tableview keeps moving
+    self.view.frame = CGRectMake(0, 0,
+                                 self.view.frame.size.width,
+                                 self.view.frame.size.height);
     return cell;
 }
+
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

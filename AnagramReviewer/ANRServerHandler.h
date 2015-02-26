@@ -11,29 +11,49 @@
 
 #define HIT_ID @"id"
 #define HIT_STATUS @"status"
-#define TWEET_ONE_ID @"tweet_one.id"
-#define TWEET_TWO_ID @"tweet_two.id"
-#define TWEET_ONE_TEXT @"tweet_one.text"
-#define TWEET_TWO_TEXT @"tweet_two.text"
+#define TWEET_ONE_ID @"tweet_one.tweet_id"
+#define TWEET_TWO_ID @"tweet_two.tweet_id"
+#define TWEET_ONE_FETCHED @"tweet_one.fetched"
+#define TWEET_TWO_FETCHED @"tweet_two.fetched"
+#define TWEET_ONE_TEXT @"tweet_one.tweet_text"
+#define TWEET_TWO_TEXT @"tweet_two.tweet_text"
 
 
-#define HIT_STATUS_REVIEW @"review"
-#define HIT_STATUS_APPROVED @"approved"
+#define HIT_STATUS_POST @"posted"
+#define HIT_STATUS_REJECT @"rejected"
+#define HIT_STATUS_APPROVE @"approved"
 #define HIT_STATUS_FAILED @"failed"
+#define HIT_STATUS_REVIEW @"review"
+#define HIT_STATUS_SEEN @"seen"
+
+#define TWITTER_ID_STRING @"id_str"
+#define TWITTER_TEXT @"text"
+#define TWITTER_USER_NAME @"user.name"
+#define TWITTER_USER_SCREENNAME @"user.screen_name"
+#define TWITTER_USER_IMG_URL @"user.profile_image_url"
+#define TWITTER_CREATED_DATE @"created_at"
+@class STTwitterAPIWrapper;
+@class Hit;
+@class ANRHit;
 
 @protocol ANRServerDelegateProtocol <NSObject>
--(void)AGServerRetrievedHits:(NSArray*)hits;
--(void)AGServerDid:(BOOL)successFlag updateStatusForHit:(NSDictionary*)hit;
--(void)AGServerFailedWithError:(NSError*)error;
+-(void)ANRServerFailedWithError:(NSError*)error;
+-(void)ANRServerDidReceiveHits:(NSArray*)hits Count:(NSUInteger)count;
+-(void)ANRServerDidReceiveInfo:(NSDictionary*)info;
+-(void)ANRServerDidReceiveResponse:(NSDictionary*)response;
+-(NSNumber*)lastHitID;
+-(NSString*)statusToFetch;
 @end
 
 @interface ANRServerHandler : NSObject <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 
 @property id<ANRServerDelegateProtocol> delegate;
-
+@property (nonatomic) NSUInteger fetchBatchSize;
+//@property (strong, nonatomic) STTwitterAPIWrapper *twitter;
++(instancetype)sharedInstance;
 -(void)requestHits;
--(void)setStatus:(NSString*)status forHit:(NSDictionary*)hit;
--(void)postHit:(NSDictionary*)hit;
-
-
+//-(void)addHitToBlacklist:(ANRHit*)hit;
+-(void)markHitsAsSeen:(NSSet*)hitIDs;
+-(void)approveHit:(ANRHit*)hit postImmediately:(BOOL)postNow;
+-(void)getInfo;
 @end

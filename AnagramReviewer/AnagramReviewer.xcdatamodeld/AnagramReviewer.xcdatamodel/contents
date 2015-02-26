@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3381.3" systemVersion="12E3067" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3381.3" systemVersion="12C60" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Hit" representedClassName="Hit" syncable="YES">
+        <attribute name="fetched" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="id_num" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="rating" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="tweets" toMany="YES" maxCount="2" deletionRule="Cascade" destinationEntity="Tweet" inverseName="hit" inverseEntity="Tweet" syncable="YES"/>
     </entity>
     <entity name="Tweet" representedClassName="Tweet" syncable="YES">
+        <attribute name="created_at" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="fetched" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="hash_str" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id_num" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="profile_img" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -18,6 +21,6 @@
     </entity>
     <elements>
         <element name="Hit" positionX="196" positionY="167" width="128" height="103"/>
-        <element name="Tweet" positionX="-9" positionY="84" width="128" height="163"/>
+        <element name="Tweet" positionX="-9" positionY="84" width="128" height="178"/>
     </elements>
 </model>

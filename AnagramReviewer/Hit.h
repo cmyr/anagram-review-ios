@@ -2,7 +2,7 @@
 //  Hit.h
 //  AnagramReviewer
 //
-//  Created by Colin Rothfels on 2013-06-19.
+//  Created by Colin Rothfels on 2013-06-21.
 //  Copyright (c) 2013 cmyr. All rights reserved.
 //
 
@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSNumber * id_num;
 @property (nonatomic, retain) NSNumber * rating;
 @property (nonatomic, retain) NSString * status;
+@property (nonatomic, retain) NSNumber * fetched;
 @property (nonatomic, retain) NSSet *tweets;
 @end
 
