@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		62064852179F3D2C00747BD0 /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62064851179F3D2C00747BD0 /* Images-2.xcassets */; };
 		622438171774F2FE002B17A2 /* STHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 622438091774F2FE002B17A2 /* STHTTPRequest.m */; };
 		622438181774F2FE002B17A2 /* STTwitterAPIWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6224380B1774F2FE002B17A2 /* STTwitterAPIWrapper.m */; };
 		622438191774F2FE002B17A2 /* STTwitterHTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 6224380D1774F2FE002B17A2 /* STTwitterHTML.m */; };
@@ -63,7 +62,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		62064851179F3D2C00747BD0 /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Images-2.xcassets"; sourceTree = "<group>"; };
 		622438081774F2FE002B17A2 /* STHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STHTTPRequest.h; sourceTree = "<group>"; };
 		622438091774F2FE002B17A2 /* STHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STHTTPRequest.m; sourceTree = "<group>"; };
 		6224380A1774F2FE002B17A2 /* STTwitterAPIWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTwitterAPIWrapper.h; sourceTree = "<group>"; };
@@ -252,7 +250,6 @@
 				627D94F417765F8B009A8F42 /* missingprofile@2x.png */,
 				622438071774F2E5002B17A2 /* twitter */,
 				62D5FFFD176FF043002E2BCB /* coredata */,
-				62064851179F3D2C00747BD0 /* Images-2.xcassets */,
 				62D5FFC1176FED7C002E2BCB /* Supporting Files */,
 			);
 			path = AnagramReviewer;
@@ -351,6 +348,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = cmyr;
 				TargetAttributes = {
+					62D5FFB4176FED7C002E2BCB = {
+						DevelopmentTeam = 39586EZW6F;
+					};
 					62D5FFD4176FED7C002E2BCB = {
 						TestTargetID = 62D5FFB4176FED7C002E2BCB;
 					};
@@ -385,7 +385,6 @@
 				6297B7771780B4CF003A084D /* cross64.png in Resources */,
 				6297B7761780B4CF003A084D /* check64.png in Resources */,
 				62D5FFC5176FED7C002E2BCB /* InfoPlist.strings in Resources */,
-				62064852179F3D2C00747BD0 /* Images-2.xcassets in Resources */,
 				6297B77A1780B5D0003A084D /* cross128.png in Resources */,
 				62D5FFD0176FED7C002E2BCB /* Images.xcassets in Resources */,
 				627D94F617765F8B009A8F42 /* missingprofile@2x.png in Resources */,
@@ -548,7 +547,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AnagramReviewer/AnagramReviewer-Prefix.pch";
 				INFOPLIST_FILE = "AnagramReviewer/AnagramReviewer-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -564,7 +563,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AnagramReviewer/AnagramReviewer-Prefix.pch";
 				INFOPLIST_FILE = "AnagramReviewer/AnagramReviewer-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
