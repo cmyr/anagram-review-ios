@@ -84,8 +84,8 @@ static int twoObservanceContext;
     rejectButton.translatesAutoresizingMaskIntoConstraints = NO;
     [approveButton setImage:[UIImage imageNamed:@"check64"] forState:UIControlStateNormal];
     [rejectButton setImage:[UIImage imageNamed:@"cross64"] forState:UIControlStateNormal];
-    approveButton.backgroundColor = [UIColor colorWithWhite:0.7 alpha:1.0];//[[UIColor greenColor]colorWithAlphaComponent:0.2];
-    rejectButton.backgroundColor = [UIColor colorWithWhite:0.7 alpha:1.0];//[[UIColor redColor]colorWithAlphaComponent:0.2];
+    approveButton.backgroundColor = [UIColor colorWithWhite:0.7 alpha:1.0];
+    rejectButton.backgroundColor = [UIColor colorWithWhite:0.7 alpha:1.0];
     [underView addSubview:approveButton];
     [underView addSubview:rejectButton];
 //    underView.tintColor = [UIColor blackColor];
@@ -301,6 +301,18 @@ static int twoObservanceContext;
     }else if ([object isEqual:self.hitForDisplay.tweet2]) {
         self.profileImageTwo.image = [object valueForKey:PROFILE_IMAGE_KEY];
     }
+}
+- (void)dealloc
+{
+    if (self.isObservingTweetOne) {
+        [_hitForDisplay.tweet1 removeObserver:self forKeyPath:PROFILE_IMAGE_KEY context:&oneObservanceContext];
+        self.isObservingTweetOne = NO;
+    }
+    if (self.isObservingTweetTwo) {
+        [_hitForDisplay.tweet2 removeObserver:self forKeyPath:PROFILE_IMAGE_KEY context:&twoObservanceContext];
+        self.isObservingTweetTwo = NO;
+    }
+
 }
 
 @end

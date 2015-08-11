@@ -547,19 +547,37 @@
 
 @implementation NSString (STTwitterOAuth)
 
-+ (NSString *)randomString {
-    CFUUIDRef cfuuid = CFUUIDCreate (kCFAllocatorDefault);
-    NSString *uuid = (NSString *)CFBridgingRelease(CFUUIDCreateString (kCFAllocatorDefault, cfuuid));
-    CFRelease (cfuuid);
-    return uuid;
-}
-
+//+ (NSString *)randomString {
+////    CFUUIDRef cfuuid = CFUUIDCreate (kCFAllocatorDefault);
+////    NSString *uuid = (NSString *)CFBridgingRelease(CFUUIDCreateString (kCFAllocatorDefault, cfuuid));
+////    CFRelease (cfuuid);
+//    NSString *uuid = [NSUUID UUID];
+//    return uuid;
+//}
+static const char __alphabet[] =
+"0123456789"
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+"abcdefghijklmnopqrstuvwxyz";
 + (NSString *)random32Characters {
-    NSString *randomString = [self randomString];
-    
+
+    NSMutableString *randomString = [NSMutableString stringWithCapacity:32];
+    u_int32_t alphabetLength = (u_int32_t)strlen(__alphabet);
+    for (int i = 0; i < 32; i++) {
+        [randomString appendFormat:@"%c", __alphabet[arc4random_uniform(alphabetLength)]];
+    }
+
+//    int tryCount = 0;
+//    NSString *randomString = @"";
+//
+//    while ([randomString length] < 32) {
+//        randomString = [self randomString];
+//        tryCount += 1;
+//    }
+//    NSLog(@"generated nonce in %d tries", tryCount);
+
     NSAssert([randomString length] >= 32, @"");
-    
-    return [randomString substringToIndex:32];
+    return randomString;
+//    return [randomString substringToIndex:32];
 }
 
 - (NSString *)signHmacSHA1WithKey:(NSString *)key {
